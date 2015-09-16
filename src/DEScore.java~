@@ -1,0 +1,55 @@
+package edu.carnegiescience.dpb.bartonlab;
+
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.TreeSet;
+
+import javax.naming.NamingException;
+import javax.servlet.ServletContext;
+
+import org.apache.commons.lang3.StringUtils;
+
+/**
+ * Contains a descores record which holds a gene ID and string score representing the differential expression across conditions and times.
+ *
+ * @author Sam Hokin <shokin@carnegiescience.edu>
+ * @version $Revision: 2346 $ $Date: 2013-11-27 19:35:25 -0600 (Wed, 27 Nov 2013) $
+ */
+public class DEScore extends AnalysisResult {
+
+	String score;
+
+	/**
+	 * Construct given a DB instance and Gene
+	 */
+	public DEScore(DB db, Gene gene) throws SQLException {
+		select(db, gene);
+	}
+
+	/**
+	 * Construct given a ServletContext, gene and experiment
+	 */
+	public CuffdiffTimeResult(ServletContext context, Gene gene, Experiment experiment) throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
+		DB db = null;
+		try {
+			db = new DB(context, experiment.schema);
+			select(db, gene);
+		} finally {
+			if (db!=null) db.close();
+		}
+	}
+
+	/**
+	 * Select for a given Gene
+	 */
+	void select(DB db, Gene gene) throws SQLException {
+		db.executeQuery("SELECT * FROM descores WHERE id='"+gene.id+"'");
+		if (db.rs.next()) {
+			this.gene = gene;
+			this.score = db.rs.getString("score");
+		}
+	}
+
+

@@ -1,0 +1,7 @@
+<%
+for (int j=0; j<samples.length; j++) {
+				   String bg = "evening";
+				   if (j%2==0) bg = "morning";
+				   %>
+    <td><img class="<%=bg%>" src="/images/spacer.gif" width="7" height="<%=Math.round(Util.log2(expr.getValues(samples[j].condition)[0])*10)%>"/></td>
+    <% } %>

@@ -1,0 +1,62 @@
+import java.io.FileReader;
+import java.io.BufferedReader;
+
+import edu.carnegiescience.dpb.bartonlab.*;
+
+/**
+ * Parses a tab-delimited file with probe_set_id and Ensemble ID to update expression table.
+ *
+ * The schema and input file are given on the command line.
+ *
+ * @author Sam Hokin <shokin@carnegiescience.edu>
+ * @version $Revision: 2338 $ $Date: 2013-11-27 12:35:04 -0600 (Wed, 27 Nov 2013) $
+ */
+public class ProbesetIDConverter {
+
+	public static void main(String[] args) {
+
+		if (args.length!=2) {
+			System.err.println("Usage: ProbesetIDConverter schema probeset2ensemble.txt");
+			return;
+		}
+
+		String schema = args[0];
+		String probefile = args[1];
+
+		DB db = null;
+
+		try {
+
+			db = new DB();
+
+			BufferedReader br = new BufferedReader(new FileReader(probefile));
+			String line = null;
+			while ((line=br.readLine()) != null) {
+				// don't really care what we read in since we won't get update unless probesetID matches a record
+				String[] parts = line.split("\t");
+				String probesetID = parts[0];
+				String ensembleID = parts[1];
+				db.executeUpdate("UPDATE "+schema+".expression SET id='"+ensembleID+"' WHERE lower(probe_set_id)='"+probesetID.toLowerCase()+"'");
+			}
+
+		} catch (Exception ex) {
+
+			System.out.println(ex.getMessage());
+
+		} finally {
+
+			if (db!=null) {
+
+				try {
+					db.close();
+				} catch (Exception ex) {
+					System.out.println(ex.getMessage());
+				}
+
+			}
+
+		}
+    
+	}
+
+}

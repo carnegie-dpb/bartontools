@@ -1,0 +1,3 @@
+#!/bin/sh
+
+java -cp classes:../lib/bartonlab.jar:../lib/postgresql-jdbc.jar:../lib/apache-commons-math.jar CorrelationHistograms $1 $2

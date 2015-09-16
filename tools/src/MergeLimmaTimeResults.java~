@@ -1,0 +1,80 @@
+import edu.carnegiescience.dpb.bartonlab.*;
+
+/**
+ * This tool merges expression from multiple expression records for the same gene ID. This happens on some microchip arrays.
+ * To preserve the concept of logFC being the average of individual logFC values, choose GEOMETRIC mean on the values, which
+ * is the arithmetic mean of log(values), the normal RMA expression value from an array. ARITHMETIC mean can be chosen otherwise.
+ *
+ * @author Sam Hokin <shokin@carnegiescience.edu>
+ * @version $Revision: 2338 $ $Date: 2013-11-27 12:35:04 -0600 (Wed, 27 Nov 2013) $
+ */
+public class MergeExpression {
+
+	public static void main(String[] args) {
+		
+		if (args.length!=1) {
+			System.out.println("Usage: MergeExpression schema geometricMean[true|false]");
+			return;
+		}
+
+		String schema = args[0];
+		boolean geometricMean = Boolean.getBoolean(args[1]); 
+
+		try {
+
+			DB db1 = new DB(); db1.setSearchPath(schema);
+			DB db2 = new DB(); db2.setSearchPath(schema);
+
+			db1.executeQuery("SELECT DISTINCT id FROM expression ORDER BY id");
+			while (db1.rs.next()) {
+				String id = db1.rs.getString("id");
+				db2.executeQuery("SELECT count(*) FROM expression WHERE id='"+id+"'");
+				db2.rs.next();
+				int count = db2.rs.getInt("count");
+				if (count>1) {
+					db2.executeQuery("SELECT * FROM expression WHERE id='"+id+"'");
+					db2.rs.next();
+					Expression ex = new Expression(db2.rs);
+					double[] values = ex.values;
+					while (db2.rs.next()) {
+						ex = new Expression(db2.rs);
+						if (geometricMean) {
+							for (int i=0; i<ex.values.length; i++) values[i] = values[i]*ex.values[i];
+						} else {
+							for (int i=0; i<ex.values.length; i++) values[i] += ex.values[i];
+						}
+					}
+					if (geometricMean) {
+						for (int i=0; i<ex.values.length; i++) values[i] = values[i]/count;
+					} else {
+						for (int i=0; i<values.length; i++) values[i] = values[i]/count;
+					}
+					// change the probe_set_id to "merged" for merged records
+					String insert = "INSERT INTO expression (id,probe_set_id, \"values\") VALUES ('"+id+"','merged','{";
+					boolean first = true;
+					for (int i=0; i<values.length; i++) {
+						if (first) {
+							first = false;
+						} else {
+							insert += ",";
+						}
+						insert += values[i];
+					}
+					insert += "}');";
+					db2.executeUpdate("DELETE FROM expression WHERE id='"+id+"'");
+					db2.executeUpdate(insert);
+				}
+			}
+
+			db1.close();
+			db2.close();
+			
+		} catch (Exception ex) {
+
+			System.err.println(ex.toString());
+
+		}
+
+	}
+
+}

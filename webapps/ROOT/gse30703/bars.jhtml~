@@ -1,0 +1,30 @@
+				<%
+				if (expr.values!=null
+				&& StatUtils.sum(expr.getValues("WT"))>0
+				&& StatUtils.sum(expr.getValues("GR-AS2"))>0
+				&& StatUtils.sum(expr.getValues("GR-REV"))>0
+				&& StatUtils.sum(expr.getValues("GR-KAN"))>0
+				) {
+				%>
+				<input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
+				<table class="barChart" cellspacing="0">
+					<tr>
+						<%
+						for (int j=0; j<samples.length; j++) {
+										   String bg = "";
+										   if (samples[j].condition.equals("WT")) bg = "bg0";
+										   if (samples[j].condition.equals("GR-AS2")) bg = "bg2";
+										   if (samples[j].condition.equals("GR-REV")) bg = "bg6";
+										   if (samples[j].condition.equals("GR-KAN")) bg = "bg8";
+										   long height = 0;
+										   if (expr.values[j]>0) height = Math.round(Math.log(expr.values[j]*10)*10);
+						%>
+						<td><img class="<%=bg%>" src="/images/spacer.gif" width="2" height="<%=height%>"/></td>
+						<%
+						} // samples loop
+						%>
+					</tr>
+				</table>
+				<%
+				}
+				%>

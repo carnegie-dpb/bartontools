@@ -1,0 +1,6 @@
+<form action="<%=request.getRequestURI()%>" method="post">
+	Gene IDs<br/>or names<br/>(one per line)<br/>
+	<textarea name="searchIDString" cols="16" rows="4"><% for (int i=0; i<genes.length; i++) out.println(genes[i].id); %></textarea>
+		<br/>
+		<input type="submit" class="searchButton" name="idSearch" value="submit"/>
+</form>

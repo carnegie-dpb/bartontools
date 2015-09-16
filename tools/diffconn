@@ -1,0 +1,2 @@
+#!/bin/sh
+java -cp classes:../lib/bartonlab.jar:../lib/postgresql-jdbc.jar:../lib/apache-commons-math.jar DifferentialConnectivity $1 $2

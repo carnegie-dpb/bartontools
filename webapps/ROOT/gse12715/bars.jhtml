@@ -1,0 +1,16 @@
+<%
+for (int j=0; j<samples.length; j++) {
+	String bg = "";
+	if (samples[j].condition.equals("Col-0_1-sucr-12")) bg = "bg1";
+	if (samples[j].condition.equals("Col-0_1-sucr-14")) bg = "bg2";
+	if (samples[j].condition.equals("Col-7_1-sucr-12")) bg = "bg3";
+	if (samples[j].condition.equals("aba2_1-sucr-12")) bg = "bg4";
+	if (samples[j].condition.equals("ein2_1-sucr-14")) bg = "bg5";
+	if (samples[j].condition.equals("etr1_1-sucr-12")) bg = "bg6";
+	long height = 0;
+	if (expr.values[j]>0) height = Math.round(Math.log(expr.values[j]*10)*10);
+%>
+	<td><img class="<%=bg%>" src="/images/spacer.gif" width="5" height="<%=height%>"/></td>
+<%
+} // samples loop
+%>

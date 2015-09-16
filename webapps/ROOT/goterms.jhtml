@@ -1,0 +1,155 @@
+<!-- external enrichment tools -->
+<table>
+	<tr>
+		<td><h3>External:</h3></td>
+		<td>
+			<!-- Panther submission -->
+			<form action="http://pantherdb.org/geneListAnalysis.do" enctype="multipart/form-data" target="_blank">
+				<input type="hidden" name="idField" value="<% for (int i=0; i<genes.length; i++) out.print(genes[i].id+" "); %>" />
+				<input type="hidden" name="fileType" value="10" />
+				<input type="hidden" name="dataset" value="<% out.print(experiment.genus+" "+experiment.species); %>" />
+				<input type="hidden" name="resultType" value="1" />
+				<input type="submit" name="submit" value="PANTHER" />
+			</form>
+		</td>
+		<% if (genes.length>1) { %>
+		<td>
+			<!-- Panther enrichment analysis -->
+			<form role="form" method="POST" action="http://amigo.geneontology.org/rte" target="_blank">
+				<input type="hidden" name="input" value="<% for (int i=0; i<genes.length; i++) out.print(genes[i].id+" "); %>" />
+				<input type="hidden" name="species" value="ARATH" />
+				<input type="hidden" name="ontology" value="biological_process" />
+				<input type="hidden" name="correction" value="bonferroni" />
+				<input type="hidden" name="resource" value="PANTHER" />
+				<input type="hidden" name="format" value="html" />
+				<button type="submit">PANTHER Term Enrichment</button>
+			</form>
+		</td>
+		<td>
+			<!-- g:Profiler -->
+			<form action="http://biit.cs.ut.ee/gprofiler/" target="_blank">
+				<input type="hidden" name="organism" value="<% out.print(experiment.genus.toLowerCase().charAt(0)+experiment.species.toLowerCase()); %>" />
+				<input type="hidden" name="query" value="<% for (int i=0; i<genes.length; i++) out.print(genes[i].id+" "); %>" />
+				<input type="hidden" name="output" value="png" />
+				<input type="hidden" name="significant" value="1" />
+				<input type="hidden" name="sort_by_structure" value="1" />
+				<button type="submit">g:Profiler</button>
+			</form>
+		</td>
+		<% } %>
+		<td>
+			<!-- ThaleMine -->
+			<form id="buildBagForm" method="post" action="https://apps.araport.org/thalemine/buildBag.do" enctype="multipart/form-data" target="_blank">
+				<input type="hidden" name="whichInput" value="" id="whichInput" />
+				<input type="hidden" name="type" value="Gene" />
+				<input type="hidden" name="extraFieldValue" value="<%=experiment.genus.substring(0,1)%>. <%=experiment.species%>" />
+				<input type="hidden" name="text" value="<% for (int i=0; i<genes.length; i++) out.print(genes[i].id+", "); %>" />
+				<input type="submit" value="ThaleMine" id="submitBag" />
+			</form>
+		</td>
+	</tr>
+</table>
+
+<h2>GO Terms</h2>
+<%=tagHeading%>
+
+<p>
+    <!-- <b>Experimental evidence codes:</b> -->
+    EXP = Inferred from Experiment;
+    IEP = Inferred from Expression Pattern;
+    IDA = Inferred from Direct Assay;
+    IGI = Inferred from Genetic Interaction;
+    IMP = Inferred from Mutant Phenotype;
+    IPI = Inferred from Physical Interaction
+</p>
+<p>
+    <!-- <b>Computational Analysis evidence codes:</b> -->
+    ISS = Inferred from Sequence or structural Similarity;
+    ISO = Inferred from Sequence Orthology;
+    ISA = Inferred from Sequence Alignment;
+    ISM = Inferred from Sequence Model;
+    IGC = Inferred from Genomic Context;
+    IBA = Inferred from Biological aspect of Ancestor;
+    IBD = Inferred from Biological aspect of Descendant;
+    IKR = Inferred from Key Residues;
+    IRD = Inferred from Rapid Divergence;
+    RCA = Inferred from Reviewed Computational Analysis
+</p>
+<p>
+    <!-- <b>Author Statement codes:</b> -->
+    TAS = Traceable Author Statement;
+    NAS = Non-traceable Author Statement;
+    <!-- b>Curatorial Statement codes:</b> -->
+    IC = Inferred by Curator;
+    ND = No biological Data available;
+    <!-- <b>Automatically-Assigned evidence code:</b> -->
+    IEA = Inferred from Electronic Annotation;
+</p>
+
+
+<%
+// form the full set of terms
+TreeSet<GOTerm> termSet = new TreeSet<GOTerm>();
+// each gene gets an HashMap containing its terms
+HashMap[] geneMaps = new HashMap[genes.length];
+for (int i=0; i<genes.length; i++) {
+	GOTerm[] goTerms = GOTerm.get(genes[i]);
+	geneMaps[i] = new HashMap<Integer,GOTerm>();
+    for (int j=0; j<goTerms.length; j++) {
+		termSet.add(goTerms[j]);
+		geneMaps[i].put(goTerms[j].id,goTerms[j]);
+	}
+}
+GOTerm[] terms = termSet.toArray(new GOTerm[0]);
+%>
+	<table class="goTerms" cellspacing="0">
+<%
+String type = "";
+boolean changeType = false;
+for (int k=0; k<terms.length; k++) {
+	// do counting first so can print on left
+	int tally = 0;
+	for (int i=0; i<genes.length; i++) {
+		if (geneMaps[i].containsKey(terms[k].id)) tally++;
+	}
+	double fraction = (double)tally/(double)genes.length;
+	String c = ""; // class for highlighting
+	if (fraction>0.50) c = "highlight";
+	if (!terms[k].type.equals(type)) {
+		changeType = true;
+		type = terms[k].type;
+	} else {
+		changeType = false;
+	}
+		%>
+		<% if (changeType) { %>
+		<tr>
+			<td class="ab"><a target="_blank" href="http://amigo.geneontology.org/amigo/term/<%=terms[k].acc%>"><%=terms[k].acc%></a> <b><%=terms[k].type%></b></td>
+			<td class="ac bb ab">#</td>
+			<td class="ac bb ab">%</td>
+			<% for (int i=0; i<genes.length; i++) { %>
+				<td class="gene">
+					<span class="geneName"><%=Util.blankIfNull(genes[i].name)%></span><br/>
+					<%=genes[i].id%>
+				</td>
+				<% } %>
+		</tr>
+		<% } %>
+		<tr>
+			<td class="<%=c%> br"><a target="_blank" href="http://amigo.geneontology.org/amigo/term/<%=terms[k].acc%>"><%=terms[k].acc%></a> <span class="term"><%=terms[k].name%></span></td>
+			<td class="tally <%=c%>"><%=tally%></td>
+			<td class="tally <%=c%>"><%=percentFormat.format(fraction)%></td>
+			<% for (int i=0; i<genes.length; i++) { %>
+				<td class="cell <%=c%>">
+					<% if (geneMaps[i].containsKey(terms[k].id)) {
+					GOTerm go = (GOTerm) geneMaps[i].get(terms[k].id);
+					out.print(go.evidenceCode);
+					} %>
+				</td>
+				<% } %>
+		</tr>
+		<%
+		}
+		%>
+	</table>
+	

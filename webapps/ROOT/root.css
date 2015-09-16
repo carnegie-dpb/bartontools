@@ -1,0 +1,850 @@
+body { 
+    font-family: "Arial", "Helvetica";
+    font-size: 12px;
+    font-weight: normal;
+	color: black;
+    margin: 10px;
+}
+
+h1 { 
+    font-size: 18px;
+    margin: 10px 0;
+}
+h2 { 
+    font-size: 16px;
+    margin: 10px 0 5px 0;
+}
+h3 { 
+    font-size: 14px;
+    margin: 2px 0;
+}
+
+td { 
+    padding: 3px;
+}
+
+hr {
+    margin: 10px 0;
+    height:1px;
+    border-width:0;
+    color:black;
+    background-color:black;
+}
+
+textarea {
+    font-family: "Courier New", "Courier";
+    font-size: 12px;
+	color: black;
+    margin: 2px 0 0 0;
+}
+
+input {
+	padding: 1px;
+	margin: 1px;
+}
+
+p {}
+
+a {
+    color: darkblue;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+pre {
+    background-color: #ddd;
+    padding: 5px;
+}
+
+.bt { border-top: 1px solid black; }
+.br { border-right: 1px solid black; }
+.bb { border-bottom: 1px solid black; }
+.bl { border-left: 1px solid black; }
+
+.al { text-align: left; }
+.ar { text-align: right; }
+.ac { text-align: center; }
+
+.at { vertical-align: top; }
+.am { vertical-align: middle; }
+.ab { vertical-align: bottom; }
+
+.np { padding: 0; }
+.nw { white-space: nowrap; }
+
+.gray { background-color: gray; }
+
+hr.divider { 
+    margin: 0; padding: 0;
+    height:1px;
+    border-width:0;
+    color:black;
+    background-color:black;
+}
+
+ul.nav {
+    font-size: 14px;
+    font-weight: bold;
+    list-style-type: none;
+    margin: 5px 0;
+    padding: 0;
+}
+ul.nav li { 
+    display: inline;
+    padding-right: 20px;
+}
+ul.nav a { 
+    color: darkblue;
+    text-decoration: none;
+}
+ul.nav a:hover { 
+    color: darkred;
+    text-decoration: none;
+}
+
+form.login {	
+	width: 400px;
+	padding: 10px;
+	border: 1px solid gray;
+	background-color: lightgray;
+}
+table.login {
+}
+
+.message {
+	font-weight: bold;
+	color: green;
+}
+
+.genus { font-style: italic; }
+.species { font-style: italic; }
+.schema { font-weight: bold; }
+.assay {font-family:"Courier New","Courier"; font-size:10px; font-weight: normal; }
+.title {font-weight: bold; }
+
+table.experimentIndex { }
+table.experimentIndex td.schema { }
+table.experimentIndex td.assay { text-align:right; }
+table.experimentIndex td.title {  }
+table.experimentIndex a { color: darkgreen; text-decoration: none; }
+table.experimentIndex a:hover { color: darkred; }
+
+
+div.experiment { font-size:13px; margin: 20px 0; }
+div.experiment .description { font-weight: bold; margin-bottom:10px; }
+div.experiment a { color: darkgreen; text-decoration: none; }
+div.experiment a:hover { color: darkred; }
+
+table.experiment {  }
+table.experiment td { vertical-align:top;  padding:3px; }
+table.experiment td.item { text-align: right; }
+
+
+table.samples { }
+
+table.samples td {
+    padding: 3px;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}
+
+table.samples td.label {
+	font-weight: bold;
+}
+
+div.privatedata {
+    padding: 5px 0;
+    font-style: italic;
+    font-weight: bold;
+    color: red;
+}
+
+div.comment { 
+    font-style: italic;
+    padding: 0 0 5px 10px;
+}
+
+div.tool,li.tool { 
+    padding: 0 0;
+    font-size: 13px;
+    font-weight: bold;
+}
+div.tool,li.tool a { 
+    color: darkgreen;
+    text-decoration: none;
+}
+div.tool,li.tool a:hover { 
+			 color: darkred;
+		 }
+
+div.workflow { padding:5px 0; font-size:13px; }
+div.workflow a { color: darkgreen; text-decoration: none; }
+div.workflow a:hover { color: darkred; }
+
+ol.workflow { 
+    font-size: 13px;
+}
+ol.workflow li { 
+    margin: 8px 0;
+}
+
+table.data { 
+    border-top: 1px solid gray;
+    border-left: 1px solid gray;
+    margin: 8px 8px;
+}
+table.data td { 
+    text-align: center;
+    font-size: 12px;
+    font-family: "Courier New", "Courier";
+    padding: 3px;
+    border-right: 1px solid gray;
+    border-bottom: 1px solid gray;
+}
+
+.error {
+    color:red;
+}
+
+.significant { 
+    font-weight: bold;
+}
+
+div.error {
+    padding: 10px;
+	margin: 5px 0;
+    border: 1px solid red;
+    width: 800px;
+}
+div.message {
+	padding: 10px;
+	margin: 5px 0;
+	border: 1px solid green;
+	width: 800px;
+}
+
+table.header {
+}
+table.header td.logo {
+	padding-right: 30px;
+}
+table.header img.logo {
+}
+table.header td.heading {
+	vertical-align: top;
+	padding-top: 26px;
+}
+table.header .title {
+    font-size: 44px;
+    font-weight: normal;
+	color: gray;
+}
+table.header .loginStatus {
+	font-size: 18px;
+}
+
+div.footer {
+    margin-top: 100px;
+    border-top: 1px solid #a00;
+    padding-top: 10px;
+}
+
+div.toolBlurb {
+	font-style: italic;
+	padding-bottom: 5px;
+}
+
+ol.toolInstructions {
+	margin: 0 0 0 2px;
+	padding: 5px 20px;
+	background: #ddd;
+	border: 1px solid gray;
+}
+
+div.searchTitle {
+	padding-bottom: 5px;
+}
+
+div.tagHeading {
+	border-bottom: 1px solid lightgray;
+	padding: 2px;
+}
+
+div.combineTags {
+    padding: 2px 2px;
+}
+
+input.tagCheckbox {
+    margin: 3px 1px 3px 3px;
+    vertical-align: middle;
+}
+input.checkbox {
+    margin: 2px;
+    vertical-align: middle;
+}
+input.radio {
+    margin: 2px;
+    vertical-align: middle;
+}
+
+table.gene { 
+    border-top: 1px solid black;
+}
+
+td.dedata { 
+}
+td.dedata table {
+	width: 350px;
+}
+
+td.cuffdata {
+}
+td.cuffdata table { 
+    width: 400px;
+}
+
+td.expfitdata { 
+    width: 250px;
+}
+td.expfitdata table { 
+    width: 250px;
+}
+td.exprdata { 
+    width: 120px;
+}
+
+td.edgerdata { 
+    width: 200px;
+}
+td.edgerdata table { 
+    width: 200px;
+}
+
+td.anovadata { 
+    width: 280px;
+}
+td.anovadata table { 
+    width: 280px;
+}
+
+td.rcfitdata { 
+    width: 350px;
+}
+td.rcfitdata table { 
+    width: 350px;
+}
+
+
+table.expressionTable { 
+    font-size: 12px;
+}
+table.expressionTable td.condition { 
+    padding: 2px;
+}
+table.expressionTable td.value { 
+    padding: 2px;
+    text-align: right;
+}
+
+.geneID {
+	font-weight: bold;
+}
+.geneName { 
+	font-weight: bold;
+    font-style: italic;
+}
+.alias {
+	font-weight: normal;
+    font-style: italic;
+}
+
+.geneHeading {
+}
+.geneHeading .geneName {
+    padding-left: 5px;
+}
+.geneHeading .alias {
+    padding-left: 5px;
+}
+.geneHeading .type {
+    font-style: italic;
+    padding: 0 5px;
+}
+.geneHeading .description {
+    padding: 0 5px;
+}
+
+
+.modelHeading { 
+    padding: 3px 0;
+}
+.modelName {
+    font-weight: bold;
+}
+.shortDescription {
+    padding: 0 5px;
+}
+
+.curatorSummary {
+    font-style: italic;
+    padding: 2px 0;
+}
+
+.computationalDescription {
+    padding: 2px 0;
+}
+
+form.tags {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    margin-bottom: 5px;
+}
+input.tagClear {
+    margin-left: 10px;
+}
+div.tags { 
+    padding: 5px 0;
+}
+a.tag {
+    color: darkblue;
+    padding: 0 5px 0 0;
+    text-decoration: none;
+}
+a.tag:hover { 
+    color: darkred;
+}
+a.tagdelete { 
+    color: black;
+    text-decoration: none;
+    padding: 0 2px;
+}
+a.tagdelete:hover { 
+    color: red;
+}
+
+td.heading { 
+    padding: 2px;
+}
+
+td.normal {
+    padding: 2px;
+}
+
+td.highlight {
+    color: green;
+    font-weight:bold;
+}
+
+td.upreg {
+    color: green;
+    padding: 2px;
+    font-weight:bold;
+}
+
+td.downreg {
+    color: red;
+    padding: 2px;
+    font-weight:bold;
+}
+
+div.topButtons { 
+    width: 1020px;
+    vertical-align: bottom;
+    position: relative;
+    left: 530px;
+    top: -70px;
+}
+table.topButtons { 
+}
+table.topButtons td { 
+    vertical-align: bottom;
+}
+
+input.searchButton { 
+    font-size: 12px;
+    color: white;
+    background-color: #0a0;
+    font-weight: bold;
+}
+input.clearButton { 
+    font-size: 11px;
+    color: white;
+    background-color: #a00;
+    font-weight: bold;
+}
+input.addTagButton { 
+    font-size: 11px;
+    color: white;
+    font-weight: bold;
+    background-color: #a0a;
+}
+input.viewButton { 
+    font-size: 11px;
+    color: white;
+    font-weight: bold;
+    background-color: #0aa;
+}
+
+input.plotOption {
+    font-size: 11px;
+    color: white;
+    font-weight: bold;
+    background-color: #a0a;
+}
+
+
+table.expressionChart { 
+    border-bottom: 1px solid black;
+    font-size: 12px;
+}
+table.expressionChart .sampleLabel { 
+    text-align: center;
+    vertical-align: top;
+    border-bottom: 1px solid black;
+}
+table.expressionChart .geneID { 
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    white-space: nowrap;
+    text-align: right;
+}
+table.expressionChart .readCount { 
+    text-align: right;
+    border-right: 1px solid black;
+}
+table.expressionChart .shaded {
+    background-color: #ddd;
+}
+
+div.deChartLegend { 
+    width: 400px;
+    margin:10px 0 10px 100px;
+    text-align:center;
+}
+
+table.deChart {
+    font-size: 11px;
+}
+table.deChart td { 
+    padding: 3px;
+    white-space: nowrap;
+}
+table.deChart td.heading {
+    text-align: center;
+    vertical-align: bottom;
+    font-weight: bold;
+    border-bottom: 1px solid black;
+}
+table.deChart td.condition { 
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+table.deChart td.geneName {
+    text-align: right;
+}
+table.deChart td.geneID { 
+    border-right: 1px solid black;
+}
+table.deChart td.base {
+    text-align: right;
+    width: 35px;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+table.deChart td.logFC { 
+    text-align: right;
+    width: 70px;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+table.deChart td.missing {
+	background-color: lightgray;
+	text-align: center;
+}
+
+
+/* Brewer RdYlGn 11 palette */
+table.deChart td.m25 { background-color:#a50026; color:white; }
+table.deChart td.m20 { background-color:#d73027; }
+table.deChart td.m15 { background-color:#f46d43; }
+table.deChart td.m10 { background-color:#fdae61; }
+table.deChart td.m05 { background-color:#fee08b; }
+table.deChart td.mid { background-color:#ffffbf; }
+table.deChart td.p05 { background-color:#d9ef8b; }
+table.deChart td.p10 { background-color:#a6d96a; }
+table.deChart td.p15 { background-color:#66bd63; }
+table.deChart td.p20 { background-color:#1a9850; }
+table.deChart td.p25 { background-color:#006837; color:white; }
+
+.page-break { 
+    page-break-after: always;
+}
+div.correlationLegend {
+    width:610px;
+    margin:20px 0 10px 0;
+    text-align:center;
+}
+table.correlationChart {
+    width: 200px;
+}
+table.correlationChart td { 
+    font-size: 9px;
+    text-align: right;
+    padding: 3px;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+table.correlationChart td.checkbox { 
+    text-align: left;
+}
+table.correlationChart td.condition { 
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    border-right: 1px solid black;
+}
+table.correlationChart td.colHeading {
+    text-align: center;
+    vertical-align: bottom;
+    border-top: 1px solid black;
+}
+table.correlationChart td.rowHeading {
+    text-align: right;
+    white-space: nowrap;
+    border-left: 1px solid black;
+}
+table.correlationChart td.legend { 
+    padding: 5px;
+    border-top: 1px solid black;
+}
+/* Brewer RdYlGn palette for correlation */
+table.correlationChart td.m95corr { background-color:#a50026; color: white; font-weight:bold; }
+table.correlationChart td.m80corr { background-color:#d73027; }
+table.correlationChart td.m60corr { background-color:#f46d43; }
+table.correlationChart td.m40corr { background-color:#fdae61; }
+table.correlationChart td.m20corr { background-color:#fee08b; }
+table.correlationChart td.mid { background-color:#ffffbf; }
+table.correlationChart td.p20corr { background-color:#d9ef8b; }
+table.correlationChart td.p40corr { background-color:#a6d96a; }
+table.correlationChart td.p60corr { background-color:#66bd63; }
+table.correlationChart td.p80corr { background-color:#1a9850; }
+table.correlationChart td.p95corr { background-color:#006837; color:white; font-weight:bold; }
+table.correlationChart td.identity { background-color:black; color: black; }
+table.correlationChart td.diagonal { border-top:1px solid black; border-left:1px solid black; border-right:2px solid black; border-bottom:2px solid black; }
+
+/* Brewer RdYlGn palette for DE-weighted correlation */
+table.correlationChart td.m25 { background-color:#a50026; color:white; font-weight: bold; }
+table.correlationChart td.m20 { background-color:#d73027; }
+table.correlationChart td.m15 { background-color:#f46d43; }
+table.correlationChart td.m10 { background-color:#fdae61; }
+table.correlationChart td.m05 { background-color:#fee08b; }
+table.correlationChart td.mid { background-color:#ffffbf; }
+table.correlationChart td.p05 { background-color:#d9ef8b; }
+table.correlationChart td.p10 { background-color:#a6d96a; }
+table.correlationChart td.p15 { background-color:#66bd63; }
+table.correlationChart td.p20 { background-color:#1a9850; }
+table.correlationChart td.p25 { background-color:#006837; color:white; font-weight: bold; }
+
+
+table.monotonicity {
+    font-size: 10px;
+}
+table.monotonicity td.heading {
+    text-align: center;
+    vertical-align: bottom;
+    font-weight: bold;
+    border-bottom: 1px solid black;
+}
+table.monotonicity td.geneID { 
+    border-right: 1px solid black;
+}
+table.monotonicity td.M { 
+    width: 50px;
+    text-align: center;
+    padding: 3px;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+/* Brewer RdYlGn 7 palette for monotonicity */
+table.monotonicity td.m3 { background-color: #d73027; }
+table.monotonicity td.m2 { background-color: #fc8d59; }
+table.monotonicity td.m1 { background-color: #fee08b; }
+table.monotonicity td.mid { background-color: #ffffbf; }
+table.monotonicity td.p1 { background-color: #d9ef8b; }
+table.monotonicity td.p2 { background-color: #91cf60; }
+table.monotonicity td.p3 { background-color: #1a9850; }
+
+input.download { 
+    color: white;
+    font-weight: bold;
+    background-color: #aa0;
+}
+
+div.search { 
+    border: 1px solid gray;
+}
+
+table.searchFitParameters { 
+    margin: 8px 0;
+    border-spacing: 2px;
+}
+
+table.simpleRegressData { 
+    width: 320px;
+}
+
+table.box { 
+    border: 1px solid black;
+}
+td.box { 
+    border: 1px solid black;
+}
+
+div.instructions { 
+    padding-bottom: 10px;
+}
+
+img.sr-plot { 
+    padding-top: 10px;
+}
+
+img.samplesPlot { 
+    margin: 10px 0;
+}
+img.samplesPlot { 
+    margin: 10px 0;
+}
+
+div.plot { 
+}
+
+div.plotControls {
+    width: 1400px;
+    text-align: center;
+}
+
+div.affxheading { 
+    padding: 3px 0;
+    border-bottom: 1px solid gray;
+}
+.probeSetId {
+    font-weight: bold;
+}
+.geneTitle {
+    font-family: "Times New Roman", "Times";
+    font-style: italic;
+}
+
+table.searchParameters { 
+}
+td.searchParameters { 
+    background-color: #ddd;
+    border:1px solid #888;
+    padding: 5px;
+    text-align: center;
+}
+td.searchInput { 
+    vertical-align: bottom;
+}
+
+.matchCount {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.matchCount error { 
+    color: red;
+}
+
+table.goTerm { 
+}
+table.goTerms td { 
+}
+table.goTerms td.gene {
+    text-align: center;
+    border-bottom: 1px solid gray;
+    font-size: 11px;
+}
+table.goTerms td.cell {
+    text-align: center;
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+}
+table.goTerms .term { 
+    font-style: italic;
+}
+table.goTerms td.tally { 
+    text-align: right;
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+}
+
+table.barChart { 
+    border: 2px solid white;
+}
+table.barChart td {
+    height: 100px;
+    font-size: 10px;
+    padding: 0 1px 0 0;
+    vertical-align: bottom;
+}
+
+img.bg0 { background-color: #aaaaaa; }
+img.bg1 { background-color: #a6cee3; }
+img.bg2 { background-color: #1f78b4; }
+img.bg3 { background-color: #b2df8a; }
+img.bg4 { background-color: #33a02c; }
+img.bg5 { background-color: #fb9a99; }
+img.bg6 { background-color: #e31a1c; }
+img.bg7 { background-color: #fdbf6f; }
+img.bg8 { background-color: #ff7f00; }
+img.bg9 { background-color: #cab2d6; }
+img.bg10 { background-color: #6a3d9a; }
+img.bg11 { background-color: #ffff99; }
+img.bg12 { background-color: #b15928; }
+img.morning { background-color: #55f; }
+img.evening { background-color: #a00; }
+
+table.ratios { 
+}
+table.ratios td { padding:0 3px; }
+
+table.anovaTable {
+    margin-top: 20px;
+    width: 900px;
+}
+table.anovaTable td {
+    padding: 2px 6px;
+}
+table.anovaTable td.cond { background-color: #eee; text-align: right; }
+table.anovaTable td.time { background-color: #fff; text-align: right; }
+table.anovaTable td.cond-time { background-color: #eee; text-align: right; }
+table.anovaTable td.heading {
+    text-align: center;
+    font-weight: bold;
+}
+
+
+td.dtData {
+    width: 200px;
+}
+table.dtChart {
+    width: 200px;
+    font-size: 11px;
+}
+table.dtChart td {
+    padding: 1px 4px 1px 0;
+}
+
+.scoreN { color: gray; }
+.scoreU { color: green; }
+.scoreD { color: red; }
+
+
+button.sort { font-size: 11px; font-weight: bold; }
+button.selected { color: blue; }

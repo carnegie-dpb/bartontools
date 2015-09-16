@@ -1,0 +1,216 @@
+<%
+// chart size
+int chartWidth = 1400;
+int chartHeight = 700;
+
+// relative axis default
+double yMinRelative = 1e-2;
+double yMaxRelative = 1e+3;
+
+
+// plot controls
+boolean showMeans = Util.getBoolean(request, "showMeans");
+boolean showLinear = Util.getBoolean(request, "showLinear");
+boolean showRelative = Util.getString(request, "yOption").equals("relative");
+boolean showZscores = Util.getString(request, "yOption").equals("z-scores");
+boolean showValues = !showRelative && !showZscores;
+
+// SVG download will return after generating chart
+boolean downloadSVG = request.getParameter("downloadSVG")!=null;
+
+// create the dataset for the plot
+DefaultXYDataset exprDataset = new DefaultXYDataset();
+
+// loop through each gene and add to dataset
+for (int i=0; i<genes.length; i++) {
+	Expression expr = new Expression(application, experiment, genes[i]);
+	double[][] xyData = new double[2][expr.values.length];
+	for (int j=0; j<expr.values.length; j++) {
+		xyData[0][j] = (double)j;
+		xyData[1][j] = expr.values[j];
+		if (showRelative) xyData[1][j] = xyData[1][j]/expr.getMeanControlValue();
+		if (showZscores) xyData[1][j] = (xyData[1][j]-expr.getMeanControlValue())/expr.getControlStandardDeviation();
+	}
+	String label = genes[i].id;
+	if (genes[i].name!=null) label += "["+genes[i].name+"]";
+	if (showMeans) {
+		// adjust xyData to display condition/time mean values
+		String cond = "";
+		int t = -1;
+		double xsum = 0.0;
+		double ysum = 0.0;
+		int count = 0;
+		for (int j=0; j<expr.values.length; j++) {
+			if (!samples[j].condition.equals(cond) || samples[j].time!=t) {
+				if (j!=0) {
+					for (int k=j-count; k<j; k++) {
+						xyData[0][k] = xsum/count;
+						xyData[1][k] = ysum/count;
+					}
+				}
+				cond = samples[j].condition;
+				t = samples[j].time;
+				count = 1;
+				xsum = xyData[0][j];
+				ysum = xyData[1][j];
+			} else {
+				count++;
+				xsum += xyData[0][j];
+				ysum += xyData[1][j];
+			}
+		}
+		// mop up
+		for (int k=expr.values.length-count; k<expr.values.length; k++) {
+			xyData[0][k] = xsum/count;
+			xyData[1][k] = ysum/count;
+		}
+	}
+	exprDataset.addSeries(label, xyData);
+}
+  
+// create chart
+String chartTitle = plotTitle;      
+JFreeChart chart = ChartFactory.createScatterPlot(chartTitle,
+												  "s",
+												  experiment.expressionlabel,
+												  exprDataset,
+												  PlotOrientation.VERTICAL,
+												  true,
+												  false,
+												  false);
+XYPlot plot = chart.getXYPlot();
+
+String[] xLabels = new String[samples.length];
+for (int i=0; i<samples.length; i++) xLabels[i] = samples[i].label+" ["+samples[i].num+"]";
+SymbolAxis xAxis = new SymbolAxis("", xLabels);
+xAxis.setTickLabelsVisible(true);
+xAxis.setRange(-0.5,samples.length-0.5);
+xAxis.setMinorTickCount(0);
+xAxis.setAutoTickUnitSelection(false);
+xAxis.setVerticalTickLabels(true);
+plot.setDomainAxis(xAxis);
+
+String yLabel = experiment.expressionlabel;
+if (showRelative) yLabel += "  / <control>";
+if (showZscores) yLabel += " z-scores";
+
+double yMin = 0;
+double yMax = 0;
+double yTimeLabel = 0;
+double yConditionLabel = 0;
+double yLineMin = 0;
+double yLineMax = 0;
+if (showLinear || showZscores) {
+	NumberAxis yAxis = new NumberAxis(yLabel);
+	yAxis.setTickLabelsVisible(true);
+	yAxis.setAutoRangeIncludesZero(true);
+	yMin = Math.min(DatasetUtilities.findRangeBounds(exprDataset).getLowerBound()*1.1, 0.0);
+	yMax = DatasetUtilities.findRangeBounds(exprDataset).getUpperBound()*1.1;
+	yLineMin = yMin;
+	yLineMax = yMax;
+	yConditionLabel = yMin + (yMax-yMin)*0.99;
+	yTimeLabel = yMin + (yMax-yMin)*0.96;
+	if (yMax!=0.0) yAxis.setRange(yMin,yMax);
+	plot.setRangeAxis(yAxis);
+} else {
+	LogarithmicAxis yAxis = new LogarithmicAxis(yLabel);
+	yAxis.setTickLabelsVisible(true);
+	yAxis.setLog10TickLabelsFlag(false);
+	yAxis.setExpTickLabelsFlag(true);
+	yAxis.setMinorTickCount(0);
+	yAxis.setAutoTickUnitSelection(false);
+	yAxis.setNumberFormatOverride(yaxisFormat);
+	if (yMin>0 && yMax>0) {
+		yConditionLabel = yMax/1.01;
+		yTimeLabel = yMax/1.10;
+		yLineMin = yMin;
+		yLineMax = yMax;
+		yAxis.setRange(yMin,yMax);
+	} else {
+		yMin = DatasetUtilities.findRangeBounds(exprDataset).getLowerBound()*0.8;
+		yMax = DatasetUtilities.findRangeBounds(exprDataset).getUpperBound()*1.2;
+		yConditionLabel = yMax*0.95;
+		yTimeLabel = yMax*0.75;
+		yLineMin = yMin;
+		yLineMax = yMax;
+		yAxis.setRange(yMin,yMax);
+	}
+	plot.setRangeAxis(yAxis);
+}
+
+// annotate the plot with lines and text for the condition
+String condition = "";
+boolean hasTimes = Sample.hasTimes(application, experiment);
+double time = -1.0;
+for (int i=0; i<samples.length; i++) {
+	if (hasTimes && (time!=samples[i].time || !condition.equals(samples[i].condition))) {
+		time = samples[i].time;
+		plot.addAnnotation(new XYLineAnnotation(samples[i].num-1.5, yLineMin, samples[i].num-1.5, yLineMax, new BasicStroke(1.0f), Color.gray));
+		XYTextAnnotation timeLabel = new XYTextAnnotation(timeFormat.format(samples[i].time), samples[i].num-1.48, yTimeLabel);
+		timeLabel.setTextAnchor(TextAnchor.TOP_LEFT);
+		timeLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		plot.addAnnotation(timeLabel);
+	}
+	if (!condition.equals(samples[i].condition)) {
+		condition = samples[i].condition;
+		plot.addAnnotation(new XYLineAnnotation(samples[i].num-1.5, yLineMin, samples[i].num-1.5, yLineMax, new BasicStroke(1.0f), Color.black));
+		XYTextAnnotation conditionLabel = new XYTextAnnotation(samples[i].condition, samples[i].num-1.48, yConditionLabel);
+		conditionLabel.setTextAnchor(TextAnchor.TOP_LEFT);
+		conditionLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+		plot.addAnnotation(conditionLabel);
+	}
+}
+// final condition vertical line
+plot.addAnnotation(new XYLineAnnotation(samples[samples.length-1].num-0.5, yLineMin, samples[samples.length-1].num-0.5, yLineMax, new BasicStroke(1.0f), Color.black));
+
+// add a horizontal line at 1.0 for relative scale
+if (showRelative) {
+	plot.addAnnotation(new XYLineAnnotation(-0.5, 1.0, samples[samples.length-1].num-0.5, 1.0, new BasicStroke(0.4f), Color.black));
+}
+
+// add a horizontal line at 0 for z-scores
+if (showZscores) {
+	plot.addAnnotation(new XYLineAnnotation(-0.5, 0.0, samples[samples.length-1].num-0.5, 0.0, new BasicStroke(0.4f), Color.black));
+}
+
+// use a small font on the legend so it doesn't take up so much room
+chart.getLegend().setItemFont(new Font(Font.DIALOG, Font.PLAIN, 10));
+chart.getLegend().setBackgroundPaint(new Color(212,212,212));
+				   
+
+String pngFile = null;
+if (downloadSVG) {
+	// output to SVG file and bail
+	SVG.downloadSVG(chart, chartWidth, chartHeight, response);
+	return;
+} else {
+	// output to PNG file in temp dir
+	pngFile = ServletUtilities.saveChartAsPNG(chart, chartWidth, chartHeight, session);
+}
+%>
+
+	<!-- samples-plot.jhtml -->
+	<div class="plot">
+		<img class="samplesPlot" src="/temp/<%=pngFile%>" alt="<%=chartTitle%>" border="0" width="<%=chartWidth%>" height="<%=chartHeight%>" />
+	</div>
+	<div class="plotControls">
+		<form action="<%=request.getRequestURI()%>" method="post">
+			<input type="hidden" name="viewSamples" value="true"/>
+			<% for (int i=0; i<genes.length; i++) { %><input type="hidden" name="id" value="<%=genes[i].id%>"/><% } %>
+				<input type="radio" class="radio" name="showMeans" <% if (!showMeans) out.print("checked"); %> onClick="submit()" value="false"/>samples
+				<input type="radio" class="radio" name="showMeans" <% if (showMeans) out.print("checked"); %> onClick="submit()" value="true"/>means
+				&nbsp;&nbsp;
+				<% if (Sample.hasControls(samples)) { %>
+				<input type="radio" class="radio" name="yOption" <% if (showValues) out.print("checked"); %> onClick="submit()" value="values"/>values
+				<input type="radio" class="radio" name="yOption" <% if (showRelative) out.print("checked"); %> onClick="submit()" value="relative"/>values/&lang;control&rang;
+				<input type="radio" class="radio" name="yOption" <% if (showZscores) out.print("checked"); %> onClick="submit()" value="z-scores"/>z-scores
+				<% } %>
+				<% if (!showZscores) { %>
+				&nbsp;&nbsp;
+				<input type="radio" class="radio" name="showLinear" <% if (!showLinear) out.print("checked"); %> onClick="submit()" value="false"/>log scale
+				<input type="radio" class="radio" name="showLinear" <% if (showLinear) out.print("checked"); %> onClick="submit()" value="true"/>linear scale
+				<% } %>
+				&nbsp;&nbsp;
+				<input type="submit" name="downloadSVG" class="download" value="download SVG file"/>
+		</form>
+	</div>

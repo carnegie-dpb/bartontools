@@ -1,0 +1,3 @@
+#!/bin/sh
+
+java -cp classes:../lib/bartonlab.jar:/usr/share/java/postgresql.jar GEOSoftPlatformParser $1 $2

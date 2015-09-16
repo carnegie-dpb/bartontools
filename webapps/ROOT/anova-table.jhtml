@@ -1,0 +1,99 @@
+<h2>ANOVA</h2>
+<%=tagHeading%>
+
+<form action="/anovaTAB" method="POST">
+	<input type="hidden" name="schema" value="<%=experiment.schema%>" />
+	<% for (int i=0; i<genes.length; i++) { %><input type="hidden" name="geneID" value="<%=genes[i].id%>"/><% } %>
+		<input type="submit" class="download" value="download TAB file"/>
+</form>
+
+<form method="POST">
+	<input type="hidden" name="schema" value="<%=experiment.schema%>" />
+	<input type="hidden" name="anovaCondition" value="<%=anovaCondition%>"/>
+	<input type="hidden" name="maxConditionQ" value="<%=maxConditionQ%>"/>
+	<input type="hidden" name="maxTimeQ" value="<%=maxTimeQ%>"/>
+	<input type="hidden" name="maxConditionTimeQ" value="<%=maxConditionTimeQ%>" />
+    <input type="hidden" name="viewANOVATable" value="true"/>
+	<% for (int i=0; i<genes.length; i++) { %><input type="hidden" name="id" value="<%=genes[i].id%>"/><% } %>
+		<%
+		for (int j=0; j<anovaConditions.length; j++) {
+						   %>
+		<table cellspacing="0" class="anovaTable bb">
+			<tr>
+				<td colspan="3" class="heading"><%=anovaConditions[j]%></td>
+				<td colspan="4" class="heading">condition</td>
+				<td colspan="4" class="heading">time</td>
+				<td colspan="4" class="heading">condition &times; time</td>
+			</tr>
+			<tr>
+				<td class="heading bb"><button class="sort <% if (Util.getString(request,"sortField").equals("id")) out.print("selected"); %>" type="submit" name="sortField" value="id">ID</button class="sort"></td>
+				<td class="heading bb"><button class="sort <% if (Util.getString(request,"sortField").equals("name")) out.print("selected"); %>" type="submit" name="sortField" value="name">Name</button class="sort"></td>
+				<td class="heading bb">&lang;ctrl&rang;</td>
+				<!-- condition -->
+				<td class="heading bb">&sigma;<sup>2</sup></td>
+				<td class="heading bb">F</td>
+				<td class="heading bb"><button class="sort <% if (Util.getString(request,"sortField").equals("condition_p")) out.print("selected"); %> type="submit" name="sortField" value="condition_p">p</button class="sort"></td>
+				<td class="heading bb">adj.p</td>
+				<!-- time -->
+				<td class="heading bb">&sigma;<sup>2</sup></td>
+				<td class="heading bb">F</td>
+				<td class="heading bb"><button class="sort <% if (Util.getString(request,"sortField").equals("time_p")) out.print("selected"); %> type="submit" name="sortField" value="time_p">p</button class="sort"></td>
+				<td class="heading bb">adj.p</td>
+				<!-- condition x time -->				
+				<td class="heading bb">&sigma;<sup>2</td>
+				<td class="heading bb">F</td>
+				<td class="heading bb"><button class="sort <% if (Util.getString(request,"sortField").equals("condition_time_p")) out.print("selected"); %> type="submit" name="sortField" value="condition_time_p">p</button class="sort"></td>
+				<td class="heading bb">adj.p</td>
+			</tr>
+			<%
+			TreeSet<ANOVAResult> resSet;
+			if (Util.getString(request,"sortField").equals("name")) {
+				resSet = new TreeSet<ANOVAResult>(ANOVAResult.NameComparator);
+			} else if (Util.getString(request,"sortField").equals("condition_p")) {
+				resSet = new TreeSet<ANOVAResult>(ANOVAResult.ConditionPComparator);
+			} else if (Util.getString(request,"sortField").equals("condition_p_adj")) {
+				resSet = new TreeSet<ANOVAResult>(ANOVAResult.ConditionPAdjComparator);
+			} else if (Util.getString(request,"sortField").equals("time_p")) {
+				resSet = new TreeSet<ANOVAResult>(ANOVAResult.TimePComparator);
+			} else if (Util.getString(request,"sortField").equals("time_p_adj")) {
+				resSet = new TreeSet<ANOVAResult>(ANOVAResult.TimePAdjComparator);
+			} else if (Util.getString(request,"sortField").equals("condition_time_p")) {
+				resSet = new TreeSet<ANOVAResult>(ANOVAResult.ConditionTimePComparator);
+			} else if (Util.getString(request,"sortField").equals("condition_time_p_adj")) {
+				resSet = new TreeSet<ANOVAResult>(ANOVAResult.ConditionTimePAdjComparator);
+			} else {
+				resSet = new TreeSet<ANOVAResult>();
+			}
+			for (int i=0; i<genes.length; i++) resSet.add(new ANOVAResult(application, experiment, anovaConditions[j], genes[i]));
+			for (ANOVAResult res : resSet) {
+				Expression expr = new Expression(application, experiment, res.gene);
+				String highlight = "";
+				%>
+			<tr>
+				<td class="bl"><%=res.gene.id%></td>
+				<td class="geneName"><%=Util.blankIfNull(res.gene.name)%></td>
+				<td align="right"><%=fractionFormat.format(expr.getMeanControlValue())%></td>
+				<% if (res.condition_p_adj<0.05) highlight="highlight"; else highlight=""; %>
+				<td class="cond <%=highlight%>"><%=expFormat.format(res.condition_meansq)%></td>
+				<td class="cond <%=highlight%>"><%=fractionFormat.format(res.condition_f)%></td>
+				<td class="cond <%=highlight%>"><%=expFormat.format(res.condition_p)%></td>
+				<td class="cond <%=highlight%>"><%=expFormat.format(res.condition_p_adj)%></td>
+				<% if (res.time_p_adj<0.05) highlight="highlight"; else highlight=""; %>
+				<td class="time <%=highlight%>"><%=expFormat.format(res.time_meansq)%></td>
+				<td class="time <%=highlight%>"><%=fractionFormat.format(res.time_f)%></td>
+				<td class="time <%=highlight%>"><%=expFormat.format(res.time_p)%></td>
+				<td class="time <%=highlight%>"><%=expFormat.format(res.time_p_adj)%></td>
+				<% if (res.condition_time_p_adj<0.05) highlight="highlight"; else highlight=""; %>
+				<td class="cond-time <%=highlight%>"><%=expFormat.format(res.condition_time_meansq)%></td>
+				<td class="cond-time <%=highlight%>"><%=fractionFormat.format(res.condition_time_f)%></td>
+				<td class="cond-time <%=highlight%>"><%=expFormat.format(res.condition_time_p)%></td>
+				<td class="cond-time <%=highlight%> br"><%=expFormat.format(res.condition_time_p_adj)%></td>
+			</tr>
+			<%
+			} // res
+			%>
+	</table>
+	<%
+	} // anovaConditions
+	%>
+</form>

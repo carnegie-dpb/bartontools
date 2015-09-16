@@ -1,0 +1,5 @@
+<form action="<%=request.getRequestURI()%>" method="post">
+  <%=experiment.annotation%><br/>Computational<br/>Description<br/>
+  <textarea name="tairterm" rows="4" cols="12"><%=tairterm%></textarea><br/>
+  <input type="submit" class="searchButton" name="tairSearch" value="search"/>
+</form>

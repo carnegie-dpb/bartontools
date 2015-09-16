@@ -1,0 +1,172 @@
+<%
+Expression[] expr = new Expression[genes.length];
+for (int k=0; k<genes.length; k++) {
+	expr[k] = new Expression(application, experiment, genes[k]); // DO NOT TAKE LOG, SO WORKS WITH MICROARRAY DATA AS WELL
+}
+
+String correlationType = Util.getString(request, "correlationType");
+if (correlationType.length()==0) correlationType = "Normal";
+				   
+boolean normal = correlationType.equals("Normal");
+boolean conditional = correlationType.equals("Conditional");
+boolean differential = correlationType.equals("Differential");
+
+PearsonsCorrelation pCorr = new PearsonsCorrelation();
+SpearmansCorrelation sCorr = new SpearmansCorrelation();
+
+// correlation groups can include all samples
+String[] groups = new String[0];
+if (conditions.length<10) {
+	// do correlation for each condition
+	groups = new String[conditions.length+1];
+	for (int i=0; i<conditions.length; i++) groups[i] = conditions[i];
+	groups[conditions.length] = "ALL";
+} else {
+	// do correlation only for all samples
+	groups = new String[1];
+	groups[0] = "ALL";
+}
+%>
+
+	<h2><%=correlationType%> Correlation Matrix</h2>
+	<%=tagHeading%>
+
+
+	<table>
+		<tr>
+			<td>
+				<form action="<%=request.getRequestURI()%>" method="post">
+					<input type="hidden" name="viewCorrelation" value="true"/>
+					<select name="correlationType" onChange="submit()">
+						<option <% if (normal) out.print("selected"); %> value="Normal">Normal: corr(condition)</option>
+						<option <% if (conditional) out.print("selected"); %> value="Conditional">Conditional: corr(WT+condition)</option>
+						<option <% if (differential) out.print("selected"); %> value="Differential">Differential: corr(condition)-corr(WT)</option>
+					</select>
+					<% for (int i=0; i<genes.length; i++) { %><input type="hidden" name="id" value="<%=genes[i].id%>"/><% } %>
+				</form>
+			</td>
+			<td>
+				<form action="/correlationTAB" method="post">
+					<input type="hidden" name="schema" value="<%=experiment.schema%>" />
+					<input type="hidden" name="correlationType" value="<%=correlationType%>" />
+					<% for (int i=0; i<genes.length; i++) { %><input type="hidden" name="geneID" value="<%=genes[i].id%>"/><% } %>
+						<input type="submit" class="download" value="download TAB file"/>
+				</form>
+			</td>
+		</tr>
+	</table>
+	
+	<% for (int i=0; i<groups.length; i++) { %>
+		
+		<% if (i>0) { %><div class="page-break"></div><% } %>
+		
+		<%
+		// group string labels each table				       
+		String group = "";
+		if (normal) group = groups[i];
+		if (conditional) {
+        group = "WT";
+        if (!groups[i].equals("WT")) group += " + "+groups[i];
+		}
+		if (differential) group = groups[i]+" - WT";
+		%>
+
+		<%
+		// don't show WT and ALL on non-normal correlation choices
+		if (normal || (!groups[i].equals("WT") && !groups[i].equals("ALL"))) {
+		%>
+		
+		<% if (normal || conditional) { %>
+		<div class="correlationLegend">
+			<b><% if (normal) { %>Normal: corr(all samples)<% } else if (conditional) { %>Conditional: corr(WT+condition)<% } %></b><br/>
+            Pearson's correlation above diagonal and Spearman's rank correlation below diagonal<br/>
+            <table cellspacing="0" class="correlationChart" align="center" style="margin-top:10px">
+				<tr>
+					<td class="legend m95corr">&lt;-0.95</td>
+					<td class="legend m80corr">&lt;-0.80</td>
+					<td class="legend m60corr">&lt;-0.60</td>
+					<td class="legend m40corr">&lt;-0.40</td>
+					<td class="legend m20corr">&lt;-0.20</td>
+					<td class="legend mid">-0.20 to 0.20</td>
+					<td class="legend p20corr">&gt;0.20</td>
+					<td class="legend p40corr">&gt;0.40</td>
+					<td class="legend p60corr">&gt;0.60</td>
+					<td class="legend p80corr">&gt;0.80</td>
+					<td class="legend p95corr">&gt;0.95</td>
+				</tr>
+            </table>
+		</div>
+		<% } else if (differential) { %>
+		<div class="correlationLegend">
+			<b>Differential: corr(selected condition) - corr(WT)</b><br/>
+			Pearson's correlation above diagonal and Spearman's rank correlation below diagonal<br/>
+			<table cellspacing="0" class="correlationChart" align="center" style="margin-top:10px">
+				<tr>
+					<td class="legend m95corr">&lt;-1.9</td>
+					<td class="legend m80corr">&lt;-1.6</td>
+					<td class="legend m60corr">&lt;-1.2</td>
+					<td class="legend m40corr">&lt;-0.8</td>
+					<td class="legend m20corr">&lt;-0.4</td>
+					<td class="legend mid">-0.4 to 0.4</td>
+					<td class="legend p20corr">&gt;0.4</td>
+					<td class="legend p40corr">&gt;0.8</td>
+					<td class="legend p60corr">&gt;1.2</td>
+					<td class="legend p80corr">&gt;1.6</td>
+					<td class="legend p95corr">&gt;1.9</td>
+				</tr>
+			</table>
+		</div>
+		<% } %>
+        
+		<table cellspacing="0" class="correlationChart">
+			<tr>
+				<td class="condition"><%=group%></td>
+				<% for (int l=0; l<genes.length; l++) { %><td class="colHeading"><span class="geneName"><%=Util.blankIfNull(genes[l].name)%></span><br/><%=genes[l].id%></td><% } %>
+			</tr>
+			<% for (int k=0; k<genes.length; k++) { %>
+				<tr>
+					<td class="rowHeading"><span class="geneName"><%=Util.blankIfNull(genes[k].name)%></span> <%=genes[k].id%></td>
+					  <%
+					  for (int l=0; l<genes.length; l++) {
+						  double corr = 1.0;
+						  String bg = "";
+						  if (normal) {
+							  if (groups[i].equals("ALL")) {
+								  if (k<l) corr = pCorr.correlation(Util.log2(expr[k].values), Util.log2(expr[l].values));
+								  if (k>l) corr = sCorr.correlation(expr[k].values, expr[l].values);
+							  } else {
+								  if (k<l) corr = pCorr.correlation(Util.log2(expr[k].getValues(groups[i])), Util.log2(expr[l].getValues(groups[i])));
+								  if (k>l) corr = sCorr.correlation(expr[k].getValues(groups[i]), expr[l].getValues(groups[i]));
+							  }
+							  bg = Util.bgCorrelation(corr);
+							  if (k==l) bg = "identity";
+						  } else if (conditional) {
+							  String[] conds = new String[2];
+							  conds[0] = "WT";
+							  conds[1] = groups[i];
+							  if (k<l) corr = pCorr.correlation(Util.log2(expr[k].getValues(conds)), Util.log2(expr[l].getValues(conds)));
+							  if (k>l) corr = sCorr.correlation(expr[k].getValues(conds), expr[l].getValues(conds));
+							  if (k==l) corr = 1.0;
+							  bg = Util.bgCorrelation(corr);
+							  if (k==l) bg = "identity";
+						  } else if (differential) {
+							  if (k<l) corr = 
+										   pCorr.correlation(Util.log2(expr[k].getValues(groups[i])), Util.log2(expr[l].getValues(groups[i]))) -
+										   pCorr.correlation(Util.log2(expr[k].getValues("WT")), Util.log2(expr[l].getValues("WT")));
+							  if (k>l) corr = sCorr.correlation(expr[k].getValues(groups[i]), expr[l].getValues(groups[i])) - sCorr.correlation(expr[k].getValues("WT"), expr[l].getValues("WT"));
+							  if (k==l) corr = 0.0;
+							  bg = Util.bgDifferentialCorrelation(corr);
+							  if (k==l) bg = "identity";
+						  }
+						  out.println("<td class=\""+bg+"\">"+fractionFormat.format(corr)+"</td>");
+					  } // columns
+				%>
+				</tr>
+				<%
+				} // rows
+				%>
+        </table>
+        <%
+        } // don't show WT on non-normal choices
+		} // groups
+        %>

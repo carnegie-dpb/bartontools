@@ -1,0 +1,125 @@
+<%
+// chart size
+int chartWidth = 600;
+int chartHeight = 400;
+
+// SVG download will return after generating chart
+boolean downloadSVG = request.getParameter("downloadSVG")!=null;
+
+// plot controls
+boolean linear = Util.getBoolean(request, "linear");
+if (request.getParameter("changeScale")!=null) linear = !linear;
+
+String[] chartPNG = new String[conditions.length];
+
+for (int k=0; k<conditions.length; k++) {
+
+	// create the dataset for the plot
+	DefaultXYDataset exprDataset = new DefaultXYDataset();
+
+	// get the samples for this condition
+	Sample[] conditionSsmples = Sample.get(application, experiment, conditions[k]);
+				   
+	// loop through each gene and add to dataset for THIS condition
+	for (int i=0; i<genes.length; i++) {
+		Expression expr = new Expression(application, experiment, genes[i]);
+		double[] values = expr.getValues(conditions[k]);
+		double[][] xyData = new double[2][values.length];
+		for (int j=0; j<values.length; j++) {
+			xyData[0][j] = conditionSsmples[j].time;
+			xyData[1][j] = values[j];
+		}
+		String geneLabel = genes[i].id;
+		if (genes[i].name!=null) geneLabel += "["+genes[i].name+"]";
+		exprDataset.addSeries(geneLabel, xyData);
+	}
+														 
+	// create chart
+	String chartTitle = conditions[k];
+	if (plotTitle.length()>0) chartTitle += ": "+plotTitle;
+	JFreeChart chart = ChartFactory.createScatterPlot(chartTitle,
+													  "Time",
+													  experiment.expressionlabel,
+													  exprDataset,
+													  PlotOrientation.VERTICAL,
+													  true,
+													  false,
+													  false);
+	XYPlot plot = chart.getXYPlot();
+	plot.setOrientation(PlotOrientation.VERTICAL);
+	plot.setBackgroundPaint(Color.lightGray);
+	plot.setRangeGridlinePaint(Color.white);
+	
+	NumberAxis xAxis = new NumberAxis("Time");
+	xAxis.setAutoRangeIncludesZero(true);
+	// xAxis.setRange(-15.0,135.0);
+	//   xAxis.setAutoTickUnitSelection(false);
+	// xAxis.setTickUnit(new NumberTickUnit(15.0));
+	plot.setDomainAxis(xAxis);
+
+	if (linear) {
+		NumberAxis yAxis = new NumberAxis(experiment.expressionlabel);
+		yAxis.setAutoRangeIncludesZero(true);	
+		plot.setRangeAxis(yAxis);
+	} else {
+		LogAxis yAxis = new LogAxis(experiment.expressionlabel);
+		// double yMin = DatasetUtilities.findRangeBounds(exprDataset).getLowerBound();
+		// double yMax = DatasetUtilities.findRangeBounds(exprDataset).getUpperBound();
+		// yAxis.setRange(yMin,yMax);
+		// yAxis.setMinorTickCount(0);
+		// yAxis.setAutoTickUnitSelection(true);
+		yAxis.setNumberFormatOverride(yaxisFormat);
+		plot.setRangeAxis(yAxis);
+	}
+
+	// use a small font on the legend so it doesn't take up so much room
+	chart.getLegend().setItemFont(new Font(Font.DIALOG, Font.PLAIN, 10));
+
+	if (downloadSVG) {
+		if (Util.getInt(request,"chartIndex")==k) {
+			// output to SVG file and return, no browser output
+			SVG.downloadSVG(chart, chartWidth, chartHeight, response);
+			return;
+		}
+	} else {
+		// output chart to PNG file in temp directory
+		chartPNG[k] = ServletUtilities.saveChartAsPNG(chart, chartWidth, chartHeight, session);
+	}
+
+}
+%>
+    <% for (int k=0; k<conditions.length; k++) { %>
+    <div style="clear:both;">
+			   <div style="float:left; padding:10px;">
+			   <img src="/temp/<%=chartPNG[k]%>" alt="Barton lab DESeq-normalized RNA-Seq read counts" border="0" width="<%=chartWidth%>" height="<%=chartHeight%>"/>
+			   </div>
+			   <div style="padding-top:<%=chartHeight/2%>px;">
+			   <form action="<%=request.getRequestURI()%>" method="post">
+			   <input type="hidden" name="viewTimes" value="true"/>
+			   <input type="hidden" name="linear" value="<%=linear%>"/>
+			   <input type="hidden" name="chartIndex" value="<%=k%>"/>
+			   <% for (int i=0; i<genes.length; i++) { %>
+													   <input type="hidden" name="id" value="<%=genes[i].id%>"/>
+													   <% } %>
+			   <input type="submit" name="downloadSVG" class="download" value="download SVG file"/>
+					</form>
+					</div>
+					</div>
+					<% } %>
+
+						<div style="clear:both; width:600px; text-align:center">
+							<form action="<%=request.getRequestURI()%>" method="post">
+							<input type="hidden" name="viewTimes" value="true"/>
+							<input type="hidden" name="linear" value="<%=linear%>"/>
+							<% for (int i=0; i<genes.length; i++) { %>
+																	<input type="hidden" name="id" value="<%=genes[i].id%>"/>
+																	<% } %>
+																		<% if (linear) { %>
+	<input type="submit" name="changeScale" class="viewButton" value="log scale"/>
+																				   <% } else { %>
+	<input type="submit" name="changeScale" class="viewButton" value="linear scale"/>
+		<% } %>
+			</form>
+				</div>
+
+

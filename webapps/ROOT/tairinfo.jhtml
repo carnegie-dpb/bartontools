@@ -1,0 +1,30 @@
+<!-- tairinfo.jhtml -->
+<%
+TAIRGene tg = new TAIRGene(application, genes[i], experiment);
+if (tg.id==null) {
+%>
+appears to be obsolete in <%=experiment.annotation%>.
+<%
+} else {
+for (int k=0; k<tg.modelname.length; k++) {
+%>
+	<div class="modelHeading">
+		<a class="modelName" target="_blank" href="https://www.arabidopsis.org/servlets/TairObject?type=gene&name=<%=tg.modelname[k]%>"><%=tg.modelname[k]%></a>
+		<span class="shortDescription"><%=Util.blankIfNull(tg.shortDescription[k])%></span>
+	</div>
+	<% if (tg.curatorSummary[k]!=null) { %><div class="curatorSummary"><%=tg.curatorSummary[k]%></div><% } %>
+    <% if (tg.computationalDescription[k]!=null) { %><div class="computationalDescription"><%=tg.computationalDescription[k]%></div><% } %>
+	<%
+	}
+}
+if (!user.isDefault()) {
+	String[] geneTags = user.getTags(application, tg);
+%>
+    <div class="tags">
+		<% for (int j=0; j<geneTags.length; j++) { %>
+        <a class="tagdelete" href="?geneID=<%=tg.id%>&removeTag=<%=geneTags[j]%>">[x]</a><a class="tag" href="?tagSearch=true&tags=<%=geneTags[j]%>"><%=geneTags[j]%></a>
+		<% } %>
+    </div>
+<%
+}
+%>

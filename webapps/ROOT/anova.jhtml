@@ -1,0 +1,112 @@
+<h2>One-way ANOVA on time or two-way ANOVA on condition X time</h2>
+
+<% if (anovaCondition.length()>0) { %>
+<%@ include file="../tags.jhtml" %>
+<% } %>
+
+<table cellspacing="2" class="searchParameters">
+    <tr>
+		<td class="searchParameters" >
+			<form action="anova.jsp" method="post">
+				<select name="anovaCondition" onChange="submit()">
+					<option value="">-- select ANOVA conditions --</option>
+					<% for (int i=0; i<anovaConditions.length; i++) { %>
+						<option <% if (anovaCondition!=null && anovaCondition.equals(anovaConditions[i])) out.print("selected"); %> value="<%=anovaConditions[i]%>"><%=anovaConditions[i]%></option>
+						<% } %>
+				</select>
+			</form>
+			<% if (anovaCondition.length()>0) { %>
+			<form action="anova.jsp" method="post">
+				<input type="hidden" name="anovaCondition" value="<%=anovaCondition%>"/>
+				<table cellspacing="0">
+					<tr>
+						<td></td>
+						<td class="searchInput">min q</td>
+						<td class="searchInput">max q</td>
+					</tr>
+					<tr>
+						<td><b>cond</b></td>
+						<td class="searchInput"><input type="text" name="minConditionQ" size="3" value="<%=minConditionQ%>"/></td>
+						<td class="searchInput"><input type="text" name="maxConditionQ" size="3" value="<%=maxConditionQ%>"/></td>
+					</tr>
+					<tr>
+						<td><b>time</b></td>
+						<td class="searchInput"><input type="text" name="minTimeQ" size="3" value="<%=minTimeQ%>"/></td>
+						<td class="searchInput"><input type="text" name="maxTimeQ" size="3" value="<%=maxTimeQ%>"/></td>
+					</tr>
+					<tr>
+						<td><b>cond &times; time</b></td>
+						<td class="searchInput"><input type="text" name="minConditionTimeQ" size="3" value="<%=minConditionTimeQ%>"/></td>
+						<td class="searchInput"><input type="text" name="maxConditionTimeQ" size="3" value="<%=maxConditionTimeQ%>"/></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="2" align="center"><input type="submit" class="searchButton" name="conditionSearch" value="search"/></td>
+					</tr>
+				</table>
+			</form>
+			<% } %>
+		</td>
+		<td class="searchParameters">
+			<%@ include file="../search-genes.jhtml" %>
+		</td>
+		<td class="searchParameters">
+			<%@ include file="../search-tair.jhtml" %>
+		</td>
+		<td style="vertical-align:top">
+			<%@ include file="../summary-results.jhtml" %>
+		</td>
+    </tr>
+</table>
+<!-- end search forms -->
+
+<%  if (genes.length>0) { %>
+<!-- form for tagging and viewing operations -->
+<form action="anova.jsp" method="post">
+	<input type="hidden" name="anovaCondition" value="<%=anovaCondition%>"/>
+	<input type="hidden" name="maxConditionQ" value="<%=maxConditionQ%>"/>
+	<input type="hidden" name="maxTimeQ" value="<%=maxTimeQ%>"/>
+	<input type="hidden" name="maxConditionTimeQ" value="<%=maxConditionTimeQ%>" />
+	<div style="position:relative; width:0; height:0">
+		<div class="topButtons">
+			<%@ include file="viewbuttons.jhtml" %>
+		</div>
+	</div>
+	<%
+	// query results here for any summary stats above individual rows
+	for (int i=0; i<genes.length; i++) {
+					   Expression expr = new Expression(application, experiment, genes[i]);
+					   double minControl = expr.getMinControlValue();
+					   double meanControl = expr.getMeanControlValue();
+					   double logMeanControl = Util.log2(meanControl);
+					   ANOVAResult res = new ANOVAResult(application, experiment, anovaCondition, genes[i]);
+					   %>
+		<table cellspacing="0" class="gene">
+			<tr>
+				<td valign="top" class="anovadata">
+					<input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
+					<%=anovaCondition%>
+					&lang;ctrl&rang;=<%=fractionFormat.format(meanControl)%>
+					<table cellspacing="0">
+						<tr>
+							<td class="heading"></td>
+							<td class="heading ac">&sigma;<sup>2</sup></td>
+							<td class="heading ac">F</td>
+							<td class="heading ac">p</td>
+							<td class="heading ac">q</td>
+						</tr>
+						<%@ include file="../anova-row.jhtml" %>
+					</table>
+				</td>
+				<td valign="top">
+					<%@ include file="../tairinfo.jhtml" %>
+				</td>
+			</tr>
+		</table>
+		<%
+		} // for each gene
+		%>
+</form>
+<%
+} // have genes
+%>

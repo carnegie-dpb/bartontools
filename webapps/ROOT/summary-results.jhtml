@@ -1,0 +1,16 @@
+      <p class="matchCount">
+        <% if (tooMany) { %>
+        <span class="error">&gt;<%=MAXMATCHES%> results</span>
+        <%
+        } else {
+          out.print(genes.length+" results ");
+          if (idSearch) out.print("(gene list)");
+          if (tairSearch) out.print("(TAIR computational description search)");
+          if (conditionSearch) out.print("(analysis search on parameters)");
+          if (tagSearch) out.print("(tag lookup)");
+        }
+        %>
+      </p>
+      <% if (error.length()>0) { %>
+      <p class="error"><%=error%></p>
+      <% } %>
