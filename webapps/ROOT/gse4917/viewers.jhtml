@@ -1,0 +1,17 @@
+<%
+// flag to indicate we're in a view and not analysis-specific JHTML
+boolean viewSelected = false;
+%>
+<% if (viewSamples) { viewSelected=true;  %>
+<%@ include file="../samples-plot.jhtml" %>
+<% } else if (viewTimes) { viewSelected=true;  %>
+<%@ include file="../times-plot.jhtml" %>
+<% } else if (viewHeatmap) { viewSelected=true; %>
+<%@ include file="../heatmap-plot.jhtml" %>
+<% } else if (viewExpressionTable) { viewSelected=true; %>
+<%@ include file="../expression-table.jhtml" %>
+<% } else if (viewCorrelation) { viewSelected=true; %>
+<%@ include file="../correlation.jhtml" %>
+<% } else if (viewGOTerms) { viewSelected=true; %>
+<%@ include file="../goterms.jhtml" %>
+<% } %>
