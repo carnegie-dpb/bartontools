@@ -1,24 +1,5 @@
-<%@ page import="java.io.File" %>
-<%
-/**
- * Use svnkit to resolve current subversion of API JAR
- */
-
-// create the default authentication manager
-org.tmatesoft.svn.core.auth.ISVNAuthenticationManager authManager = org.tmatesoft.svn.core.wc.SVNWCUtil.createDefaultAuthenticationManager();
-// create the options; read-only access
-org.tmatesoft.svn.core.wc.ISVNOptions options = org.tmatesoft.svn.core.wc.SVNWCUtil.createDefaultOptions(true);
-// instantiate an SVNWCClient
-org.tmatesoft.svn.core.wc.SVNWCClient client = new org.tmatesoft.svn.core.wc.SVNWCClient(authManager, options);
-// run a doInfo on the file
-File file = new File(application.getRealPath("/")+"/WEB-INF/lib/bartonlab.jar");
-org.tmatesoft.svn.core.wc.SVNInfo info = client.doInfo(file, org.tmatesoft.svn.core.wc.SVNRevision.WORKING);
-// get the revision
-org.tmatesoft.svn.core.wc.SVNRevision revision = info.getRevision();
-%>
     <div class="footer">
 		&copy; 2015 Carnegie Institution for Science
-		[API revision <%=revision.getNumber()%>]
 		This software is under development and almost certainly has bugs. Please report them to <a href="mailto:shokin@carnegiescience.edu">Sam Hokin</a>.
     </div>
 
