@@ -245,10 +245,15 @@ table.header .loginStatus {
 	font-size: 18px;
 }
 
-div.footer {
+.footer {
     margin-top: 100px;
     border-top: 1px solid #a00;
     padding-top: 10px;
+}
+
+.git {
+	padding: 2px 0;
+	font-family: "Lucida Console", Monaco, monospace;
 }
 
 div.toolBlurb {

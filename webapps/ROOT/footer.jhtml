@@ -1,7 +1,26 @@
-    <div class="footer">
-		&copy; 2015 Carnegie Institution for Science
-		This software is under development and almost certainly has bugs. Please report them to <a href="mailto:shokin@carnegiescience.edu">Sam Hokin</a>.
-    </div>
+<%@ page import="org.eclipse.jgit.api.Git,org.eclipse.jgit.api.Status,org.eclipse.jgit.api.errors.GitAPIException,org.eclipse.jgit.api.errors.InvalidRemoteException,org.eclipse.jgit.api.errors.TransportException" %>
+<%@ page import="org.eclipse.jgit.lib.Ref,org.eclipse.jgit.lib.Repository" %>
+<%
+Git git = Git.open(new File("/home/sam/bartontools"));
+Status status = git.status().call();
+Repository repo = git.getRepository();
+String[] commitLines = repo.readCommitEditMsg().split("\n");
+%>
+<div class="footer">
+	&copy; 2015 Carnegie Institution for Science
+	This software is under development and almost certainly has bugs. Please report them to <a href="mailto:shokin@carnegiescience.edu">Sam Hokin</a>.
+</div>
+
+
+<div class="git">
+	<% if (status.isClean()) { %>
+	Branch <b><%=repo.getBranch()%></b> is clean.
+	<% } else if (status.hasUncommittedChanges()) { %>
+	Branch <b><%=repo.getBranch()%></b> has uncommitted changes.
+	<% } %>
+	Last commit:
+	<% for (int i=0; i<commitLines.length; i++) { if (!commitLines[i].startsWith("#")) out.println(commitLines[i]); } %>
+</div>
 
   </body>
 </html>
