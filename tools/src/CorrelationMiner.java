@@ -43,7 +43,7 @@ public class CorrelationMiner {
       Sample[] samples = Sample.getAll(db);
 
       // expression for input gene
-      Expression expr1 = new Expression(db, new SimpleGene(geneID));
+      Expression expr1 = new Expression(db, new Gene(geneID));
 
       // expression for all genes, manually set samples
       Expression[] expr2 = Expression.getAll(db);

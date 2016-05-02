@@ -59,10 +59,11 @@ public class Gene implements Comparable {
 	public String[] aliases = new String[0];
 
 	/**
-	 * Construct an instance with only the gene id defined
+	 * Construct an instance with only the gene id defined (and set equal to name)
 	 */
 	public Gene(String id) {
 		this.id = id.toUpperCase();
+                this.name = id;
 	}
 
 	/**
@@ -289,7 +290,8 @@ public class Gene implements Comparable {
 			TreeSet<Gene> set = new TreeSet<Gene>();
 			for (int i=0; i<ids.length; i++) {
 				Gene g = new Gene(db, ids[i]);
-				if (g.id!=null) set.add(g);
+                                if (g.id==null) g = new Gene(ids[i]);
+				set.add(g);
 			}
 			return set.toArray(new Gene[0]);
 		} finally {

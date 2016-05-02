@@ -40,7 +40,7 @@ if (request.getParameter("confirmationKey")!=null) {
 
 		<table class="header" cellspacing="0">
 			<tr>
-				<td class="logo"><a href="/index.jsp"><img src="/images/PB_CISLogo_2c_RGB.png" alt="Carnegie Institution for Science - Plant Biology" /></a></td>
+				<td class="logo"><a href="/index.jsp"><img src="/images/carnegie-dpb.png" alt="Carnegie Institution for Science - Plant Biology" /></a></td>
 				<td class="heading">
 					<span class="title">Barton Lab Web Tools</span>
 				</td>

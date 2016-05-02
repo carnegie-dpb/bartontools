@@ -1,48 +1,48 @@
 <div class="experiment">
 
-	<% if (experiment.description!=null) { %>
+    <% if (experiment.description!=null) { %>
     <div class="description"><%=experiment.description%></div>
-	<% } %>
-	
+    <% } %>
+    
     <% if (!experiment.publicdata) { %>
     <div class="privatedata">This data is currently under analysis and is NOT public. Please do not share.</div>
     <% } %>
 
     <table class="experiment" cellspacing="0">
-		<tr><td class="item">Species:</td><td class="species"><%=experiment.genus%> <%=experiment.species%></td></tr>
-		<tr><td class="item">Assay:</td><td><%=experiment.assay%></td></tr>
-		<tr><td class="item">Annotation:</td><td><%=experiment.annotation%></td></tr>
-		<% if (experiment.notes!=null) { %><tr><td class="item">Notes:</td><td><%=experiment.notes%></td></tr><% } %>
-		<% if (experiment.contributors!=null) { %><tr class="item"><td>Contributors:</td><td><%=experiment.contributors%></td></tr><% } %>
-		<% if (experiment.geoseries!=null) { %><tr><td class="item">GEO Series:</td><td><a target="_blank" href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=<%=experiment.geoseries%>"><%=experiment.geoseries%></a></td></tr><% } %>
-	    <% if (experiment.geodataset!=null) { %><tr><td class="item">GEO Dataset:</td><td><%=experiment.geodataset%></td></tr><% } %>
-	    <% if (experiment.pmid!=0) { %><tr><td class="item">Pub Med:</td><td><a target="_blank" href="http://www.ncbi.nlm.nih.gov/pubmed/<%=experiment.pmid%>"><%=experiment.pmid%></a></td></tr><% } %>
+	<tr><td class="item">Species:</td><td class="species"><%=experiment.genus%> <%=experiment.species%></td></tr>
+	<tr><td class="item">Assay:</td><td><%=experiment.assay%></td></tr>
+	<tr><td class="item">Annotation:</td><td><%=experiment.annotation%></td></tr>
+	<% if (experiment.notes!=null) { %><tr><td class="item">Notes:</td><td><%=experiment.notes%></td></tr><% } %>
+	<% if (experiment.contributors!=null) { %><tr class="item"><td>Contributors:</td><td><%=experiment.contributors%></td></tr><% } %>
+	<% if (experiment.geoseries!=null) { %><tr><td class="item">GEO Series:</td><td><a target="_blank" href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=<%=experiment.geoseries%>"><%=experiment.geoseries%></a></td></tr><% } %>
+	<% if (experiment.geodataset!=null) { %><tr><td class="item">GEO Dataset:</td><td><%=experiment.geodataset%></td></tr><% } %>
+	<% if (experiment.pmid!=0) { %><tr><td class="item">Pub Med:</td><td><a target="_blank" href="http://www.ncbi.nlm.nih.gov/pubmed/<%=experiment.pmid%>"><%=experiment.pmid%></a></td></tr><% } %>
     </table>
 
     <h2>Samples</h2>
 
     <table class="samples" cellspacing="0">
-		<tr>
-			<td class="bt"></td>
-			<td class="bt">label</td>
-			<td class="bt ac">condition</td>
-			<td class="bt">time</td>
-			<td class="bt br">comment</td>
-		</tr>
-		<%
-		Sample[] samples = Sample.getAll(application, experiment);
-		for (int i=0; i<samples.length; i++) {
-						   %>
-			<tr>
-				<td align="right"><%=samples[i].num%></td>
-				<td class="label"><%=samples[i].label%></td>
-				<td align="center"><%=samples[i].condition%></td>
-				<td align="right"><%=samples[i].time%></td>
-				<td class="br"><%=Util.blankIfNull(samples[i].comment)%></td>
-			</tr>
-			<%
-			}
-			%>
+	<tr>
+	    <td class="bt"></td>
+	    <td class="bt">label</td>
+	    <td class="bt ac">condition</td>
+            <% if (experiment.isTimewise) { %><td class="bt">time</td><% } %>
+	    <td class="bt br">comment</td>
+	</tr>
+	<%
+	Sample[] samples = Sample.getAll(application, experiment);
+	for (int i=0; i<samples.length; i++) {
+					%>
+	    <tr>
+		<td align="right"><%=samples[i].num%></td>
+		<td class="label"><%=samples[i].label%></td>
+		<td align="center"><%=samples[i].condition%></td>
+		<% if (experiment.isTimewise) { %><td align="right"><%=samples[i].time%></td><% } %>
+		<td class="br"><%=Util.blankIfNull(samples[i].comment)%></td>
+	    </tr>
+	    <%
+	    }
+	    %>
     </table>
 
 </div>

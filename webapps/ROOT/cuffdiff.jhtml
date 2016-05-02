@@ -1,109 +1,110 @@
-<h2>Cuffdiff Timewise Differential Expression Analysis</h2>
+<h2>Cuffdiff <% if (experiment.isTimewise) out.print("Timewise"); %> Differential Expression Analysis</h2>
 
 <div class="toolBlurb">Searches on Cuffdiff-determined differential expression values.</div>
 
 <%@ include file="../tags.jhtml" %>
 
 <ol class="toolInstructions" style="width:800px;">
-	<li>Select the direction of regulation per condition: UP, DN or NC ("No Change", defined as |logFC|<1).</li>
-	<li>Enter the minimum |logFC| value to accept a gene for the UP or DN conditions.</li>
-	<li>Select the confidence metric: p or q (FDR-adjusted p) and enter the maximum value allowed to accept a gene for the UP or DN conditions.</li>
+    <li>Select the direction of regulation per condition: UP, DN or NC ("No Change", defined as |logFC|<1).</li>
+    <li>Enter the minimum |logFC| value to accept a gene for the UP or DN conditions.</li>
+    <li>Select the confidence metric: p or q (FDR-adjusted p) and enter the maximum value allowed to accept a gene for the UP or DN conditions.</li>
 </ol>
 <!-- search forms -->
 <table cellspacing="2" class="searchParameters">
-	<tr>
-		<td class="searchParameters">
-			<div class="searchTitle"><b>Cuffdiff Parameters</b></div>
-			<form action="cuffdiff.jsp" method="post">
-				<table cellspacing="0" align="center">
-					<tr>
-						<% for (int i=0; i<conditions.length; i++) { %>
-						<td align="center">
-							<%=conditions[i]%><br/>
-							<select name="<%=conditions[i]%>">
-								<option <% if (directions[i]==0) out.print("selected"); %> value="0">--</option>
-								<option <% if (directions[i]==CuffdiffResult.UP) out.print("selected"); %> value="<%=CuffdiffResult.UP%>">UP</option>
-								<option <% if (directions[i]==CuffdiffResult.DN) out.print("selected"); %> value="<%=CuffdiffResult.DN%>">DN</option>
-								<option <% if (directions[i]==CuffdiffResult.NC) out.print("selected"); %> value="<%=CuffdiffResult.NC%>">NC</option>
-							</select>
-						</td>
-						<% } %>	    
-					</tr>
-				</table>
-				<table cellspacing="0" align="center">
-					<tr>
-						<td class="searchInput">Min |logFC|<br/><input type="text" name="minlogFC" size="4" value="<%=minlogFC%>"/></td>
-						<td class="searchInput">
-							Max
-							<input type="radio" name="confidenceTerm" <% if (confidenceTerm.equals("p")) out.print("checked"); %> value="p">p
-							<input type="radio" name="confidenceTerm" <% if (confidenceTerm.equals("q")) out.print("checked"); %> value="q">q
-							<br/>
-							<input type="text" name="maxpq" size="4" value="<%=maxpq%>"/>
-						</td>
-					</tr>
-				</table>
-				<input type="submit" class="searchButton" name="conditionSearch" value="GO" onClick="new Spinner(opts).spin(document.getElementById('spinner'));" />
-			</form>
-		</td>
-		<td class="searchParameters">
-			<%@ include file="../search-genes.jhtml" %>
-		</td>
-		<td class="searchParameters">
-			<%@ include file="../search-tair.jhtml" %>
-		</td>
-		<td style="vertical-align:top">
-			<%@ include file="../summary-results.jhtml" %>
-		</td>
-	</tr>
+    <tr>
+        <td class="searchParameters">
+            <div class="searchTitle"><b>Cuffdiff Parameters</b></div>
+            <form action="cuffdiff.jsp" method="post">
+                <table cellspacing="0" align="center">
+                    <tr>
+                        <% for (int i=0; i<conditions.length; i++) { %>
+                        <td align="center">
+                            <%=conditions[i]%><br/>
+                            <select name="<%=conditions[i]%>">
+                                <option <% if (directions[i]==0) out.print("selected"); %> value="0">--</option>
+                                <option <% if (directions[i]==CuffdiffResult.UP) out.print("selected"); %> value="<%=CuffdiffResult.UP%>">UP</option>
+                                <option <% if (directions[i]==CuffdiffResult.DN) out.print("selected"); %> value="<%=CuffdiffResult.DN%>">DN</option>
+                                <option <% if (directions[i]==CuffdiffResult.NC) out.print("selected"); %> value="<%=CuffdiffResult.NC%>">NC</option>
+                            </select>
+                        </td>
+                        <% } %>	    
+                    </tr>
+                </table>
+                <table cellspacing="0" align="center">
+                    <tr>
+                        <td class="searchInput">Min |logFC|<br/><input type="text" name="minlogFC" size="4" value="<%=minlogFC%>"/></td>
+                        <td class="searchInput">
+                            Max
+                            <input type="radio" name="confidenceTerm" <% if (confidenceTerm.equals("p")) out.print("checked"); %> value="p">p
+                            <input type="radio" name="confidenceTerm" <% if (confidenceTerm.equals("q")) out.print("checked"); %> value="q">q
+                            <br/>
+                            <input type="text" name="maxpq" size="4" value="<%=maxpq%>"/>
+                        </td>
+                    </tr>
+                </table>
+                <input type="submit" class="searchButton" name="conditionSearch" value="GO" onClick="new Spinner(opts).spin(document.getElementById('spinner'));" />
+            </form>
+        </td>
+        <td class="searchParameters">
+            <%@ include file="../search-genes.jhtml" %>
+        </td>
+        <td class="searchParameters">
+            <%@ include file="../search-tair.jhtml" %>
+        </td>
+        <td style="vertical-align:top">
+            <%@ include file="../summary-results.jhtml" %>
+        </td>
+    </tr>
 </table>
 <!-- end search forms -->
 
 <%  if (genes.length>0) { %>
 <!-- form for tagging and viewing operations along with results display -->
 <form action="cuffdiff.jsp" method="post">
-	<div style="position:relative; width:0; height:0">
-		<div class="topButtons">
-			<%@ include file="viewbuttons.jhtml" %>
-		</div>
-	</div>
-	<%
-	// query results here for any summary stats above individual rows
-	for (int i=0; i<genes.length; i++) {
-					   CuffdiffTimeResult[] res = new CuffdiffTimeResult[conditions.length];
-					   boolean exists = false;
-					   for (int j=0; j<conditions.length; j++) {
-										  res[j] = new CuffdiffTimeResult(application, experiment, conditions[j], genes[i]);
-										  if (res[j].q!=null) exists = true;
-										  }
-										  %>
-		<table cellspacing="0" class="gene">
-			<tr>
-				<td valign="top" class="dedata">
-					<% if (exists) { %>
-					<table cellspacing="0" class="deChart">
-						<tr>
-							<td class="checkbox"><input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" /></td>
-							<td class="ac">base</td>
-							<% for (int j=1; j<times.length; j++) { %>
-								<td class="ac bb"><%=times[j]%> logFC(q)</td>
-								<% } %>
-						</tr>
-						<% for (int j=0; j<conditions.length; j++) { %>
-							<%@ include file="../cuffdiff-row.jhtml" %>
-							<% } %>
-					</table>
-					<% } %>
-				</td>
-				<td valign="top">
-					<%@ include file="../gene.jhtml" %>
-					<% if (experiment.annotation.startsWith("TAIR")) { %><%@ include file="../tairinfo.jhtml" %><% } %>
-				</td>
-			</tr>
-		</table>
-		<%
-		} // for each gene
-		%>
+    <div style="position:relative; width:0; height:0">
+        <div class="topButtons">
+            <%@ include file="viewbuttons.jhtml" %>
+        </div>
+    </div>
+    <%
+    // query results here for any summary stats above individual rows
+    for (int i=0; i<genes.length; i++) {
+        boolean exists = false;
+        CuffdiffTimeResult[] res = new CuffdiffTimeResult[conditions.length];
+        for (int j=0; j<conditions.length; j++) {
+            res[j] = new CuffdiffTimeResult(application, experiment, conditions[j], genes[i]);
+            if (res[j].q!=null) exists = true;
+        }
+        %>
+        <table cellspacing="0" class="gene">
+            <tr>
+                <td valign="top" class="dedata">
+                    <table cellspacing="0" class="deChart">
+                        <% if (exists) { %>
+                        <tr>
+                            <td class="checkbox">
+                                <input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
+                            </td>
+                            <td class="ac">base</td>
+                            <% for (int j=1; j<times.length; j++) { %>
+                                <td class="ac bb"><%=times[j]%> logFC(p,q)</td>
+                                <% } %>
+                        </tr>
+                        <% for (int j=0; j<conditions.length; j++) { %>
+                            <%@ include file="../cuffdiff-row.jhtml" %>
+                            <% } %>
+                            <% } %>
+                    </table>
+                </td>
+                <td valign="top">
+                    <%@ include file="../gene.jhtml" %>
+                    <% if (experiment.annotation.startsWith("TAIR")) { %><%@ include file="../tairinfo.jhtml" %><% } %>
+                </td>
+            </tr>
+        </table>
+        <%
+        } // for each gene
+        %>
 </form>
 <!-- end tagging/viewing form -->
 <% } // have genes %>
-		

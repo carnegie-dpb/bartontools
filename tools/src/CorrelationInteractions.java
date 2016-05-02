@@ -50,8 +50,8 @@ public class CorrelationInteractions {
       String line = null;
       while ((line=in.readLine())!=null) {
 	String[] parts = line.split(","); // comma-separated values
-	SimpleGene gene1 = new SimpleGene(parts[0]);
-	SimpleGene gene2 = new SimpleGene(parts[1]);
+	Gene gene1 = new Gene(parts[0]);
+	Gene gene2 = new Gene(parts[1]);
 	pairSet.add(new GenePair(gene1, gene2));
 	geneSet.add(gene1);
 	geneSet.add(gene2);
