@@ -2,7 +2,7 @@
 <%@ page import="org.eclipse.jgit.api.Git,org.eclipse.jgit.api.Status,org.eclipse.jgit.api.errors.GitAPIException,org.eclipse.jgit.api.errors.InvalidRemoteException,org.eclipse.jgit.api.errors.TransportException" %>
 <%@ page import="org.eclipse.jgit.lib.Ref,org.eclipse.jgit.lib.Repository" %>
 <%
-Git git = Git.open(new File("/home/sam/bartontools"));
+Git git = Git.open(new File("/home/shokin/bartontools"));
 Status status = git.status().call();
 Repository repo = git.getRepository();
 String commitString = repo.readCommitEditMsg();
