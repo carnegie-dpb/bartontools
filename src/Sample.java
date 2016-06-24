@@ -11,7 +11,7 @@ import javax.servlet.ServletContext;
 /**
  * Describes a single sample in a study over various conditions and times, along with appropriate methods.
  *
- * @author Sam Hokin <hokin@stanford.edu>
+ * @author Sam Hokin 
  * @version $Revision: 2799 $ $Date: 2015-08-07 15:41:11 -0500 (Fri, 07 Aug 2015) $
  */
 public class Sample implements Comparable {

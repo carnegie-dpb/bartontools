@@ -48,7 +48,7 @@ public class CorrelationMatrix {
       String line = null;
       while ((line=in.readLine())!=null) {
 	String[] parts = line.split(" "); // space-separated values (R default)
-	geneSet.add(new SimpleGene(parts[0]));
+	geneSet.add(new Gene(parts[0]));
       }
 
       // now spin through ALL the genes

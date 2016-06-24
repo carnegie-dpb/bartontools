@@ -135,16 +135,25 @@ public class GFFRecord implements Comparable {
             if (chunks[i].toLowerCase().startsWith("version=")) attributeVersion = Integer.parseInt(getAttributeValue(chunks[i]));
             if (chunks[i].toLowerCase().startsWith("constitutive=")) attributeConstitutive = Integer.parseInt(getAttributeValue(chunks[i]));
             if (chunks[i].toLowerCase().startsWith("rank=")) attributeRank = Integer.parseInt(getAttributeValue(chunks[i]));
-            // special cases
-            if (attributeName!=null && attributeName.startsWith("TR")) {
-                String[] trParts = attributeName.split("\\|");
-                trinityName = trParts[0];
-            }
         }
         // set Name to ID if missing
         if (attributeName==null && attributeID!=null) updateAttributeName(attributeID);
         // set ID to Name if missing
         if (attributeID==null && attributeName!=null) updateAttributeID(attributeName);
+        // yank "gene:" off of ID and name if present
+        if (attributeID!=null && attributeID.startsWith("gene:")) {
+            String[] parts = attributeID.split("\\:");
+            attributeID = parts[1];
+        }
+        if (attributeName!=null && attributeName.startsWith("gene:")) {
+            String[] parts = attributeName.split("\\:");
+            attributeName = parts[1];
+        }
+        // special cases
+        if (attributeName!=null && attributeName.startsWith("TR")) {
+            String[] parts = attributeName.split("\\|");
+            trinityName = parts[0];
+        }
     }
 
     /**

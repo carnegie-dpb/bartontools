@@ -60,7 +60,7 @@ public class CorrelationFraction {
 				System.out.println("--------------------------------------------------------------");
 		  
 				// get gene's expression
-				SimpleGene gene1 = new SimpleGene(id);
+				Gene gene1 = new Gene(id);
 				db = new DB();
 				db.setSearchPath(schema);
 				Expression expr1 = new Expression(db, gene1);

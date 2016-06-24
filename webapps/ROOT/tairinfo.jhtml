@@ -3,15 +3,17 @@
 TAIRGene tg = new TAIRGene(application, genes[i], experiment);
 if (tg.id==null) {
 %>
-appears to be obsolete in <%=experiment.annotation%>.
+<div class="modelHeading">
+    <span class="shortDescription">Gene appears to be obsolete in <%=experiment.annotation%>.</span>
+</div>
 <%
 } else {
 for (int k=0; k<tg.modelname.length; k++) {
 %>
-	<div class="modelHeading">
-		<a class="modelName" target="_blank" href="https://www.arabidopsis.org/servlets/TairObject?type=gene&name=<%=tg.modelname[k]%>"><%=tg.modelname[k]%></a>
-		<span class="shortDescription"><%=Util.blankIfNull(tg.shortDescription[k])%></span>
-	</div>
+    <div class="modelHeading">
+	<a class="modelName" target="_blank" href="https://www.arabidopsis.org/servlets/TairObject?type=gene&name=<%=tg.modelname[k]%>"><%=tg.modelname[k]%></a>
+	<span class="shortDescription"><%=Util.blankIfNull(tg.shortDescription[k])%></span>
+    </div>
 	<% if (tg.curatorSummary[k]!=null) { %><div class="curatorSummary"><%=tg.curatorSummary[k]%></div><% } %>
     <% if (tg.computationalDescription[k]!=null) { %><div class="computationalDescription"><%=tg.computationalDescription[k]%></div><% } %>
 	<%

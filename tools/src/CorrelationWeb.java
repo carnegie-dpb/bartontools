@@ -20,8 +20,8 @@ public class CorrelationWeb {
 
     String schema = args[0];
     String condition = args[1];
-    SimpleGene startGene = new SimpleGene(args[2]);
-    SimpleGene endGene = new SimpleGene(args[3]);
+    Gene startGene = new Gene(args[2]);
+    Gene endGene = new Gene(args[3]);
     double threshold = Double.parseDouble(args[4]);
 
     try {

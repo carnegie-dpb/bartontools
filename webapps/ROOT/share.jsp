@@ -37,7 +37,7 @@ if (Util.getInt(request,"user_id")!=0) {
 	<body>
 
 		<div class="header">
-			<a href="/index.jsp"><img class="cis_logo" src="/images/PB_CISLogo_2c_RGB.png" alt="Carnegie Institution for Science - Plant Biology" /></a>
+			<a href="/index.jsp"><img class="cis_logo" src="/images/carnegie-dpb.png" alt="Carnegie Institution for Science - Plant Biology" /></a>
 			<div class="heading">Barton Lab Web Tools</div>
 		</div>
 		

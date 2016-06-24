@@ -26,26 +26,26 @@ double[] xvalues = new double[genes.length*samples.length];
 double[] yvalues = new double[genes.length*samples.length];
 double[] zvalues = new double[genes.length*samples.length];
 for (int i=0; i<genes.length; i++) {
-  Expression expr = new Expression(application, experiment, genes[i]);
-  double meanControlValue = expr.getMeanControlValue();
-  for (int j=0; j<expr.samples.length; j++) {
-    xvalues[k] = (double)j - 0.5;
-    yvalues[k] = (double)i - 0.5;
-    double value = expr.values[j];
-    if (relative) value = value/meanControlValue;
-    if (linear) {
-      zvalues[k] = value;
-    } else {
-      zvalues[k] = Util.log2(value+1e-6);
+    Expression expr = new Expression(application, experiment, genes[i]);
+    double meanControlValue = expr.getMeanControlValue();
+    for (int j=0; j<expr.samples.length; j++) {
+        xvalues[k] = (double)j - 0.5;
+        yvalues[k] = (double)i - 0.5;
+        double value = expr.values[j];
+        if (relative) value = value/meanControlValue;
+        if (linear) {
+            zvalues[k] = value;
+        } else {
+            zvalues[k] = Util.log2(value+1e-6);
+        }
+        if (xvalues[k]<xMin) xMin = xvalues[k];
+        if (xvalues[k]>xMax) xMax = xvalues[k];
+        if (yvalues[k]<yMin) yMin = yvalues[k];
+        if (yvalues[k]>yMax) yMax = yvalues[k];
+        if (value>0 && zvalues[k]<zMin) zMin = zvalues[k];
+        if (value>0 && zvalues[k]>zMax) zMax = zvalues[k];
+        k++;
     }
-    if (xvalues[k]<xMin) xMin = xvalues[k];
-    if (xvalues[k]>xMax) xMax = xvalues[k];
-    if (yvalues[k]<yMin) yMin = yvalues[k];
-    if (yvalues[k]>yMax) yMax = yvalues[k];
-    if (value>0 && zvalues[k]<zMin) zMin = zvalues[k];
-    if (value>0 && zvalues[k]>zMax) zMax = zvalues[k];
-    k++;
-  }
 }
 
 // create the dataset for the plot
@@ -55,11 +55,11 @@ exprDataset.addSeries("TAG HERE?", new double[][]{ xvalues, yvalues, zvalues });
 // y axis: genes
 String[] yLabels = new String[genes.length];
 for (int i=0; i<genes.length; i++) {
-  if (genes[i].name!=null && !genes[i].name.equals(genes[i].id)) {
-    yLabels[i] = genes[i].name+" "+genes[i].id;
-  } else {
-    yLabels[i] = genes[i].id;
-  }
+    if (genes[i].name!=null && !genes[i].name.equals(genes[i].id)) {
+        yLabels[i] = genes[i].name+" "+genes[i].id;
+    } else {
+        yLabels[i] = genes[i].id;
+    }
 }
 SymbolAxis yAxis = new SymbolAxis("", yLabels);
 yAxis.setRange(-0.5, genes.length-0.5);
@@ -85,13 +85,17 @@ String[] conditionLabels = new String[samples.length];
 String prevCondition = "";
 double prevTime = -1.0;
 for (int i=0; i<samples.length; i++) {
-  if (!samples[i].condition.equals(prevCondition) || samples[i].time!=prevTime) {
-    conditionLabels[i] = samples[i].condition+" "+timeFormat.format(samples[i].time)+" \u23a3";
-    prevCondition = samples[i].condition;
-    prevTime = samples[i].time;
-  } else {
-    conditionLabels[i] = "\u23a2";
-  }
+    if (!samples[i].condition.equals(prevCondition) || samples[i].time!=prevTime) {
+        if (experiment.isTimewise) {
+            conditionLabels[i] = samples[i].condition+" "+timeFormat.format(samples[i].time)+" \u23a3";
+        } else {
+            conditionLabels[i] = samples[i].condition+" \u23a3";
+        }
+        prevCondition = samples[i].condition;
+        prevTime = samples[i].time;
+    } else {
+        conditionLabels[i] = "\u23a2";
+    }
 }
 SymbolAxis x2Axis = new SymbolAxis("", conditionLabels);
 x2Axis.setTickMarksVisible(false);
@@ -104,7 +108,7 @@ renderer.setBlockHeight(blockSize);
 renderer.setBlockAnchor(RectangleAnchor.BOTTOM_LEFT);
 
 /* boring
-PaintScale paintScale = new GrayPaintScale(zMin, zMax, 1);
+   PaintScale paintScale = new GrayPaintScale(zMin, zMax, 1);
 */
 
 LookupPaintScale paintScale = new LookupPaintScale(zMin, zMax, Color.black);
@@ -113,16 +117,16 @@ String changePalette = Util.getString(request, "changePalette");
 if (changePalette.length()>0) paletteName = changePalette;
 Color[] palette = new Color[0];
 if (relative && !linear) {
-  paletteName = "brewerRdYlGn21";
-  palette = Palette.brewerRdYlGn21();
-  for (int i=0; i<21; i++) paintScale.add((i-10)*0.5, palette[i]);
+    paletteName = "brewerRdYlGn21";
+    palette = Palette.brewerRdYlGn21();
+    for (int i=0; i<21; i++) paintScale.add((i-10)*0.5, palette[i]);
 } else {
-  if (paletteName.length()==0 || paletteName.equals("brewerRdYlGn21")) paletteName = "heat palette";
-  if (paletteName.equals("heat palette")) palette = Palette.heat100();
-  if (paletteName.equals("rainbow palette")) palette = Palette.rainbow100();
-  if (paletteName.equals("cyan-magenta palette")) palette = Palette.cm100();
-  for (int i=0; i<100; i++) paintScale.add(zMin+(zMax-zMin)*i*0.01, palette[i]);
-  paintScale.add(zMax, Color.white);
+    if (paletteName.length()==0 || paletteName.equals("brewerRdYlGn21")) paletteName = "heat palette";
+    if (paletteName.equals("heat palette")) palette = Palette.heat100();
+    if (paletteName.equals("rainbow palette")) palette = Palette.rainbow100();
+    if (paletteName.equals("cyan-magenta palette")) palette = Palette.cm100();
+    for (int i=0; i<100; i++) paintScale.add(zMin+(zMax-zMin)*i*0.01, palette[i]);
+    paintScale.add(zMax, Color.white);
 }
 renderer.setPaintScale(paintScale);
 
@@ -137,14 +141,14 @@ plot.setDomainAxis(1, x2Axis);
 String condition = "";
 double time = 99.9;
 for (int i=0; i<samples.length; i++) {
-  if (time!=samples[i].time) {
-    time = samples[i].time;
-    plot.addAnnotation(new XYLineAnnotation(samples[i].num-1.5, -0.5, samples[i].num-1.5, genes.length-0.5, new BasicStroke(0.2f), Color.gray));
-  }
-  if (!condition.equals(samples[i].condition)) {
-    condition = samples[i].condition;
-    plot.addAnnotation(new XYLineAnnotation(samples[i].num-1.5,- 0.5, samples[i].num-1.5, genes.length-0.5, new BasicStroke(0.2f), Color.black));
-  }
+    if (time!=samples[i].time) {
+        time = samples[i].time;
+        plot.addAnnotation(new XYLineAnnotation(samples[i].num-1.5, -0.5, samples[i].num-1.5, genes.length-0.5, new BasicStroke(0.2f), Color.gray));
+    }
+    if (!condition.equals(samples[i].condition)) {
+        condition = samples[i].condition;
+        plot.addAnnotation(new XYLineAnnotation(samples[i].num-1.5,- 0.5, samples[i].num-1.5, genes.length-0.5, new BasicStroke(0.2f), Color.black));
+    }
 }
 
 // add thin line between genes to guide the eye
@@ -170,48 +174,48 @@ int chartHeight = (genes.length)*blockSize +  195; // labels top and bottom
 
 String pngFile = null;
 if (downloadSVG) {
-  // output to SVG file and bail
-  SVG.downloadSVG(chart, chartWidth, chartHeight, response);
-  return;
+    // output to SVG file and bail
+    SVG.downloadSVG(chart, chartWidth, chartHeight, response);
+    return;
 } else {
-  // output to PNG file in temp dir
-  pngFile = ServletUtilities.saveChartAsPNG(chart, chartWidth, chartHeight, session);
+    // output to PNG file in temp dir
+    pngFile = ServletUtilities.saveChartAsPNG(chart, chartWidth, chartHeight, session);
 }
 %>
-<div class="plot">
-  <img class="heatmapPlot" src="/temp/<%=pngFile%>" alt="<%=chartTitle%>" border="0" width="<%=chartWidth%>" height="<%=chartHeight%>"/>
-</div>
+    <div class="plot">
+        <img class="heatmapPlot" src="/temp/<%=pngFile%>" alt="<%=chartTitle%>" border="0" width="<%=chartWidth%>" height="<%=chartHeight%>"/>
+        </div>
 
-<div class="plotControls">
-  <form action="<%=request.getRequestURI()%>" method="post">
-    <input type="hidden" name="viewHeatmap" value="true"/>
-    <input type="hidden" name="plotTitle" value="<%=plotTitle%>"/>
-    <input type="hidden" name="linear" value="<%=linear%>"/>
-    <input type="hidden" name="relative" value="<%=relative%>"/>
-    <input type="hidden" name="paletteName" value="<%=paletteName%>"/>
-    <% for (int i=0; i<genes.length; i++) { %>
-    <input type="hidden" name="id" value="<%=genes[i].id%>"/>
-    <% } %>
-    <% if (linear) { %>
+        <div class="plotControls">
+        <form action="<%=request.getRequestURI()%>" method="post">
+        <input type="hidden" name="viewHeatmap" value="true"/>
+        <input type="hidden" name="plotTitle" value="<%=plotTitle%>"/>
+        <input type="hidden" name="linear" value="<%=linear%>"/>
+        <input type="hidden" name="relative" value="<%=relative%>"/>
+        <input type="hidden" name="paletteName" value="<%=paletteName%>"/>
+        <% for (int i=0; i<genes.length; i++) { %>
+                                                <input type="hidden" name="id" value="<%=genes[i].id%>"/>
+                                                <% } %>
+                                                    <% if (linear) { %>
     <input type="submit" name="toggleLinear" class="viewButton" value="use log scale"/>
-    <% } else { %>
+                                                               <% } else { %>
     <input type="submit" name="toggleLinear" class="viewButton" value="use linear scale"/>
-    <% } %>
-    <% if (Sample.hasControls(samples)) {
+        <% } %>
+            <% if (Sample.hasControls(samples)) {
     if (relative) { %>
-    <input type="submit" name="toggleRelative" class="viewButton" value="show absolute FPKM"/>
-    <% } else { %>
-    <input type="submit" name="toggleRelative" class="viewButton" value="divide by &lang;control&rang;"/>
-    <% } } %>
-    <% if (!relative || linear) { %>
+        <input type="submit" name="toggleRelative" class="viewButton" value="show absolute FPKM"/>
+            <% } else { %>
+        <input type="submit" name="toggleRelative" class="viewButton" value="divide by &lang;control&rang;"/>
+            <% } } %>
+                <% if (!relative || linear) { %>
     <select name="changePalette" onChange="submit()">
-      <option <% if (paletteName.equals("heat palette")) out.print("selected"); %> value="heat palette">heat palette</option>
-      <option <% if (paletteName.equals("rainbow palette")) out.print("selected"); %> value="rainbow palette">rainbow palette</option>
-      <option <% if (paletteName.equals("cyan-magenta palette")) out.print("selected"); %> value="cyan-magenta palette">cyan-magenta palette</option>
-    </select>
-    <% } %>
-    <input type="submit" name="downloadSVG" class="download" value="download SVG file"/>
-  </form>
-</div>
+                           <option <% if (paletteName.equals("heat palette")) out.print("selected"); %> value="heat palette">heat palette</option>
+                                                                                                            <option <% if (paletteName.equals("rainbow palette")) out.print("selected"); %> value="rainbow palette">rainbow palette</option>
+                                                                                                                                                                                                <option <% if (paletteName.equals("cyan-magenta palette")) out.print("selected"); %> value="cyan-magenta palette">cyan-magenta palette</option>
+                                                                                                                                                                                                                                                                                         </select>
+                                                                                                                                                                                                                                                                                         <% } %>
+                                                                                                                                                                                                                                                                                             <input type="submit" name="downloadSVG" class="download" value="download SVG file"/>
+                                                                                                                                                                                                                                                                                                 </form>
+                                                                                                                                                                                                                                                                                                 </div>
 
 
