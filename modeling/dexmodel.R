@@ -1,5 +1,5 @@
 ##
-## Model the Yoshikawa and Robertson data with the ODE import model
+## Model the Yoshikawa, Robertson and Hache data with the ODE import model
 ##
 
 source("rhon.R")

@@ -5,12 +5,8 @@
 ## nu = nuclear GR import rate
 ## gamman = nuclear GR loss rate
 
-rhon = function(rhoc0, rhon0, nu, gamman, t) {
-  if (nu==gamman) {
-    f = rhon0 + rhoc0*nu*t*exp(-nu*t)
-  } else {
-    f = rhon0 + rhoc0*nu/(nu-gamman)*(exp(-gamman*t)-exp(-nu*t))
-  }
-  f[t<0] = rhon0
-  return(f)
+rhon = function(t=0:1000/500, rhoc0=10, rhon0=1, nu=10) {
+    f = rhon0 + rhoc0*(1 - exp(-nu*t))
+    f[t<0] = rhon0
+    return(f)
 }

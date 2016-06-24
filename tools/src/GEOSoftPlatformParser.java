@@ -13,67 +13,67 @@ import edu.carnegiescience.dpb.bartonlab.*;
  */
 public class GEOSoftPlatformParser {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		if (args.length!=2) {
-			System.err.println("Usage: GEOSoftParser schema GEOSoftFile.soft");
-			return;
-		}
+        if (args.length!=2) {
+            System.err.println("Usage: GEOSoftParser schema GEOSoftFile.soft");
+            return;
+        }
 
-		String schema = args[0];
-		String softfile = args[1];
+        String schema = args[0];
+        String softfile = args[1];
 
-		DB db = null;
+        DB db = null;
 
-		try {
+        try {
 
-			db = new DB();
+            db = new DB();
 
-			BufferedReader br = new BufferedReader(new FileReader(softfile));
-			boolean readingData = false;
-			String line = null;
-			while ((line=br.readLine()) != null) {
+            BufferedReader br = new BufferedReader(new FileReader(softfile));
+            boolean readingData = false;
+            String line = null;
+            while ((line=br.readLine()) != null) {
 
-				if (readingData) {
-					String[] parts = line.split("\t");
-					String id = parts[0];
-					String gb_acc = parts[1];
-					String orf = parts[2];
-					String miRNA_ID = parts[3];
-					String accessions = parts[4];
-					String[] aparts = accessions.split("\\|");
-					String geneID = aparts[0].toUpperCase();
-					if (geneID.length()>0) db.executeUpdate("UPDATE "+schema+".expression SET id='"+geneID+"' WHERE probe_set_id='"+id+"'");
-				}
+                if (readingData) {
+                    String[] parts = line.split("\t");
+                    String id = parts[0];
+                    String gb_acc = parts[1];
+                    String orf = parts[2];
+                    String miRNA_ID = parts[3];
+                    String accessions = parts[4];
+                    String[] aparts = accessions.split("\\|");
+                    String geneID = aparts[0].toUpperCase();
+                    if (geneID.length()>0) db.executeUpdate("UPDATE "+schema+".expression SET id='"+geneID+"' WHERE probe_set_id='"+id+"'");
+                }
 				
-				if (line.startsWith("!platform_table_begin")) {
-					// skip the field heading, assumed to be:
-					// ID      GB_ACC  ORF     miRNA_ID        Accessions      SEQUENCE        ProbeUID        ControlType     ProbeName       GeneName        Description     SPOT_ID
-					String heading = br.readLine();
-					readingData = true;
-				}
+                if (line.startsWith("!platform_table_begin")) {
+                    // skip the field heading, assumed to be:
+                    // ID      GB_ACC  ORF     miRNA_ID        Accessions      SEQUENCE        ProbeUID        ControlType     ProbeName       GeneName        Description     SPOT_ID
+                    String heading = br.readLine();
+                    readingData = true;
+                }
 
-			}
+            }
 
-		} catch (Exception ex) {
+        } catch (Exception ex) {
 
-			System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage());
 
-		} finally {
+        } finally {
 
-			if (db!=null) {
+            if (db!=null) {
 
-				try {
-					db.close();
-				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
-				}
+                try {
+                    db.close();
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
 
-			}
+            }
 
-		}
+        }
     
-	}
+    }
 
 }
 
