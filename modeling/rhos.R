@@ -17,23 +17,23 @@
 ## Solutions provided by Sage Math
 
 
-rhos = function(t=0:1000/500, rhoc0=10, rhon0=1, nu=10, rhop0=1, etap=2, gammap=3, rhos0=1, etas=4, gammas=5) {
+rhos = function(t=0:1000/500, rhoc0=10, rhon0=1, rhos0=1, nu=10, etap=2, gammap=3, etas=4, gammas=5) {
 
     if (nu==gammap && gammap==gammas) {
 
-        f = rhos0 - etap*rhoc0*t*exp(-nu*t) + etap*rhoc0/nu - (etap*rhoc0 - nu*rhop0)*exp(-nu*t)/nu
+       f = rhos0 - etap*rhoc0*t*exp(-nu*t) + etap*rhoc0/nu - etap*rhoc0*exp(-nu*t)/nu
         
     } else if (nu==gammap && gammap!=gammas) {
 
-        f = rhos0 - etap*etas*rhoc0*t*exp(-nu*t)/(gammas - nu) + etap*etas*rhoc0/(gammas*nu) - (etap*etas*nu*rhoc0 + etas*gammas^2*rhop0 - (etas*gammas*rhop0)*nu)*exp(-gammas*t)/(gammas^3 - 2*gammas^2*nu + gammas*nu^2) + (etas*gammas*nu*rhop0 - etas*nu^2*rhop0 - (etap*etas*gammas - 2*etap*etas*nu)*rhoc0)*exp(-nu*t)/(gammas^2*nu - 2*gammas*nu^2 + nu^3)
+        f = rhos0 - etap*etas*rhoc0*t*exp(-nu*t)/(gammas-nu) + etap*etas*rhoc0/(gammas*nu) - (etap*etas*nu*rhoc0)*exp(-gammas*t) / (gammas^3 - 2*gammas^2*nu + gammas*nu^2) + (- (etap*etas*gammas - 2*etap*etas*nu)*rhoc0)*exp(-nu*t) / (gammas^2*nu - 2*gammas*nu^2 + nu^3)
 
     } else if (nu!=gammap && gammap==gammas) {
-        f = rhos0 + etap*etas*nu*rhoc0*t*exp(-gammap*t)/(gammap^2 - gammap*nu) + etas*gammap^2*t*exp(-gammap*t)*rhop0/(gammap^2 - gammap*nu) - etas*gammap*nu*t*exp(-gammap*t)*rhop0/(gammap^2 - gammap*nu) - etap*etas*rhoc0*exp(-nu*t)/(gammap^2 - 2*gammap*nu + nu^2) + etap*etas*rhoc0/gammap^2 + ((2*etap*etas*gammap*nu - etap*etas*nu^2)*rhoc0)*exp(-gammap*t)/(gammap^4 - 2*gammap^3*nu + gammap^2*nu^2)
+        f = rhos0 + etap*etas*nu*rhoc0*t*exp(-gammap*t)/(gammap^2 - gammap*nu) - etap*etas*rhoc0*exp(-nu*t)/(gammap^2 - 2*gammap*nu + nu^2) + etap*etas*rhoc0/gammap^2 + ((2*etap*etas*gammap*nu - etap*etas*nu^2)*rhoc0)*exp(-gammap*t) / (gammap^4 - 2*gammap^3*nu + gammap^2*nu^2)
 
     } else {
 
-        f = rhos0 - etap*etas*rhoc0*exp(-nu*t)/(gammap*gammas - (gammap + gammas)*nu + nu^2) + etap*etas*rhoc0/(gammap*gammas) - (etap*etas*nu*rhoc0 + etas*gammap^2*rhop0 - etas*gammap*nu*rhop0)*exp(-gammap*t)/(gammap^3 - gammap^2*gammas - (gammap^2 - gammap*gammas)*nu) + (etap*etas*nu*rhoc0 + (etas*rhop0)*gammas^2 + ( - (etas*rhop0)*gammas)*nu)*exp(-gammas*t)/(gammap*gammas^2 - gammas^3 - (gammap*gammas - gammas^2)*nu)
-
+        f = rhos0 -etap*etas*rhoc0*exp(-nu*t)/(gammap*gammas - (gammap + gammas)*nu + nu^2) + etap*etas*rhoc0/(gammap*gammas) - (etap*etas*nu*rhoc0)*exp(-gammap*t)/(gammap^3 - gammap^2*gammas - (gammap^2 - gammap*gammas)*nu) + (etap*etas*nu*rhoc0)*exp(-gammas*t) / (gammap*gammas^2-gammas^3-(gammap*gammas-gammas^2)*nu)
+        
     }
     
     f[t<0] = rhos0

@@ -29,7 +29,7 @@ plot(t, rhoc(t=t, rhoc0=rhoc0, nu=nu), type="l", col="black", lwd=2, ylim=c(0,rh
      )
 lines(t, rhon(t=t, rhoc0=rhoc0, rhon0=rhon0, nu=nu), col="blue", lwd=2)
 lines(t, rhop(t=t, rhoc0=rhoc0, rhon0=rhon0, nu=nu, rhop0=rhop0, etap=etap, gammap=gammap), col="darkgreen", lwd=2)
-lines(t, rhos(t=t, rhoc0=rhoc0, rhon0=rhon0, nu=nu, rhop0=rhop0, etap=etap, gammap=gammap, rhos0=rhos0, etas=etas, gammas=gammas), col="red", lwd=2)
+lines(t, rhos(t=t, rhoc0=rhoc0, rhon0=rhon0, nu=nu, etap=etap, gammap=gammap, rhos0=rhos0, etas=etas, gammas=gammas), col="red", lwd=2)
 
 text(0.17, 24, bquote(rho[c]), pos=2, col="black", cex=1.5)
 text(0.31, 20, bquote(rho[n]), pos=2, col="blue", cex=1.5)
