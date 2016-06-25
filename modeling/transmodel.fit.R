@@ -11,8 +11,8 @@ source("transmodel.error.R")
 
 transmodel.fit = function(
                           fitTerms="rhop0.etap.gammap", turnOff=0,
-                          rhoc0=19, rhon0=1, nu=10, rhop0=1, etap=1, gammap=2.5,
-                          schema="bl2013", gene="At5g47370", condition="GR-REV",
+                          rhoc0=25, rhon0=1, nu=10, rhop0=1, etap=1, gammap=2.5,
+                          schema="gse70796", gene="At5g47370", condition="GR-REV",
                           dataTimes, dataValues, dataLabel=NA,
                           plotBars=FALSE,  doPlot=TRUE
                           ) {
