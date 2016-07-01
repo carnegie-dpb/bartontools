@@ -11,12 +11,12 @@ source("transmodel2.R")
 source("transmodel2.error.R")
 
 transmodel2.fit = function(
-    schema="bl2013", condition="GR-REV", gene1="At5g03995", gene2="At5g44574",
-    rhon0=1, rhoc0=19, nu=10, rhop0=1, etap=1, gammap=2, rhos0=1, etas=1, gammas=1,
-    dataTimes, data1Values, data2Values, 
-    data1Label=NA, data2Label=NA, plotBars=FALSE, doPlot=TRUE
-) {
-
+                           schema="gse70796", condition="GR-REV", gene1="At5g03995", gene2="At5g44574",
+                           rhon0=1, rhoc0=25, nu=10, rhop0=1, etap=1, gammap=2.5, rhos0=1, etas=1, gammas=2.5,
+                           dataTimes, data1Values, data2Values, 
+                           data1Label=NA, data2Label=NA, plotBars=FALSE, doPlot=TRUE
+                           ) {
+    
     ## get time (in hours) and expression arrays for the given schema and gene IDs
     if (!hasArg(dataTimes)) {
         dataTimes = getTimes(schema, condition)
@@ -26,7 +26,7 @@ transmodel2.fit = function(
         if (is.na(data1Label)) data1Label = paste(condition,gene1,sep=":")
         if (is.na(data2Label)) data2Label = paste(condition,gene2,sep=":")
     }
-
+    
     ## do minimization of primary transcript params
     fit1 = transmodel.fit(turnOff=0, rhoc0=rhoc0,nu=nu,  dataTimes=dataTimes, dataValues=data1Values, doPlot=FALSE)
     ## new params from fit
@@ -49,7 +49,10 @@ transmodel2.fit = function(
 
     ## plot it
     if (doPlot) {
-        transmodel2(turnOff=0, rhoc0=rhoc0,rhon0=rhon0,nu=nu, rhop0=rhop0,etap=etap,gammap=gammap, rhos0=rhos0,etas=etas,gammas=gammas,
+        transmodel2(turnOff=0,
+                    rhoc0=rhoc0, rhon0=rhon0, nu=nu,
+                    rhop0=rhop0, etap=etap, gammap=gammap,
+                    rhos0=rhos0, etas=etas, gammas=gammas,
                     dataTimes=dataTimes, data1Values=data1Values,data1Label=data1Label, data2Values=data2Values,data2Label=data2Label, plotBars=plotBars)
     }
 

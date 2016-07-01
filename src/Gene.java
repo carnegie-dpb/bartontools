@@ -300,14 +300,17 @@ public class Gene implements Comparable {
 	}
 
 	/**
-	 * Return public.genes which have descriptions containing the supplied string; unique, sorted.
+	 * Return genes which have descriptions containing the supplied string or for which there are aliases containing the supplied string
 	 */
 	public static Gene[] searchOnDescriptions(ServletContext context, Experiment experiment, String term) throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException, UnsupportedEncodingException {
 		DB db = null;
 		try {
 			db = new DB(context);
 			TreeSet<Gene> set = new TreeSet<Gene>();
-			db.executeQuery("SELECT * FROM public.genes WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND description ILIKE '%"+term+"%' LIMIT 1000");
+			db.executeQuery("SELECT DISTINCT * FROM public.genes WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND description ILIKE '%"+term+"%'" +
+                                        " OR id IN " +
+                                        "(SELECT id FROM genealiases WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND name ILIKE '%"+term+"%' OR fullname ILIKE '"+term+"')" +
+                                        " LIMIT 1000");
 			while (db.rs.next()) set.add(new Gene(db.rs));
 			return set.toArray(new Gene[0]);
 		} finally {

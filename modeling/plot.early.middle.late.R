@@ -5,9 +5,9 @@
 source("rhop.R")
 source("transmodel.fit.R")
 
-source("../R/getTimes.R")
-source("../R/getExpression.R")
-source("../R/plot.bars.R")
+source("~/R/getTimes.R")
+source("~/R/getExpression.R")
+source("~/R/plot.bars.R")
 
 plot.early.middle.late = function() {
 

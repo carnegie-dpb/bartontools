@@ -2,55 +2,47 @@
 ## plot an example early turnOff gene
 ##
 
-source("rhop.R")
-source("transmodel.fit.R")
-
-source("../R/getTimes.R")
-source("../R/getExpression.R")
-source("../R/plot.bars.R")
-
 plot.middle = function() {
 
-  rhoc0 = 19
+  rhoc0 = 25
   rhon0 = 1
   nu = 10
-  gamman = 0
 
   condition = "GR-REV"
 
   gene = "TAA1"
 
-  bl2012.t = getTimes(schema="bl2012",condition=condition)/60
-  bl2013.t = getTimes(schema="bl2013",condition=condition)/60
+  gse30703.t = getTimes(schema="gse30703",condition=condition)/60
+  gse70796.t = getTimes(schema="gse70796",condition=condition)/60
 
-  bl2012 = getExpression(schema="bl2012",condition=condition,gene=gene)
-  bl2013 = getExpression(schema="bl2013",condition=condition,gene=gene)
+  gse30703 = getExpression(schema="gse30703",condition=condition,gene=gene)
+  gse70796 = getExpression(schema="gse70796",condition=condition,gene=gene)
 
-  bl2012.base = mean(bl2012[bl2012.t==0])
-  bl2013.base = mean(bl2013[bl2013.t==0])
+  gse30703.base = mean(gse30703[gse30703.t==0])
+  gse70796.base = mean(gse70796[gse70796.t==0])
 
-  bl2012.fit = transmodel.fit(schema="bl2012",condition=condition,gene=gene,turnOff=1.0, doPlot=F)
-  bl2013.fit = transmodel.fit(schema="bl2013",condition=condition,gene=gene,turnOff=1.0, doPlot=F)
+  gse30703.fit = transmodel.fit(schema="gse30703",condition=condition,gene=gene,turnOff=1.0, doPlot=F)
+  gse70796.fit = transmodel.fit(schema="gse70796",condition=condition,gene=gene,turnOff=1.0, doPlot=F)
 
-  bl2012.rhop0 = bl2012.fit$estimate[1]
-  bl2012.etap = bl2012.fit$estimate[2]
-  bl2012.gammap = bl2012.fit$estimate[3]
+  gse30703.rhop0 = gse30703.fit$estimate[1]
+  gse30703.etap = gse30703.fit$estimate[2]
+  gse30703.gammap = gse30703.fit$estimate[3]
 
-  bl2013.rhop0 = bl2013.fit$estimate[1]
-  bl2013.etap = bl2013.fit$estimate[2]
-  bl2013.gammap = bl2013.fit$estimate[3]
+  gse70796.rhop0 = gse70796.fit$estimate[1]
+  gse70796.etap = gse70796.fit$estimate[2]
+  gse70796.gammap = gse70796.fit$estimate[3]
 
   t = 0:200/100
-  bl2012.model = rhop(rhoc=rhoc0,nu=nu,gamman=gamman,t=t, rhop0=bl2012.rhop0, etap=bl2012.etap, gammap=bl2012.gammap, turnOff=1.0)
-  bl2013.model = rhop(rhoc=rhoc0,nu=nu,gamman=gamman,t=t, rhop0=bl2013.rhop0, etap=bl2013.etap, gammap=bl2013.gammap, turnOff=1.0)
+  gse30703.model = rhop(rhoc=rhoc0,nu=nu, t=t, rhop0=gse30703.rhop0, etap=gse30703.etap, gammap=gse30703.gammap, turnOff=1.0)
+  gse70796.model = rhop(rhoc=rhoc0,nu=nu, t=t, rhop0=gse70796.rhop0, etap=gse70796.etap, gammap=gse70796.gammap, turnOff=1.0)
 
-  plot(t, bl2012.model/bl2012.base, type="l", xlim=c(0,2), log="y", xlab="time (h)", ylab="relative expression", ylim=c(.8,4))
-  plot.bars(bl2012.t, bl2012/bl2012.base, over=T, pch=21, cex=1.5, bg="grey")
+  plot(t, gse30703.model/gse30703.base, type="l", xlim=c(0,2), log="y", xlab="time (h)", ylab="relative expression", ylim=c(.8,4))
+  plot.bars(gse30703.t, gse30703/gse30703.base, over=T, pch=21, cex=1.5, bg="grey")
 
-  lines(t, bl2013.model/bl2013.base)
-  plot.bars(bl2013.t, bl2013/bl2013.base, over=T, pch=22, cex=1.5, bg="grey")
+  lines(t, gse70796.model/gse70796.base)
+  plot.bars(gse70796.t, gse70796/gse70796.base, over=T, pch=22, cex=1.5, bg="grey")
 
-  legend(2, 4, xjust=1, yjust=1, pch=21:22, pt.cex=1.5, pt.bg="grey", cex=1.2,
+  legend(2.05, 4, xjust=1, yjust=1, pch=21:22, pt.cex=1.5, pt.bg="grey", cex=1.2,
          c(
            expression(paste("microarray: ",gamma[p]==0.94," ",h^-1," (",r^2==0.95,")")),
            expression(paste("RNA-seq:   ",gamma[p]==0.82," ",h^-1," (",r^2==0.92,")"))

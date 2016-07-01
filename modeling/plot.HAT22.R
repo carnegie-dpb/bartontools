@@ -1,25 +1,33 @@
+##
 ## custom plot of HAT22 to show how it would look without turn-off
+##
 
-source("~/R/getTimes.R")
-source("~/R/getExpression.R")
-source("rhop.R")
+plot.HAT22 = function() {
 
-plot.HAT22 = function(
-    schema="gse30703", condition="GR-REV", gene="HAT22",
-    rhop0=178.9, etap=90.534523, gammap=3.975264,
-    logFC = c(0,1.53,0.32,0.06),
-    logFCinf = 1.77, kappa = 96, r2=0.96,
-    t=0:300/100
-    ) {
+    ## experimental data
+    logFC = c(0,1.53,0.32,0.06)
 
-    times = getTimes(schema=schema, condition=condition)/60
-    expr = getExpression(schema=schema, condition=condition, gene=gene)
+    times = getTimes(schema="gse30703", condition="GR-REV")/60
+    expr = getExpression(schema="gse30703", condition="GR-REV", gene="HAT22")
+
+    t=0:600/100
     
-    rhop = rhop(t=t, rhoc0=19,nu=10,gamman=0, rhop0=rhop0,etap=etap,gammap=gammap, turnOff=0.5)
-    rhop.nt = rhop(t=t[t>0.5], rhoc0=19,nu=10,gamman=0, rhop0=rhop0,etap=etap,gammap=gammap, turnOff=0)
+    rhoc0 = 25
+    rhon0 = 1
+    nu = 10
+
+    rhop0=182
+    etap=69.6
+    gammap=4.11
+                      
+    logFCinf = 1.73
+    kappa = 95.5
+    r2=0.96
+                      
+    
+    rhop = rhop(t=t, rhoc0=rhoc0, nu=nu, rhop0=rhop0,etap=etap,gammap=gammap, turnOff=0.5)
 
     plot(t, log2(rhop/rhop0), type="l", xlab="time (h)", ylab=expression(paste(log[2],"(relative values)")), ylim=c(-0.5,2))
-    lines(t[t>0.5], log2(rhop.nt/rhop0), lty=3)
     
     points(c(0,0.5,1,2), logFC, pch=21, cex=1.5, bg="lightgray")
 
@@ -31,10 +39,10 @@ plot.HAT22 = function(
     y1 = par()$usr[4]
     ydelta = y1-y0
 
-    text(max(t), y1-0.20*ydelta, pos=2, expression(paste("GR-REV:",italic(gene))), cex=1.2)
+    text(max(t), y1-0.20*ydelta, pos=2, expression(paste("GR-REV:",italic(HAT22))), cex=1.2)
     legend(max(t), y1-0.25*ydelta, xjust=1, yjust=1, pch=c(3,21,NA), pt.cex=c(1.5,1.5), pt.bg="lightgray", lty=c(NA,NA,1), cex=1.2,
            c(
-               "microarray CEL (RMA)",
+               "microarray intensity (RMA)",
                "microarray logFC (limma)",
                "model fit"
                )

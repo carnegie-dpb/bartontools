@@ -1,5 +1,12 @@
 ## plot the early, middle and late turn-off plots as separate plots
 
+source("rhop.R")
+source("transmodel.fit.R")
+
+source("~/R/getTimes.R")
+source("~/R/getExpression.R")
+source("~/R/plot.bars.R")
+
 oldpar = par(mfrow=c(3,1), mar=c(3,3,0.5,0.5), mgp=c(1.5,.5,0))
 
 source("plot.early.color.R")

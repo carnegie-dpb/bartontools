@@ -119,11 +119,13 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
 
     ## flag suspect fits
     if (etap*(rhon0+rhoc0)/abs(rhop0)<1 || etap*(rhon0+rhoc0)/abs(rhop0)>100) {
-        text(xtext, maxRight-step*6, "?", pos=4, col="red")
+        text(par()$usr[2], maxRight-step*6, "?", pos=3, col="red")
     }
     if (gammap<0.1 || gammap>10) {
-        text(xtext, maxRight-step*7, "?", pos=4, col="red")
+        text(par()$usr[2], maxRight-step*7, "?", pos=3, col="red")
     }
+
+    ## derived fit metrics
     if (hasArg(dataTimes) & hasArg(dataValues)) {
         text(xtext, maxRight-step*9, bquote(paste(kappa==.(signif(kappa,3))," ",h^-2)), pos=3, col="black")
         text(xtext, maxRight-step*10, bquote(logFC(inf)==.(round(logFCinf,2))), pos=3, col="black")
