@@ -12,7 +12,7 @@ source("errorMetric.R")
 transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTimes, dataValues, dataLabel=NA, plotBars=FALSE) {
 
     ## set rhop0 = mean of minimum time points
-    if (!hasArg(rhop0) && hasArg(dataValues) & hasArg(dataTimes)) {
+    if (!hasArg(rhop0) && hasArg(dataValues) && hasArg(dataTimes)) {
         tMin = min(dataTimes)
         rhop0 = mean(dataValues[dataTimes==tMin])
     }
@@ -49,7 +49,7 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     kappa = nu*etap*rhoc0/rhop0
 
     ## compare with provided data
-    if (hasArg(dataTimes) & hasArg(dataValues)) {
+    if (hasArg(dataTimes) && hasArg(dataValues)) {
         if (plotBars) {
             ## plot mean and error bars
             for (ti in unique(dataTimes)) {
@@ -90,7 +90,7 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     xtext = par()$usr[2]*0.85
     ylegend = 0
 
-    if (hasArg(dataLabel) & !is.na(dataLabel)) {
+    if (hasArg(dataLabel) && !is.na(dataLabel)) {
         legend(max(t), ylegend, xjust=1, yjust=0, lty=c(1,1,0), pch=c(-1,-1,19), col=c("blue","red","red"),
                c(
                    expression(paste(rho[n]," (right axis)")),
@@ -126,7 +126,7 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     }
 
     ## derived fit metrics
-    if (hasArg(dataTimes) & hasArg(dataValues)) {
+    if (hasArg(dataTimes) && hasArg(dataValues)) {
         text(xtext, maxRight-step*9, bquote(paste(kappa==.(signif(kappa,3))," ",h^-2)), pos=3, col="black")
         text(xtext, maxRight-step*10, bquote(logFC(inf)==.(round(logFCinf,2))), pos=3, col="black")
         text(xtext, maxRight-step*11, bquote(r^2==.(round(R2,2))), pos=3, col="black")

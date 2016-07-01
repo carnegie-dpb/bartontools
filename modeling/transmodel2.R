@@ -40,7 +40,7 @@ transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,ga
 
     ## compare primary with provided data
     R2p = 0
-    if (hasArg(dataTimes) & hasArg(data1Values)) {
+    if (hasArg(dataTimes) && hasArg(data1Values)) {
         if (plotBars) {
             ## plot mean and error bars
             for (ti in unique(dataTimes)) {
@@ -62,7 +62,7 @@ transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,ga
 
     ## compare secondary with provided data
     R2s = 0
-    if (hasArg(dataTimes) & hasArg(data2Values)) {
+    if (hasArg(dataTimes) && hasArg(data2Values)) {
         if (plotBars) {
             ## plot mean and error bars
             for (ti in unique(dataTimes)) {
@@ -92,7 +92,7 @@ transmodel2 = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,ga
     ## optional annotation using right axis
     xlegend = par()$usr[2]*0.95
     ylegend = par()$yaxp[1]
-    if (hasArg(data1Label) & hasArg(data2Label)) {
+    if (hasArg(data1Label) && hasArg(data2Label)) {
         legend(xlegend, ylegend, xjust=1, yjust=0, lty=c(0,0,1,1,1), pch=c(19,19,-1,-1,-1), cex=1, pt.cex=1.2, col=c("blue","red","black","blue","red"), text.col=c("blue","red","black","blue","red"),
                c(
                    bquote(paste(.(data1Label))),

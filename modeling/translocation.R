@@ -28,7 +28,7 @@ translocation = function(rhoc0, rhon0, nu, gamman, dataTimes, dataValues, dataLa
   xlegend = max(t)*0.95
   ylegend = ymin*1.1
   step = exp(log(ymax/ymin)/20)
-  if (hasArg(dataTimes) & hasArg(dataValues)) {
+  if (hasArg(dataTimes) && hasArg(dataValues)) {
       points(dataTimes, dataValues, pch=19, col="blue")
       fitValues = dataTimes
       for (i in 1:length(dataTimes)) {

@@ -10,7 +10,7 @@ source("Rsquared.R")
 transmodel.pub = function(rhon0=1, rhoc0=20, nu=10, gamman=0.7, rhop0=1, etap=1, gammap=1, dataTimes, dataValues, dataLabel=NA, plotBars=FALSE) {
 
   ## set rhop0 = mean of first three data points
-  if (rhop0==0 && hasArg(dataValues) && hasArg(dataTimes)) rhop0 = mean(dataValues[dataTimes==0])
+  if (rhop0==0 &&&& hasArg(dataValues) &&&& hasArg(dataTimes)) rhop0 = mean(dataValues[dataTimes==0])
 
   ## calculation interval
   t = (0:200)/100
@@ -35,7 +35,7 @@ transmodel.pub = function(rhon0=1, rhoc0=20, nu=10, gamman=0.7, rhop0=1, etap=1,
   }
 
   ## compare with provided data
-  if (hasArg(dataTimes) & hasArg(dataValues)) {
+  if (hasArg(dataTimes) && hasArg(dataValues)) {
     if (plotBars) {
       ## plot mean and error bars
       for (ti in unique(dataTimes)) {
@@ -65,7 +65,7 @@ transmodel.pub = function(rhon0=1, rhoc0=20, nu=10, gamman=0.7, rhop0=1, etap=1,
   par(new=FALSE)
 
   ## annotation
-  if (hasArg(dataLabel) & !is.na(dataLabel)) {
+  if (hasArg(dataLabel) && !is.na(dataLabel)) {
     legend(par()$xaxp[2], 0.98*par()$usr[4], xjust=1, yjust=1, lty=c(1,2,0), pch=c(-1,-1,19), 
            c(
              expression(paste(rho[n],"  ","(right axis)")),
@@ -93,7 +93,7 @@ transmodel.pub = function(rhon0=1, rhoc0=20, nu=10, gamman=0.7, rhop0=1, etap=1,
   text(xtext, 0.20*ytext, bquote(paste(eta[p]==.(signif(etap,3))," ",h^-1)), pos=4, col="black")
   text(xtext, 0.15*ytext, bquote(paste(gamma[p]==.(signif(gammap,3))," ",h^-1)), pos=4, col="black")
 
-  if (hasArg(dataTimes) & hasArg(dataValues)) {
+  if (hasArg(dataTimes) && hasArg(dataValues)) {
     text(xtext, 0.05*ytext, bquote(r^2==.(round(R2,2))), pos=4, col="black")
   }
 

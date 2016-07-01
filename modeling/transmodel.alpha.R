@@ -43,7 +43,7 @@ transmodel.alpha = function(rhon0=1, rhoc0=26, nu=10, gamman=0, rhop0=0, alphap=
   }
 
   ## compare with provided data
-  if (hasArg(dataTimes) & hasArg(dataValues)) {
+  if (hasArg(dataTimes) && hasArg(dataValues)) {
     if (plotBars) {
       ## plot mean and error bars
       for (ti in unique(dataTimes)) {
@@ -98,14 +98,14 @@ transmodel.alpha = function(rhon0=1, rhoc0=26, nu=10, gamman=0, rhop0=0, alphap=
   par(new=FALSE)
 
   ## annotation using right axis so stuff always in same place for given rhoc0
-  if (!is.na(logFCModel) & logFCModel<0) {
+  if (!is.na(logFCModel) && logFCModel<0) {
     legendX = par()$xaxp[2]
     legendXjust = 1
   } else {
     legendX = par()$xaxp[1]
     legendXjust = 0
   }
-  if (hasArg(dataLabel) & !is.na(dataLabel)) {
+  if (hasArg(dataLabel) && !is.na(dataLabel)) {
     legend(legendX, 0.95*par()$yaxp[2], xjust=legendXjust, yjust=1, c("GR-TF (right axis)","Primary Target",dataLabel), lty=c(1,1,0), pch=c(-1,-1,19), col=c("blue","red","red"))
   } else {
     legend(legendX, 0.95*par()$yaxp[2], xjust=legendXjust, yjust=1, c("GR-TF (right axis)","Primary Target"), lty=1, col=c("blue","red"))
@@ -119,7 +119,7 @@ transmodel.alpha = function(rhon0=1, rhoc0=26, nu=10, gamman=0, rhop0=0, alphap=
   text(par()$xaxp[2], 0.40*par()$yaxp[2], bquote(alpha[p]==.(signif(alphap,3))), pos=2, col="red")
   text(par()$xaxp[2], 0.35*par()$yaxp[2], bquote(gamma[p]==.(signif(gammap,3))), pos=2, col="red")
 
-  if (hasArg(dataTimes) & hasArg(dataValues)) {
+  if (hasArg(dataTimes) && hasArg(dataValues)) {
     text(par()$xaxp[2], 0.20*par()$yaxp[2], paste("logFC(data)=",signif(logFCData,3)), pos=2, col="black")
     text(par()$xaxp[2], 0.05*par()$yaxp[2], bquote(fit:R^2==.(round(R2,2))), pos=2, col="black")
   }
