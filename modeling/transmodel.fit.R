@@ -11,14 +11,11 @@ source("transmodel.error.R")
 
 transmodel.fit = function(
                           fitTerms="rhop0.etap.gammap", turnOff=0,
-                          rhoc0=19, rhon0=1, nu=10, rhop0=1, etap=1, gammap=2.5,
-                          schema="bl2013", gene="At5g47370", condition="GR-REV",
+                          rhoc0=25, rhon0=1, nu=10, rhop0=1, etap=1, gammap=2.5,
+                          schema="gse70796", gene="At5g47370", condition="GR-REV",
                           dataTimes, dataValues, dataLabel=NA,
                           plotBars=FALSE,  doPlot=TRUE
                           ) {
-
-    print(paste("Before fit:","rhoc0=",rhoc0,"rhon0=",rhon0,"rhop0=",rhop0,"nu=",nu,"etap=",etap,"gammap=",gammap))
-    print(paste("fitTerms =", fitTerms))
 
     ## get time (in hours) and expression arrays for the given schema and gene ID from the database
     if (!hasArg(dataTimes)) {
@@ -107,8 +104,6 @@ transmodel.fit = function(
         gammap = fit$estimate[4]
         
     }
-
-    print(paste("After fit:","rhoc0=",rhoc0,"rhon0=",rhon0,"rhop0=",rhop0,"nu=",nu,"etap=",etap,"gammap=",gammap))
 
     ## get R-squared and error metric
     fitValues = rhop(t=dataTimes, turnOff=turnOff, rhoc0=rhoc0,nu=nu, rhop0=rhop0,etap=etap,gammap=gammap)
