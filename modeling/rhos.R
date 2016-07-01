@@ -21,19 +21,19 @@ rhos = function(t=0:1000/500, rhoc0=10, rhon0=1, nu=10, rhop0=1, etap=2, gammap=
 
     if (nu==gammap && gammap==gammas) {
 
-        f =  -1/2*etap*etas*t^2*exp(-nu*t)*rhoc0 - 1/2*etap*etas*t*(rhoc0 + rhon0)*exp(-nu*t)/nu + 1/2*etas*t*exp(-nu*t)*rhop0 - 1/2*(etap*etas*(rhoc0 + rhon0) - etas*nu*rhop0)*t*exp(-nu*t)/nu + etap*etas*(rhoc0 + rhon0)/nu^2 - (etap*etas*(rhoc0 + rhon0) - nu^2*rhos0)*exp(-nu*t)/nu^2
+        f = rhos0 - etap*etas*rhoc0*t*exp(-nu*t)/(gammap - nu) + etap*etas*rhoc0/(gammap*nu) - (etap*etas*nu*rhoc0)*exp(-gammap*t)/(gammap^3 - 2*gammap^2*nu + gammap*nu^2) + (0 - (etap*etas*gammap - 2*etap*etas*nu)*rhoc0)*exp(-nu*t)/(gammap^2*nu - 2*gammap*nu^2 + nu^3)
     
     } else if (nu==gammap && gammap!=gammas) {
 
-        f = -etap*etas*t*exp(-nu*t)*rhoc0/(gammas - nu) + etap*etas*(rhoc0 + rhon0)/(gammas*nu) + (etap*etas*gammas*rhon0 - etas*gammas^2*rhop0 + gammas^3*rhos0 + gammas*nu^2*rhos0 - (etap*etas*(rhoc0 + rhon0) - etas*gammas*rhop0 + 2*gammas^2*rhos0)*nu)*exp(-gammas*t)/(gammas^3 - 2*gammas^2*nu + gammas*nu^2) - (etap*etas*gammas*(rhoc0 + rhon0) + etas*nu^2*rhop0 - (etap*etas*(2*rhoc0 + rhon0) + etas*gammas*rhop0)*nu)*exp(-nu*t)/(gammas^2*nu - 2*gammas*nu^2 + nu^3)
+        f = rhos0 - etap*etas*rhoc0*t*exp(-nu*t)/(gammas - nu) + etap*etas*rhoc0/(gammas*nu) - (etap*etas*nu*rhoc0)*exp(-gammas*t)/(gammas^3 - 2*gammas^2*nu + gammas*nu^2) + (0 - (etap*etas*gammas - 2*etap*etas*nu)*rhoc0)*exp(-nu*t)/(gammas^2*nu - 2*gammas*nu^2 + nu^3)
 
     } else if (nu!=gammap && gammap==gammas) {
 
-        f = -etap*etas*gammap*t*exp(-gammap*t)*rhon0/(gammap^2 - gammap*nu) + etas*gammap^2*t*exp(-gammap*t)*rhop0/(gammap^2 - gammap*nu) + (etap*etas*(rhoc0 + rhon0) - etas*gammap*rhop0)*nu*t*exp(-gammap*t)/(gammap^2 - gammap*nu) - etap*etas*exp(-nu*t)*rhoc0/(gammap^2 - 2*gammap*nu + nu^2) + etap*etas*(rhoc0 + rhon0)/gammap^2 - (etap*etas*gammap^2*rhon0 - gammap^4*rhos0 + (etap*etas*(rhoc0 + rhon0) - gammap^2*rhos0)*nu^2 - 2*(etap*etas*gammap*(rhoc0 + rhon0) - gammap^3*rhos0)*nu)*exp(-gammap*t)/(gammap^4 - 2*gammap^3*nu + gammap^2*nu^2)
+        f = rhos0 + etap*etas*nu*rhoc0*t*exp(-gammap*t)/(gammap^2 - gammap*nu) - etap*etas*rhoc0*exp(-nu*t)/(gammap^2 - 2*gammap*nu + nu^2) + etap*etas*rhoc0/gammap^2 + ((2*etap*etas*gammap*nu - etap*etas*nu^2)*rhoc0)*exp(-gammap*t)/(gammap^4 - 2*gammap^3*nu + gammap^2*nu^2)
 
     } else {
 
-        f = -etap*etas*exp(-nu*t)*rhoc0/(gammap*gammas - (gammap + gammas)*nu + nu^2) + etap*etas*(rhoc0 + rhon0)/(gammap*gammas) + (etap*etas*gammap*rhon0 - etas*gammap^2*rhop0 - (etap*etas*(rhoc0 + rhon0) - etas*gammap*rhop0)*nu)*exp(-gammap*t)/(gammap^3 - gammap^2*gammas - (gammap^2 - gammap*gammas)*nu) - (etap*etas*gammas*rhon0 + gammas^3*rhos0 - (etas*rhop0 + gammap*rhos0)*gammas^2 - (etap*etas*(rhoc0 + rhon0) + gammas^2*rhos0 - (etas*rhop0 + gammap*rhos0)*gammas)*nu)*exp(-gammas*t)/(gammap*gammas^2 - gammas^3 - (gammap*gammas - gammas^2)*nu)
+        f = rhos0 - etap*etas*rhoc0*exp(-nu*t)/(gammap*gammas - (gammap + gammas)*nu + nu^2) + etap*etas*rhoc0/(gammap*gammas) - (etap*etas*nu*rhoc0)*exp(-gammap*t)/(gammap^3 - gammap^2*gammas - (gammap^2 - gammap*gammas)*nu) + (etap*etas*nu*rhoc0 + (0 - (0)*gammas)*nu)*exp(-gammas*t)/(gammap*gammas^2 - gammas^3 - (gammap*gammas - gammas^2)*nu)
 
     }
     
