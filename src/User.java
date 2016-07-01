@@ -426,10 +426,12 @@ public class User implements Comparable {
 	    // use Apache Commons Email to send confirmation email with keyed URL
 	    Email email = new SimpleEmail();
 	    email.setDebug(false);
-	    email.setSSLOnConnect(false);
 	    email.setHostName(context.getInitParameter("mail.smtp.host"));
 	    email.setSmtpPort(Integer.parseInt(context.getInitParameter("mail.smtp.port")));
-	    // email.setSslSmtpPort(context.getInitParameter("mail.smtp.port"));
+	    if (context.getInitParameter("mail.smtp.ssl").equals("true")) {
+		email.setSslSmtpPort(context.getInitParameter("mail.smtp.port"));
+		email.setSSLOnConnect(true);
+	    }
 	    email.setAuthentication(context.getInitParameter("mail.smtp.user"), context.getInitParameter("mail.smtp.password"));
 	    email.setFrom(context.getInitParameter("mail.from.address"));
 	    email.setSubject("Activate your account registration on Barton Lab Web Tools");
