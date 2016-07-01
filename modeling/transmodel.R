@@ -45,8 +45,8 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     }
 
     ## metrics for display
-    logFCinf = log2(1 + etap/gammap*(rhoc0+rhon0)/rhop0)
-    kappa = nu*etap*(1 - gammap/nu*rhon0/rhoc0)
+    logFCinf = log2(1 + etap/gammap*rhoc0/rhop0)
+    kappa = nu*etap*rhoc0/rhop0
 
     ## compare with provided data
     if (hasArg(dataTimes) & hasArg(dataValues)) {
