@@ -17,7 +17,7 @@
 ## Solutions provided by Sage Math
 
 
-rhos = function(t=0:1000/500, rhoc0=10, rhon0=1, rhos0=1, nu=10, etap=2, gammap=3, etas=4, gammas=5) {
+rhos = function(t, rhoc0, rhon0, rhos0, nu, etap, gammap, etas, gammas) {
 
     if (nu==gammap && gammap==gammas) {
         

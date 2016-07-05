@@ -11,7 +11,7 @@ source("transmodel.error.R")
 
 transmodel.fit = function(
                           fitTerms="rhop0.etap.gammap", turnOff=0,
-                          rhoc0=25, rhon0=1, nu=10, rhop0=1, etap=1, gammap=2.5,
+                          rhoc0=25, rhon0=1, nu=10, rhop0=1, etap=1, gammap=4,
                           schema="gse70796", gene="At5g47370", condition="GR-REV",
                           dataTimes, dataValues, dataLabel=NA,
                           plotBars=FALSE,  doPlot=TRUE
@@ -30,7 +30,6 @@ transmodel.fit = function(
     if (!hasArg(rhop0)) {
         rhop0 = mean(dataValues[dataTimes==tMin])
     }
-    rhop0input = rhop0
 
     ## estimate etap from rhop0, assume up-regulated
     if (!hasArg(etap)) etap = 0.1*rhop0
@@ -113,7 +112,11 @@ transmodel.fit = function(
     
     ## plot it
     if (doPlot) {
-        transmodel(turnOff=turnOff, rhoc0=rhoc0,rhon0=rhon0,nu=nu, rhop0=rhop0,etap=etap,gammap=gammap, dataTimes=dataTimes,dataValues=dataValues,dataLabel=dataLabel, plotBars=plotBars)
+        transmodel(turnOff=turnOff,
+                   rhoc0=rhoc0, rhon0=rhon0, nu=nu,
+                   rhop0=rhop0, etap=etap, gammap=gammap,
+                   dataTimes=dataTimes, dataValues=dataValues, dataLabel=dataLabel,
+                   plotBars=plotBars)
     }
 
     ## return fit in case we want it

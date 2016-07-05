@@ -44,10 +44,6 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
         plot(t, rhop_t, type="l", xlab="time (h)", ylab="nuclear concentration", col="red", ylim=c(0,ymax))
     }
 
-    ## metrics for display
-    logFCinf = log2(1 + etap/gammap*rhoc0/rhop0)
-    kappa = nu*etap*rhoc0/rhop0
-
     ## compare with provided data
     if (hasArg(dataTimes) && hasArg(dataValues)) {
         if (plotBars) {
@@ -77,6 +73,10 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     par(new=FALSE)
 
     ## annotation using right axis so stuff always in same place for given rhoc0
+
+    ## metrics for display
+    logFCinf = log2(1 + etap/gammap*rhoc0/rhop0)
+    kappa = nu*etap*rhoc0/rhop0
 
     ## LOG
     step = 1.12^(par()$usr[4]-par()$usr[3])
@@ -119,10 +119,10 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
 
     ## flag suspect fits
     if (etap*(rhon0+rhoc0)/abs(rhop0)<1 || etap*(rhon0+rhoc0)/abs(rhop0)>100) {
-        text(par()$usr[2], maxRight-step*6, "?", pos=3, col="red")
+        text(max(t), maxRight-step*6+step*0.2, "!!", pos=3, col="red", font=2)
     }
     if (gammap<0.1 || gammap>10) {
-        text(par()$usr[2], maxRight-step*7, "?", pos=3, col="red")
+        text(max(t), maxRight-step*7+step*0.2, "!!", pos=3, col="red", font=2)
     }
 
     ## derived fit metrics
