@@ -2,8 +2,8 @@
 ## plot out some example genes
 ##
 
-source("../R/getExpression.R")
-source("../R/getTimes.R")
+source("~/R/getExpression.R")
+source("~/R/getTimes.R")
 source("transmodel.fit.R")
 source("sampleAverage.R")
 

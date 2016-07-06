@@ -6,8 +6,8 @@ source("transmodel.fit.R")
 source("Rsquared.R")
 source("rhop.R")
 
-source("../R/getExpression.R")
-source("../R/getAllIDs.R")
+source("~/R/getExpression.R")
+source("~/R/getAllIDs.R")
 
 scanall = function(schema,condition) {
 

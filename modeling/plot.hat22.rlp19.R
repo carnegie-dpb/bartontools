@@ -4,8 +4,8 @@
 
 source("rhocnps.R")
 
-source("../R/getExpression.R")
-source("../R/getTimes.R")
+source("~/R/getExpression.R")
+source("~/R/getTimes.R")
 
 plot.hat22.rlp19 = function(schema, rhop0, etap, gammap, rhos0, etas, gammas, turnOff) {
 

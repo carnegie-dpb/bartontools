@@ -22,6 +22,10 @@ transmodel.fit = function(
         dataTimes = getTimes(schema, condition)
         if (max(dataTimes)>60) dataTimes = dataTimes/60
         dataValues = getExpression(schema, condition, toupper(gene))
+        if (is.null(dataValues)) {
+            print("No data - aborting.")
+            return(NULL)
+        }
         if (is.na(dataLabel)) dataLabel = paste(toupper(schema)," ",condition,":",gene,sep="")
     }
     

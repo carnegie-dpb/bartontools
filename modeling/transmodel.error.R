@@ -7,10 +7,10 @@ source("rhop.R")
 source("errorMetric.R")
 
 ## the transcription model to be minimized
-transmodel.error = function(p, fitTerms, turnOff, rhoc0,nu, rhop0,etap,gammap, dataTimes, dataValues) {
+transmodel.error = function(p, fitTerms, turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, dataTimes, dataValues) {
 
     ## allowable parameter ranges
-    gammapMax = 8
+    gammapMax = 8.0
     
     ## rhop0: fit rhop0 only
     if (fitTerms=="rhop0") {
@@ -48,7 +48,7 @@ transmodel.error = function(p, fitTerms, turnOff, rhoc0,nu, rhop0,etap,gammap, d
     if (gammap>gammapMax) {
         fitValues = dataTimes*0
     } else {
-        fitValues = rhop(turnOff=turnOff, t=dataTimes, rhoc0=rhoc0, nu=nu, rhop0=rhop0, etap=etap, gammap=gammap)
+        fitValues = rhop(t=dataTimes, rhoc0=rhoc0, rhon0=rhon0, nu=nu, rhop0=rhop0, etap=etap, gammap=gammap, turnOff=turnOff)
     }
 
     ## return error metric

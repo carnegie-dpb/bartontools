@@ -2,8 +2,8 @@
 ##
 ## hardcoded to query limmatimeresults for bl2012, cuffdifftimeresults for bl2013
 
-source("../R/getLimmaTimeResults.R")
-source("../R/getCuffdiffTimeResults.R")
+source("~/R/getLimmaTimeResults.R")
+source("~/R/getCuffdiffTimeResults.R")
 
 count.significant = function(schema, condition, genes) {
 

@@ -6,9 +6,9 @@ source("transmodel.fit.R")
 source("Rsquared.R")
 source("rhop.R")
 
-source("../R/getTimes.R")
-source("../R/getExpression.R")
-source("../R/getSymbol.R")
+source("~/R/getTimes.R")
+source("~/R/getExpression.R")
+source("~/R/getSymbol.R")
 
 scan.candidates = function(schema, condition, txtTable, rhon0=1, rhoc0=19, nu=10, gamman=0) {
 

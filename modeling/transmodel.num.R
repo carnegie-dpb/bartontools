@@ -2,8 +2,8 @@
 ## numerically solve linear transcription model for a direct target in one condition
 ##
 
-source("../R/getExpression.R")
-source("../R/getTimes.R")
+source("~/R/getExpression.R")
+source("~/R/getTimes.R")
 
 source("rhocnps.R")
 source("Rsquared.R")

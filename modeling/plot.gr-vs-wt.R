@@ -2,8 +2,8 @@
 ## plot out the WT versus condition points for the transgene
 ##
 
-source("../R/getTimes.R")
-source("../R/getExpression.R")
+source("~/R/getTimes.R")
+source("~/R/getExpression.R")
 
 condition = "GR-REV"
 tg = "REV"

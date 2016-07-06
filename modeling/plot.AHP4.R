@@ -6,9 +6,9 @@ source("transmodel2.fit.R")
 source("rhop.R")
 source("rhos.R")
 
-source("../R/getExpression.R")
-source("../R/getTimes.R")
-source("../R/plot.bars.R")
+source("~/R/getExpression.R")
+source("~/R/getTimes.R")
+source("~/R/plot.bars.R")
 
 plot.AHP4 = function(schema, condition, ylim) {
 

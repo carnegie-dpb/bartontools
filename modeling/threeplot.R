@@ -2,8 +2,8 @@
 ## plot three genes and fits
 ##
 
-source("../R/getTimes.R")
-source("../R/getExpression.R")
+source("~/R/getTimes.R")
+source("~/R/getExpression.R")
 source("rhon.R")
 source("rhop.R")
 

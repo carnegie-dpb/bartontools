@@ -2,9 +2,9 @@
 ## killer plot for Kathy's grant aim
 ##
 
-source("../R/getExpression.R")
-source("../R/getTimes.R")
-source("../R/plot.bars.R")
+source("~/R/getExpression.R")
+source("~/R/getTimes.R")
+source("~/R/plot.bars.R")
 
 source("rhon.R")
 source("rhop.R")
