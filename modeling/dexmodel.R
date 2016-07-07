@@ -19,34 +19,35 @@ rhoc0 = c(87.6, 89.2, 87.2, 92.0, 83.2)
 rhon0 = c(5.4, 2.1, 12.6, 7.0, 16.7)
 nu = c(12.1, 72.2, 4.53, 6.92, 5.51)
 
-plot(robertson$time, robertson$Dex1uM, pch=19, cex=1.2, xlim=c(0,2), ylim=c(0,100), ylab="nuclear GR fraction (%)", xlab="time (h)", main="")
+plot(robertson$time, robertson$Dex1uM, pch=19, cex=1.5, xlim=c(0,2), ylim=c(0,100), ylab="nuclear GR fraction (%)", xlab="time after DEX application (h)", main="", col="blue")
 
-points(hache$time, hache$Dex1uM, pch=15, cex=1.2)
+points(hache$time, hache$Dex1uM, pch=15, cex=1.5, col="red")
 
-points(yosh$time, yosh$Dex1nM, pch=4, cex=1.2)
-
-points(yosh$time, yosh$Dex10nM, pch=1, cex=1.2)
-points(yosh$time, yosh$Dex100nM, pch=2, cex=1.2)
-points(yosh$time, yosh$Dex1uM,  pch=5, cex=1.2)
+points(yosh$time, yosh$Dex1nM, pch=4, cex=1.5, col="darkgreen")
+points(yosh$time, yosh$Dex10nM, pch=1, cex=1.5, col="darkgreen")
+points(yosh$time, yosh$Dex100nM, pch=2, cex=1.5, col="darkgreen")
+points(yosh$time, yosh$Dex1uM,  pch=5, cex=1.5, col="darkgreen")
 
 ## calculation interval
 t = (0:200)/100
 
 ## numerical solution
-rhon1 = rhon(rhoc0[1], rhon0[1], nu[1], 0, t/2)
-rhon2 = rhon(rhoc0[2], rhon0[2], nu[2], 0, t)
-rhon3 = rhon(rhoc0[3], rhon0[3], nu[3], 0, t)
-rhon4 = rhon(rhoc0[4], rhon0[4], nu[4], 0, t)
-rhon5 = rhon(rhoc0[5], rhon0[5], nu[5], 0, t)
+rhon1 = rhon(rhoc0=rhoc0[1], rhon0=rhon0[1], nu=nu[1], t=t/2)
+rhon2 = rhon(rhoc0=rhoc0[2], rhon0=rhon0[2], nu=nu[2], t=t)
+rhon3 = rhon(rhoc0=rhoc0[3], rhon0=rhon0[3], nu=nu[3], t=t)
+rhon4 = rhon(rhoc0=rhoc0[4], rhon0=rhon0[4], nu=nu[4], t=t)
+rhon5 = rhon(rhoc0=rhoc0[5], rhon0=rhon0[5], nu=nu[5], t=t)
 
 ## plot 'em
-lines(t/2, rhon1, lty=1, lwd=1.5)
-lines(t, rhon2, lty=2, lwd=1.5)
-lines(t, rhon3, lty=3, lwd=1.5)
-lines(t, rhon4, lty=4, lwd=1.5)
-lines(t, rhon5, lty=6, lwd=1.5)
+lines(t/2, rhon1, lty=1, lwd=1.5, col="blue")
 
-legend(max(t), 0, xjust=1, yjust=0, pch=c(NA,19,15,5,2,1,4), lty=c(0,1,2,3,4,6,0), cex=1.2, lwd=1.5,
+lines(t, rhon2, lty=1, lwd=1.5, col="red")
+
+lines(t, rhon3, lty=3, lwd=1.5, col="darkgreen")
+lines(t, rhon4, lty=4, lwd=1.5, col="darkgreen")
+lines(t, rhon5, lty=6, lwd=1.5, col="darkgreen")
+
+legend(max(t), 0, xjust=1, yjust=0, pch=c(NA,19,15,5,2,1,4), col=c("","blue","red","darkgreen","darkgreen","darkgreen","darkgreen"), lty=c(0,1,1,3,4,6,0), pt.cex=1.5, lwd=1.5,
        c(
          expression(paste("               DEX","  ",nu," ",(h^-1))),
          expression("Rob.       1 \u{B5}M   12.1"),

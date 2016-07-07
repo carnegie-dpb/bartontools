@@ -24,23 +24,27 @@ plot.HAT22 = function() {
     kappa = 95.5
     r2=0.96
                       
-    
     rhop = rhop(t=t, rhoc0=rhoc0, nu=nu, rhop0=rhop0,etap=etap,gammap=gammap, turnOff=0.5)
 
-    plot(t, log2(rhop/rhop0), type="l", xlab="time (h)", ylab=expression(paste(log[2],"(relative values)")), ylim=c(-0.5,2))
+    rhop.asymptote = rhop(t=t, rhoc0=rhoc0, nu=nu, rhop0=rhop0,etap=etap,gammap=gammap, turnOff=0)
+
+    ## plot
+
+    plot(t, log2(rhop/rhop0), type="l", xlab="time after DEX application (h)", ylab=expression(paste(log[2],"(relative values)")), ylim=c(-0.5,2))
+    lines(t[60:120], log2(rhop.asymptote[60:120]/rhop0), lty=3)
     
-    points(c(0,0.5,1,2), logFC, pch=21, cex=1.5, bg="lightgray")
+    points(c(0,0.5,1,2), logFC, pch=19, cex=2, col="red")
 
     lines(c(0,max(t)), c(logFCinf,logFCinf), lty=2)
 
-    points(times, log2(expr/rhop0), pch=3, cex=1.5)
+    points(times, log2(expr/rhop0), pch=3, cex=2, col="blue")
 
     y0 = par()$usr[3]
     y1 = par()$usr[4]
     ydelta = y1-y0
 
     text(max(t), y1-0.20*ydelta, pos=2, expression(paste("GR-REV:",italic(HAT22))), cex=1.2)
-    legend(max(t), y1-0.25*ydelta, xjust=1, yjust=1, pch=c(3,21,NA), pt.cex=c(1.5,1.5), pt.bg="lightgray", lty=c(NA,NA,1), cex=1.2,
+    legend(max(t), y1-0.25*ydelta, xjust=1, yjust=1, pch=c(3,19,NA), pt.cex=2, lty=c(NA,NA,1), cex=1.2, col=c("blue","red","black"),
            c(
                "microarray intensity (RMA)",
                "microarray logFC (limma)",

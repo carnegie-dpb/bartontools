@@ -16,14 +16,14 @@ transmodel2.num = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,eta
 
     ## plot primary transcript concentration
     if (hasArg(data1Values)) {
-        plot(t, model$rhop, type="l", xlab="time after DEX application (h)", ylab="nuclear concentration (lines), expression (points)", lty=1, col="red", 
-             ylim=c(1, max(data1Values,data2Values,model$rhop,model$rhos)))
+        plot(t, model$rhop, type="l", xlab="time after DEX application (h)", ylab="nuclear concentration (lines), expression (points)", lty=1, lwd=2, col="red", log="y",
+             ylim=c(min(data1Values,data2Values,model$rhop,model$rhos), max(data1Values,data2Values,model$rhop,model$rhos)))
     } else {
-        plot(t, model$rhop, type="l", xlab="time after DEX application (h)", ylab="nuclear concentration (arb)", ylim=c(0,max(model$rhop,model$rhos)), lty=1, col="red")
+        plot(t, model$rhop, type="l", xlab="time after DEX application (h)", ylab="nuclear concentration (arb)", ylim=c(0,max(model$rhop,model$rhos)), lty=1, lwd=2, col="red")
     }
 
     ## secondary transcript concentration
-    lines(t, model$rhos, lty=1, col="darkgreen")
+    lines(t, model$rhos, lty=1, lwd=2, col="darkgreen")
 
     ## compare primary with provided data
     R2p = 0
@@ -71,7 +71,7 @@ transmodel2.num = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,eta
     
     ## plot GR-TF on right axis
     par(new=TRUE)
-    plot(t, model$rhon, type="l", lty=1, axes=FALSE, xlab=NA, ylab=NA, ylim=c(0,max(model$rhon)), col="blue")
+    plot(t, model$rhon, type="l", lty=1, lwd=2, axes=FALSE, xlab=NA, ylab=NA, ylim=c(0,max(model$rhon)), col="blue")
     axis(side=4)
     par(new=FALSE)
 
@@ -83,31 +83,33 @@ transmodel2.num = function(turnOff, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,eta
     text(xtext, maxRight, bquote(rho[c0]==.(round(rhoc0,1))), pos=4, col="blue")
     text(xtext, maxRight-1*step, bquote(rho[n0]==.(round(rhon0,1))), pos=4, col="blue")
     text(xtext, maxRight-2*step, bquote(paste(nu==.(signif(nu,3))," ",h^-1)), pos=4, col="blue")
+    text(xtext, maxRight-3*step, bquote(gamma[n]==0), pos=4, col="blue")
+    text(xtext, maxRight-4*step, bquote(gamma[e]==0), pos=4, col="blue")
 
-    text(xtext, maxRight-4*step, bquote(rho[p0]==.(round(rhop0,1))), pos=4, col="red")
-    text(xtext, maxRight-5*step, bquote(paste(eta[p]==.(signif(etap,3))," ",h^-1)), pos=4, col="red")
-    text(xtext, maxRight-6*step, bquote(paste(gamma[p]==.(signif(gammap,3))," ",h^-1)), pos=4, col="red")
-    text(xtext, maxRight-7*step, bquote(r^2==.(round(R2p,2))), pos=4, col="red")
+    text(xtext, maxRight-8*step, bquote(rho[p0]==.(round(rhop0,1))), pos=4, col="red")
+    text(xtext, maxRight-9*step, bquote(paste(eta[p]==.(signif(etap,3))," ",h^-1)), pos=4, col="red")
+    text(xtext, maxRight-10*step, bquote(paste(gamma[p]==.(signif(gammap,3))," ",h^-1)), pos=4, col="red")
+    text(xtext, maxRight-11*step, bquote(r^2==.(round(R2p,2))), pos=4, col="red")
 
-    text(xtext, maxRight-9*step, bquote(rho[s0]==.(round(rhos0,1))), pos=4, col="darkgreen")
-    text(xtext, maxRight-10*step, bquote(paste(eta[s]==.(signif(etas,3))," ",h^-1)), pos=4, col="darkgreen")
-    text(xtext, maxRight-11*step, bquote(paste(gamma[s]==.(signif(gammas,3))," ",h^-1)), pos=4, col="darkgreen")
-    text(xtext, maxRight-12*step, bquote(r^2==.(round(R2s,2))), pos=4, col="darkgreen")
+    text(xtext, maxRight-13*step, bquote(rho[s0]==.(round(rhos0,1))), pos=4, col="darkgreen")
+    text(xtext, maxRight-14*step, bquote(paste(eta[s]==.(signif(etas,3))," ",h^-1)), pos=4, col="darkgreen")
+    text(xtext, maxRight-15*step, bquote(paste(gamma[s]==.(signif(gammas,3))," ",h^-1)), pos=4, col="darkgreen")
+    text(xtext, maxRight-16*step, bquote(r^2==.(round(R2s,2))), pos=4, col="darkgreen")
 
 
     if (hasArg(data1Label) && hasArg(data2Label)) {
-        legend(x=max(t), y=0, xjust=1, yjust=0, lty=c(0,0,1,1,1), pch=c(19,19,-1,-1,-1), cex=1, pt.cex=1.2,
+        legend(x=max(t)*0.6, maxRight*0.25, xjust=1, yjust=0, lty=c(0,0,1,1,1), lwd=2, pch=c(19,19,-1,-1,-1), cex=1, pt.cex=1.2,
                col=c("red","darkgreen","black","red","darkgreen"),
                c(
                    data1Label,
                    data2Label,
-                   expression(paste(rho[n], "  (right scale)")),
-                   expression(rho[p]),
-                   expression(rho[s])
+                   expression(paste(rho[n],"  ","(right scale, linear)")),
+                   expression(paste(rho[p],"  ","(left scale, log)")),
+                   expression(paste(rho[s],"  ","(left scale, log)"))
                )
                )
     } else {
-        legend(x=max(t), y=0, xjust=1, yjust=0, lty=1, col=c("black","red","darkgreen"),
+        legend(x=max(t)*0.75, y=maxRight*0.25, xjust=1, yjust=0, lty=1, lwd=2, col=c("blue","red","darkgreen"),
                c(
                    expression(paste(rho[n], "  (right scale)")),
                    expression(rho[p]),
