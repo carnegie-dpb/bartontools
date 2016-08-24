@@ -7,14 +7,14 @@
 require("deSolve")
 source("rhop.R")
 
-rhos.num = function(turnOff=0, rhoc0,rhon0,nu,gamman, rhop0,etap,gammap, rhos0,etas,gammas, t) {
+rhos.num = function(turnOff=0, rhoc0,rhon0,nu, rhop0,etap,gammap, rhos0,etas,gammas, t) {
 
   ## derivative for rhos
   rhosdot = function(t, y, parms) {
     rhos = y[1]
 
     ## rhop from analytic solution
-    rhop = rhop(turnOff=turnOff, t=t, rhoc0=rhoc0,nu=nu,gamman=gamman, rhop0=rhop0,etap=etap,gammap=gammap)
+    rhop = rhop(turnOff=turnOff, t=t, rhoc0=rhoc0,nu=nu, rhop0=rhop0,etap=etap,gammap=gammap)
     
     ## deriv
     return( list( c(

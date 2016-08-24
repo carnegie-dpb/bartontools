@@ -4,9 +4,9 @@
 
 source("rhop.R")
 
-source("../R/getTimes.R")
-source("../R/getExpression.R")
-source("../R/plot.bars.R")
+source("~/R/getTimes.R")
+source("~/R/getExpression.R")
+source("~/R/plot.bars.R")
 
 rhoc0 = 19
 rhon0 = 1

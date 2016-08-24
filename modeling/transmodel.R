@@ -12,7 +12,7 @@ source("errorMetric.R")
 transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTimes, dataValues, dataLabel=NA, plotBars=FALSE) {
 
     ## set rhop0 = mean of minimum time points
-    if (!hasArg(rhop0) && hasArg(dataValues) & hasArg(dataTimes)) {
+    if (!hasArg(rhop0) && hasArg(dataValues) && hasArg(dataTimes)) {
         tMin = min(dataTimes)
         rhop0 = mean(dataValues[dataTimes==tMin])
     }
@@ -44,12 +44,8 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
         plot(t, rhop_t, type="l", xlab="time (h)", ylab="nuclear concentration", col="red", ylim=c(0,ymax))
     }
 
-    ## metrics for display
-    logFCinf = log2(1 + etap/gammap*rhoc0/rhop0)
-    kappa = nu*etap*rhoc0/rhop0
-
     ## compare with provided data
-    if (hasArg(dataTimes) & hasArg(dataValues)) {
+    if (hasArg(dataTimes) && hasArg(dataValues)) {
         if (plotBars) {
             ## plot mean and error bars
             for (ti in unique(dataTimes)) {
@@ -78,6 +74,10 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
 
     ## annotation using right axis so stuff always in same place for given rhoc0
 
+    ## metrics for display
+    logFCinf = log2(1 + etap/gammap*rhoc0/rhop0)
+    kappa = nu*etap*rhoc0/rhop0
+
     ## LOG
     step = 1.12^(par()$usr[4]-par()$usr[3])
     maxRight = 10^par()$usr[4]/step
@@ -90,7 +90,7 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
     xtext = par()$usr[2]*0.85
     ylegend = 0
 
-    if (hasArg(dataLabel) & !is.na(dataLabel)) {
+    if (hasArg(dataLabel) && !is.na(dataLabel)) {
         legend(max(t), ylegend, xjust=1, yjust=0, lty=c(1,1,0), pch=c(-1,-1,19), col=c("blue","red","red"),
                c(
                    expression(paste(rho[n]," (right axis)")),
@@ -119,14 +119,14 @@ transmodel = function(turnOff=0, rhon0, rhoc0, nu, rhop0, etap, gammap, dataTime
 
     ## flag suspect fits
     if (etap*(rhon0+rhoc0)/abs(rhop0)<1 || etap*(rhon0+rhoc0)/abs(rhop0)>100) {
-        text(par()$usr[2], maxRight-step*6, "?", pos=3, col="red")
+        text(max(t), maxRight-step*6+step*0.2, "!!", pos=3, col="red", font=2)
     }
     if (gammap<0.1 || gammap>10) {
-        text(par()$usr[2], maxRight-step*7, "?", pos=3, col="red")
+        text(max(t), maxRight-step*7+step*0.2, "!!", pos=3, col="red", font=2)
     }
 
     ## derived fit metrics
-    if (hasArg(dataTimes) & hasArg(dataValues)) {
+    if (hasArg(dataTimes) && hasArg(dataValues)) {
         text(xtext, maxRight-step*9, bquote(paste(kappa==.(signif(kappa,3))," ",h^-2)), pos=3, col="black")
         text(xtext, maxRight-step*10, bquote(logFC(inf)==.(round(logFCinf,2))), pos=3, col="black")
         text(xtext, maxRight-step*11, bquote(r^2==.(round(R2,2))), pos=3, col="black")

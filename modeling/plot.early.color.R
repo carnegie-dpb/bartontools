@@ -36,16 +36,16 @@ plot.early = function() {
     gse70796.model = rhop(rhoc=rhoc0,nu=nu, t=t, rhop0=gse70796.rhop0, etap=gse70796.etap, gammap=gse70796.gammap, turnOff=0.5)
 
     plot(t, gse30703.model/gse30703.base, type="l", xlim=c(0,2), log="y", xlab="time (h)", ylab="relative expression", ylim=c(.8,4), col="blue")
-    plot.bars(gse30703.t, gse30703/gse30703.base, over=T, pch=21, cex=1.5, bg="blue", col="blue")
+    plot.bars(gse30703.t, gse30703/gse30703.base, over=T, pch=19, cex=1.5, bg="blue", col="blue")
 
-    plot.bars(gse70796.t, gse70796/gse70796.base, over=T, pch=22, cex=1.5, bg="red", col="red")
     lines(t, gse70796.model/gse70796.base, col="red")
+    plot.bars(gse70796.t, gse70796/gse70796.base, over=T, pch=19, cex=1.5, bg="red", col="red")
 
     ## redo first points to cover bars
-    points(t, gse70796.model/gse30703.base, pch=21, cex=1.5, bg="blue", col="blue")
+    points(t, gse70796.model/gse30703.base, pch=19, cex=1.5, bg="blue", col="blue")
     
 
-    legend(2, 4, xjust=1, yjust=1, pch=21:22, pt.cex=1.5, pt.bg=c("blue","red"), pt.lwd=0, cex=1.2,
+    legend(2, 4, xjust=1, yjust=1, pch=19, pt.cex=1.5, col=c("blue","red"), cex=1.2,
            c(
                expression(paste("microarray: ",gamma[p]==0.71," ",h^-1," (",r^2==0.84,"0)")),
                expression(paste("RNA-seq:   ",gamma[p]==0.45," ",h^-1," (",r^2==0.83,")"))

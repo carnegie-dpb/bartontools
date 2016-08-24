@@ -22,7 +22,7 @@ transmodels.num = function(rhoc0,rhon0,nu,gamman,gammae, rhop0,etap,gammap, rhos
 
   ## compare secondary with provided data
   R2s = 0
-  if (hasArg(dataTimes) & hasArg(data2Values)) {
+  if (hasArg(dataTimes) && hasArg(data2Values)) {
     if (plotBars) {
       ## plot mean and error bars
       for (ti in unique(dataTimes)) {

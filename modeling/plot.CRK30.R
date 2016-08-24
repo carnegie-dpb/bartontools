@@ -26,20 +26,22 @@ plot.CRK30 = function() {
     
     rhop = rhop(t=t, rhoc0=rhoc0, nu=nu, rhop0=rhop0, etap=etap, gammap=gammap)
 
-    plot(t, log2(rhop/rhop0), type="l", xlab="time (h)", ylab=expression(paste(log[2],"(relative values)")), ylim=c(-3.5,+0.5))
+    ## plots
+
+    plot(t, log2(rhop/rhop0), type="l", xlab="time after DEX application (h)", ylab=expression(paste(log[2],"(relative values)")), ylim=c(-3.5,+0.5))
     
-    points(c(0,0.5,1,2), logFC, pch=21, cex=1.5, bg="lightgray")
+    points(c(0,0.5,1,2), logFC, pch=19, cex=2, col="red")
 
     lines(c(0,max(t)), c(logFCinf,logFCinf), lty=2)
 
-    points(times, log2(CRK30/rhop0), pch=3, cex=1.5)
+    points(times, log2(CRK30/rhop0), pch=3, cex=2, col="blue")
 
     y0 = par()$usr[3]
     y1 = par()$usr[4]
     ydelta = y1-y0
 
     text(max(t), y1-0.05*ydelta, pos=2, expression(paste("GR-KAN:",italic("CRK30"))), cex=1.2)
-    legend(max(t), y1-0.10*ydelta, xjust=1, yjust=1, pch=c(3,21,NA), pt.cex=c(1.5,1.5), pt.bg="lightgray", lty=c(NA,NA,1), cex=1.2,
+    legend(max(t), y1-0.10*ydelta, xjust=1, yjust=1, pch=c(3,19,NA), pt.cex=2, lty=c(NA,NA,1), cex=1.2, col=c("blue","red","black"),
            c(
                "RNA-seq FPKM",
                "RNA-seq logFC (Cuffdiff)",

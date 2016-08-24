@@ -23,7 +23,7 @@ translocation.num = function(rhoc0=99, rhon0=1, nu=12.1, gammae=0.146, gamman=0,
   text(par()$xaxp[2], 0.45*par()$yaxp[2], bquote(gamma[n]==.(signif(gamman,3))), pos=2, col="blue")
 
   ## overplot data points
-  if (hasArg(dataTimes) & hasArg(dataValues)) {
+  if (hasArg(dataTimes) && hasArg(dataValues)) {
     points(dataTimes, dataValues, pch=19, col="blue")
     R2numer = 0
     R2denom = 0

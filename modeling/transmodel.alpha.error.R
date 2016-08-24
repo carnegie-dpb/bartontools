@@ -14,7 +14,7 @@ transmodel.alpha.error = function(p, rhon0=0, rhoc0=0, rhop0=0, nu=0, gammap=0, 
   gamman = 0
     
   ## varied parameters for minimization
-  if (nu==0 & gammap==0) {
+  if (nu==0 && gammap==0) {
     ## full three-parameter fit
     nu = p[1]
     alphap = p[2]

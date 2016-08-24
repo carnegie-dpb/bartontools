@@ -7,23 +7,23 @@ source("rhocnps.R")
 source("errorMetric.R")
 
 ## the transcription model to be minimized
-transmodel.num.error = function(p, fitType, turnOff, rhoc0, rhon0, nu, gamman, gammae, rhop0, etap, gammap, dataTimes, dataValues) {
+transmodel.num.error = function(p, fitTerms, turnOff, rhoc0, rhon0, nu, gamman, gammae, rhop0, etap, gammap, dataTimes, dataValues) {
 
   ## twoparam: fit rhop0, etap
-  if (fitType=="twoparam") {
+  if (fitTerms=="rhop0.etap") {
     rhop0 = p[1]
     etap = p[2]
   }
 
   ## threeparam: fit rhop0, etap, gammap
-  if (fitType=="threeparam") {
+  if (fitTerms=="rhop0.etap.gammap") {
     rhop0 = p[1]
     etap = p[2]
     gammap = p[3]
   }
 
   ## turnoff: threeparam plus turnOff
-  if (fitType=="turnoff") {
+  if (fitTerms=="rhop0.etap.gammap.turnOff") {
     rhop0 = p[1]
     etap = p[2]
     gammap = p[3]
@@ -31,7 +31,7 @@ transmodel.num.error = function(p, fitType, turnOff, rhoc0, rhon0, nu, gamman, g
   }
 
   ## fourparam1: fit gamman, rhop0, etap, gammap
-  if (fitType=="fourparam1") {
+  if (fitTerms=="gamman.rhop0.etap.gammap") {
     gamman = p[1]
     rhop0 = p[2]
     etap = p[3]
@@ -39,7 +39,7 @@ transmodel.num.error = function(p, fitType, turnOff, rhoc0, rhon0, nu, gamman, g
   }
   
   ## fourparam2: fit nu, rhop0, etap, gammap
-  if (fitType=="fourparam2") {
+  if (fitTerms=="nu.rhop0.etap.gammap") {
     nu = p[1]
     rhop0 = p[2]
     etap = p[3]

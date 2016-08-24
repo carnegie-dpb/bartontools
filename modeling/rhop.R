@@ -13,7 +13,7 @@
 ##
 ## Solutions provided by Sage Math
 
-rhop = function(t=0:1000/500, rhoc0=10, rhon0=1, nu=10, rhop0=1, etap=2, gammap=3, turnOff=0) {
+rhop = function(t, rhoc0, rhon0, nu, rhop0, etap, gammap, turnOff=0) {
 
     if (nu==gammap) {
 

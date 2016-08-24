@@ -20,6 +20,6 @@ plot.middle()
 text(0.0, 3.5, pos=4, "(b)  Group M", cex=1.2)
 
 plot.late()
-text(0.0, 4.5, pos=4, "(c)  Group L", cex=1.2)
+text(0.0, 5.0, pos=4, "(c)  Group L", cex=1.2)
 
 par(oldpar)

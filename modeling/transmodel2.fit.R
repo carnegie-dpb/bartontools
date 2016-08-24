@@ -12,7 +12,9 @@ source("transmodel2.error.R")
 
 transmodel2.fit = function(
                            schema="gse70796", condition="GR-REV", gene1="At5g03995", gene2="At5g44574",
-                           rhon0=1, rhoc0=25, nu=10, rhop0=1, etap=1, gammap=2.5, rhos0=1, etas=1, gammas=2.5,
+                           rhon0=1, rhoc0=25, nu=10,
+                           rhop0=1, etap=1, gammap=4,
+                           rhos0=1, etas=1, gammas=4,
                            dataTimes, data1Values, data2Values, 
                            data1Label=NA, data2Label=NA, plotBars=FALSE, doPlot=TRUE
                            ) {
@@ -26,9 +28,18 @@ transmodel2.fit = function(
         if (is.na(data1Label)) data1Label = paste(condition,gene1,sep=":")
         if (is.na(data2Label)) data2Label = paste(condition,gene2,sep=":")
     }
+
+    ## estimate rhos0 from minimum t data points
+    tMin = min(dataTimes)
+    if (!hasArg(rhos0)) {
+        rhos0 = mean(data2Values[dataTimes==tMin])
+    }
     
     ## do minimization of primary transcript params
-    fit1 = transmodel.fit(turnOff=0, rhoc0=rhoc0,nu=nu,  dataTimes=dataTimes, dataValues=data1Values, doPlot=FALSE)
+    fit1 = transmodel.fit(turnOff=0, rhoc0=rhoc0, rhon=rhon0, nu=nu,
+                          rhop0=rhop0, etap=etap, gammap=gammap,
+                          dataTimes=dataTimes, dataValues=data1Values, doPlot=FALSE)
+    
     ## new params from fit
     rhop0 = fit1$estimate[1]
     etap = fit1$estimate[2]
@@ -38,7 +49,8 @@ transmodel2.fit = function(
     if (fit1$code==5) print("*** fit1 MAXIMUM STEP SIZE EXCEEDED FIVE CONSECUTIVE TIMES ***")
 
     ## do minimization of secondary transcript params
-    fit2 = nlm(p=c(rhos0,etas,gammas), rhoc0=rhoc0,nu=nu, etap=etap,gammap=gammap, f=transmodel2.error, gradtol=1e-5, iterlim=1000, dataTimes=dataTimes, data2Values=data2Values)
+    fit2 = nlm(p=c(rhos0,etas,gammas),
+               rhoc0=rhoc0, rhon0=rhon0, nu=nu, etap=etap, gammap=gammap, f=transmodel2.error, gradtol=1e-5, iterlim=1000, dataTimes=dataTimes, data2Values=data2Values)
     ## new params from fit
     rhos0 = fit2$estimate[1]
     etas = fit2$estimate[2]

@@ -6,9 +6,9 @@ source("rhoc.R")
 source("rhon.R")
 source("rhop.R")
 
-source("../R/getExpression.R")
-source("../R/getTimes.R")
-source("../R/plot.bars.R")
+source("~/R/getExpression.R")
+source("~/R/getTimes.R")
+source("~/R/plot.bars.R")
 
 expr = getExpression(schema="bl2013", condition="GR-REV", gene="At4g39190")
 texpr = getTimes(schema="bl2013", condition="GR-REV")/60

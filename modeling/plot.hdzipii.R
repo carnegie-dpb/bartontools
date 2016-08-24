@@ -2,9 +2,9 @@
 ## overplot the early HD-ZIPII genes
 ##
 
-source("../R/plot.bars.R")
-source("../R/getTimes.R")
-source("../R/getExpression.R")
+source("~/R/plot.bars.R")
+source("~/R/getTimes.R")
+source("~/R/getExpression.R")
 
 t.12 = getTimes(schema="bl2012",condition="GR-REV")
 t.13 = getTimes(schema="bl2013",condition="GR-REV")

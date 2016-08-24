@@ -42,7 +42,7 @@ plot.late = function() {
   lines(t, gse70796.model/gse70796.base)
   plot.bars(gse70796.t, gse70796/gse70796.base, over=T, pch=22, cex=1.5, bg="grey")
 
-  legend(2.05, 1.9, xjust=1, yjust=1, pch=21:22, pt.cex=1.5, pt.bg="grey", cex=1.2,
+  legend(2.05, 1.5, xjust=1, yjust=1, pch=21:22, pt.cex=1.5, pt.bg="grey", cex=1.2,
          c(
            expression(paste("microarray: ",gamma[p]==-0.56," ",h^-1," (",r^2==0.88,")")),
            expression(paste("RNA-seq:   ",gamma[p]==-0.66," ",h^-1," (",r^2==0.88,")"))

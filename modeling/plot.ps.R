@@ -4,8 +4,8 @@
 
 source("rhocnps.R")
 
-source("../R/getExpression.R")
-source("../R/getTimes.R")
+source("~/R/getExpression.R")
+source("~/R/getTimes.R")
 
 plot.ps = function(schema, gene1, gene2, rhop0, etap, gammap, rhos0, etas, gammas, turnOff=0) {
 

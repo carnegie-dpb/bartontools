@@ -10,8 +10,8 @@ source("~/R/plot.bars.R")
 oldpar = par(mfrow=c(3,1), mar=c(3,3,0.5,0.5), mgp=c(1.5,.5,0))
 
 source("plot.early.color.R")
-source("plot.middle.R")
-source("plot.late.R")
+source("plot.middle.color.R")
+source("plot.late.color.R")
 
 plot.early()
 text(0.0, 3.5, pos=4, "(a)  Group E", cex=1.2)

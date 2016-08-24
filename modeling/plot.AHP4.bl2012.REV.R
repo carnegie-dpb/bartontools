@@ -6,8 +6,8 @@ source("transmodel2.fit.R")
 source("rhop.R")
 source("rhos.R")
 
-source("../R/getExpression.R")
-source("../R/getTimes.R")
+source("~/R/getExpression.R")
+source("~/R/getTimes.R")
 
 plot.AHP4.bl2012.REV = function() {
 

@@ -5,8 +5,8 @@
 ##
 ## set nuFixed=TRUE to hold nu fixed, i.e. not be a fitted parameter
 
-source("../R/getExpression.R")
-source("../R/getTimes.R")
+source("~/R/getExpression.R")
+source("~/R/getTimes.R")
 
 source("transmodels.num.error.R")
 source("transmodels.num.R")
