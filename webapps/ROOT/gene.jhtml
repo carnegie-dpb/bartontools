@@ -7,7 +7,7 @@
 	<% } else { %>
 	<% if (!genes[i].name.equals(genes[i].id)) { %><span class="geneName"><%=genes[i].name%></span><% } %>
 	<% for (int k=0; k<genes[i].aliases.length; k++) { if (!genes[i].aliases[k].equals(genes[i].name)) { %><span class="alias"><%=genes[i].aliases[k]%></span><% }} %>
-	<span class="type"><%=genes[i].biotype%></span>
-	<span class="description"><%=genes[i].description%></span>
+	<span class="type"><%=Util.blankIfNull(genes[i].biotype)%></span>
+	<span class="description"><%=Util.blankIfNull(genes[i].description)%></span>
 	<% } %>
 </div>
