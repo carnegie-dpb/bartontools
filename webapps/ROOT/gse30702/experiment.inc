@@ -1,6 +1,6 @@
 <%
 // the schema for this experiment
-String SCHEMA = "gse30703";
+String SCHEMA = "gse30702";
 
 // bail if more than this many matches is reached
 int MAXMATCHES = 1700;
