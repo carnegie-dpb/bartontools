@@ -1,8 +1,6 @@
 <h2>One-way ANOVA on time or two-way ANOVA on condition X time</h2>
 
-<% if (anovaCondition.length()>0) { %>
 <%@ include file="../tags.jhtml" %>
-<% } %>
 
 <table cellspacing="2" class="searchParameters">
     <tr>
@@ -75,40 +73,49 @@
     <%
     // query results here for any summary stats above individual rows
     for (int i=0; i<genes.length; i++) {
-				  Expression expr = new Expression(application, experiment, genes[i]);
-				  double minControl = expr.getMinControlValue();
-				  double meanControl = expr.getMeanControlValue();
-				  double logMeanControl = Util.log2(meanControl);
-				  ANOVAResult res = new ANOVAResult(application, experiment, anovaCondition, genes[i]);
-				  %>
-	<table cellspacing="0" class="gene">
-	    <tr>
-		<td valign="top" class="anovadata">
-                    <% if (meanControl>0.0) { %>
-		    <input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
-                    <% } %>
-		    <%=anovaCondition%>
-		    &lang;ctrl&rang;=<%=fractionFormat.format(meanControl)%>
-		    <table cellspacing="0">
-			<tr>
-			    <td class="heading"></td>
-			    <td class="heading ac">&sigma;<sup>2</sup></td>
-			    <td class="heading ac">F</td>
-			    <td class="heading ac">p</td>
-			    <td class="heading ac">q</td>
-			</tr>
-			<%@ include file="../anova-row.jhtml" %>
-		    </table>
-		</td>
-		<td valign="top">
-                    <%@ include file="../gene.jhtml" %>
-                    <% if (experiment.annotation.startsWith("TAIR")) { %><%@ include file="../tairinfo.jhtml" %><% } %>
-		</td>
-	    </tr>
-	</table>
-	<%
-	} // for each gene
+	Expression expr = new Expression(application, experiment, genes[i]);
+	double minControl = expr.getMinControlValue();
+	double meanControl = expr.getMeanControlValue();
+	double logMeanControl = Util.log2(meanControl);
+	List<ANOVAResult> results;
+	if (anovaCondition.length()>0) {
+	    // single condition
+	    results = new ArrayList<ANOVAResult>();
+	    results.add(new ANOVAResult(application, experiment, anovaCondition, genes[i]));
+	} else {
+	    // all conditions
+	    results = ANOVAResult.getResults(application, experiment, genes[i]);
+	}
 	%>
+    <table cellspacing="0" class="gene">
+      <tr>
+	<td valign="top" class="anovadata">
+          <% if (meanControl>0.0) { %>
+	  <input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
+          <% } %>
+	  &lang;ctrl&rang;=<%=fractionFormat.format(meanControl)%>
+	  <% for (ANOVAResult res : results) { %>
+	  <table cellspacing="0" style="border:1px solid gray;">
+	    <tr>
+	      <td class="heading"><b><%=res.conditions%></b></td>
+	      <td class="heading ac">&sigma;<sup>2</sup></td>
+	      <td class="heading ac">F</td>
+	      <td class="heading ac">p</td>
+	      <td class="heading ac">q</td>
+	    </tr>
+	    <%@ include file="../anova-row.jhtml" %>
+	  </table>
+	  <% } %>
+	</td>
+	<td valign="top">
+          <%@ include file="../gene.jhtml" %>
+          <% if (experiment.annotation.startsWith("TAIR")) { %><%@ include file="../tairinfo.jhtml" %><% } %>
+	</td>
+      </tr>
+    </table>
+    <%
+       } // for each gene
+    %>
 </form>
 <%
 } // have genes

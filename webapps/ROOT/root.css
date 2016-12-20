@@ -438,10 +438,20 @@ td.normal {
     padding: 2px;
 }
 
-td.highlight {
+.highlight {
     color: green;
     font-weight:bold;
 }
+
+.highlight-q {
+    color: green;
+    font-weight:bold;
+}
+
+.highlight-p {
+    color: black;
+    font-weight: bold;
+}   
 
 td.upreg {
     color: green;

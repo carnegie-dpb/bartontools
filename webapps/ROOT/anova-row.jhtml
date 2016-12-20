@@ -1,9 +1,11 @@
 <%
 String style = "";
 if (res.condition_f>0 && res.condition_p_adj<0.05) {
-  style = "highlight";
+    style = "highlight-q";
+} else if (res.condition_f>0 && res.condition_p<0.05) {
+    style = "highlight-p";
 } else {
-  style = "normal";
+    style = "normal";
 }
 %>
 <tr>

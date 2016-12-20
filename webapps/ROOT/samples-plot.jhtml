@@ -100,7 +100,7 @@ double yTimeLabel = 0;
 double yConditionLabel = 0;
 double yLineMin = 0;
 double yLineMax = 0;
-if (showLinear || showZscores) {
+if (exprDataset.getSeriesCount()>0 && (showLinear || showZscores)) {
 	NumberAxis yAxis = new NumberAxis(yLabel);
 	yAxis.setTickLabelsVisible(true);
 	yAxis.setAutoRangeIncludesZero(true);
@@ -112,7 +112,7 @@ if (showLinear || showZscores) {
 	yTimeLabel = yMin + (yMax-yMin)*0.96;
 	if (yMax!=0.0) yAxis.setRange(yMin,yMax);
 	plot.setRangeAxis(yAxis);
-} else {
+} else if (exprDataset.getSeriesCount()>0) {
 	LogarithmicAxis yAxis = new LogarithmicAxis(yLabel);
 	yAxis.setTickLabelsVisible(true);
 	yAxis.setLog10TickLabelsFlag(false);
