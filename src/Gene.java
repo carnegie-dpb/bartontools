@@ -116,10 +116,8 @@ public class Gene implements Comparable {
      */
     void select(DB db, String id) throws SQLException, UnsupportedEncodingException {
 	if (id!=null) {
-	    System.out.println("Gene.java: id="+id);
 	    db.executeQuery("SELECT * FROM public.genes WHERE id="+Util.charsOrNull(id.toUpperCase()));
 	    if (db.rs.next()) {
-		System.out.println("FOUND.");
 		populate(db.rs);
 		// now build the aliases array
 		db.executeQuery("SELECT * FROM public.genealiases WHERE id="+Util.charsOrNull(id.toUpperCase()));
@@ -127,7 +125,6 @@ public class Gene implements Comparable {
 		while (db.rs.next()) set.add(db.rs.getString("name"));
 		aliases = set.toArray(new String[0]);
 	    } else {
-		System.out.println("NOT FOUND.");
 		// null id to indicate that this instance is empty
 		id = null;
 	    }
@@ -219,7 +216,7 @@ public class Gene implements Comparable {
      * Return the ID for the given gene name; returns first id alphabetically if multiple
      */
     public static String getIdForName(DB db, String name) throws SQLException {
-	db.executeQuery("SELECT * FROM public.genes WHERE upper(name)="+Util.charsOrNull(name.toUpperCase())+" ORDER BY id");
+	db.executeQuery("SELECT * FROM public.genes WHERE name ILIKE "+Util.charsOrNull(name)+" ORDER BY id");
 	if (db.rs.next()) {
 	    return db.rs.getString("id");
 	} else {
@@ -244,7 +241,7 @@ public class Gene implements Comparable {
      */
     public static String[] getIDsForName(DB db, String name, Experiment experiment) throws SQLException {
 	TreeSet<String> set = new TreeSet<String>();
-	db.executeQuery("SELECT * FROM public.genes WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND upper(name)="+Util.charsOrNull(name.toUpperCase()));
+	db.executeQuery("SELECT * FROM public.genes WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND name ILIKE "+Util.charsOrNull(name));
 	while (db.rs.next()) set.add(db.rs.getString("id"));
 	return set.toArray(new String[0]);
     }
@@ -266,7 +263,7 @@ public class Gene implements Comparable {
      */
     public static String[] getIDsForAlias(DB db, String name, Experiment experiment) throws SQLException {
 	TreeSet<String> set = new TreeSet<String>();
-	db.executeQuery("SELECT * FROM public.genealiases WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND upper(name)="+Util.charsOrNull(name.toUpperCase()));
+	db.executeQuery("SELECT * FROM public.genealiases WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND name ILIKE "+Util.charsOrNull(name));
 	while (db.rs.next()) set.add(db.rs.getString("id"));
 	return set.toArray(new String[0]);
     }
