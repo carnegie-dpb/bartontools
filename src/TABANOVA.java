@@ -23,155 +23,148 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class TABANOVA extends HttpServlet {
 
-  /**
-   * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
-   */
-  public void init(ServletConfig config) throws ServletException {
-    super.init(config);
-  }
+    /**
+     * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
+     */
+    public void init(ServletConfig config) throws ServletException {
+	super.init(config);
+    }
 
-  /**
-   * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest,
-   *      javax.servlet.http.HttpServletResponse)
-   */
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    doPost(request, response);
-  }
+    /**
+     * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest,
+     *      javax.servlet.http.HttpServletResponse)
+     */
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	doPost(request, response);
+    }
   
-  /**
-   * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-   */
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+     * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    // define formats here for consistency across the app
-    DecimalFormat expFormat = new DecimalFormat("0.0E0");
-    DecimalFormat countFormat = new DecimalFormat("#");
-    DecimalFormat timeFormat = new DecimalFormat("#");
-    DecimalFormat fractionFormat = new DecimalFormat("#0.00");
-    DecimalFormat pFormat = new DecimalFormat("#0.000");
-    DecimalFormat yaxisFormat = new DecimalFormat("0E0");
-    DecimalFormat percentFormat = new DecimalFormat("#0.0%");
-    DecimalFormat corrFormat = new DecimalFormat("#0.000");
+	// show doubles with scientific notation here
+	DecimalFormat expFormat = new DecimalFormat("0.00E0");
     
-    // DB connection
-    DB db = null;
+	// DB connection
+	DB db = null;
 
-    try {
+	try {
 
-      // get posted variables
-      String schema = Util.getString(request, "schema");
+	    // get posted variables
+	    String schema = Util.getString(request, "schema");
 
-      // use a single db connection throughout
-      db = new DB(request.getSession().getServletContext(), schema);
+	    // use a single db connection throughout
+	    db = new DB(request.getSession().getServletContext(), schema);
 
-      // get the genes
-      String[] geneIDs = Util.getStringValues(request, "geneID");
-      Gene[] genes = new Gene[geneIDs.length];
-      for (int i=0; i<genes.length; i++) genes[i] = new Gene(db, geneIDs[i]);
+	    // get the genes
+	    String[] geneIDs = Util.getStringValues(request, "geneID");
+	    Gene[] genes = new Gene[geneIDs.length];
+	    for (int i=0; i<genes.length; i++) genes[i] = new Gene(db, geneIDs[i]);
 
-      // write to a StringBuffer 
-      StringBuffer buffer = new StringBuffer();
+	    // write to a StringBuffer 
+	    StringBuffer buffer = new StringBuffer();
 
-      // first row = meta-headings
-      // second row = headings
-      buffer.append("geneID\tgeneShortName\t");
-      buffer.append("conditions\t");
-      buffer.append("meanControl\t");
-      buffer.append("log2meanControl\t");
-      buffer.append("Cond sigma2\tCond F\tCond p\tCond pAdj\t");
-      buffer.append("Time sigma2\tTime F\tTime p\tTime pAdj\t");
-      buffer.append("CxT sigma2\tCxT F\tCxT p\tCxT pAdj");
+	    // first row = meta-headings
+	    // second row = headings
+	    buffer.append("geneID\tgeneShortName\t");
+	    buffer.append("conditions\t");
+	    buffer.append("meanControl\t");
+	    buffer.append("log2meanControl\t");
+	    buffer.append("Cond sigma2\tCond F\tCond p\tCond pAdj\t");
+	    buffer.append("Time sigma2\tTime F\tTime p\tTime pAdj\t");
+	    buffer.append("CxT sigma2\tCxT F\tCxT p\tCxT pAdj");
 
-      // loop through the conditions
-      String[] anovaConditions = ANOVAResult.getConditions(db);
-      for (int j=0; j<anovaConditions.length; j++) {
+	    // loop through the conditions
+	    String[] anovaConditions = ANOVAResult.getConditions(db);
+	    for (int j=0; j<anovaConditions.length; j++) {
 
-	// loop through genes
-	for (int i=0; i<genes.length; i++) {
-	  ANOVAResult res = new ANOVAResult(db, anovaConditions[j], genes[i]);
-	  Expression expr = new Expression(db, genes[i]);
-	  double meanExpr = expr.getMeanControlValue();
-	  double logMeanExpr = Util.log2(meanExpr);
+		// loop through genes
+		for (int i=0; i<genes.length; i++) {
+		    ANOVAResult res = new ANOVAResult(db, anovaConditions[j], genes[i]);
+		    Expression expr = new Expression(db, genes[i]);
+		    double meanExpr = expr.getMeanControlValue();
+		    double logMeanExpr = Util.log2(meanExpr);
 
-	  add(buffer, genes[i].id, true);
-	  add(buffer, Util.blankIfNull(genes[i].name), false);
-	  add(buffer, anovaConditions[j], false);
-	  add(buffer, fractionFormat.format(meanExpr), false);
-	  add(buffer, fractionFormat.format(logMeanExpr), false);
+		    add(buffer, genes[i].id, true);
+		    add(buffer, Util.blankIfNull(genes[i].name), false);
+		    add(buffer, anovaConditions[j], false);
+		    add(buffer, expFormat.format(meanExpr), false);
+		    add(buffer, expFormat.format(logMeanExpr), false);
 
-	  add(buffer, expFormat.format(res.condition_meansq), false);
-	  add(buffer, fractionFormat.format(res.condition_f), false);
-	  add(buffer, pFormat.format(res.condition_p), false);
-	  add(buffer, pFormat.format(res.condition_p_adj), false);
+		    add(buffer, expFormat.format(res.condition_meansq), false);
+		    add(buffer, expFormat.format(res.condition_f), false);
+		    add(buffer, expFormat.format(res.condition_p), false);
+		    add(buffer, expFormat.format(res.condition_p_adj), false);
 
-	  add(buffer, expFormat.format(res.time_meansq), false);
-	  add(buffer, fractionFormat.format(res.time_f), false);
-	  add(buffer, pFormat.format(res.time_p), false);
-	  add(buffer, pFormat.format(res.time_p_adj), false);
+		    add(buffer, expFormat.format(res.time_meansq), false);
+		    add(buffer, expFormat.format(res.time_f), false);
+		    add(buffer, expFormat.format(res.time_p), false);
+		    add(buffer, expFormat.format(res.time_p_adj), false);
 
-	  add(buffer, expFormat.format(res.condition_time_meansq), false);
-	  add(buffer, fractionFormat.format(res.condition_time_f), false);
-	  add(buffer, pFormat.format(res.condition_time_p), false);
-	  add(buffer, pFormat.format(res.condition_time_p_adj), false);
+		    add(buffer, expFormat.format(res.condition_time_meansq), false);
+		    add(buffer, expFormat.format(res.condition_time_f), false);
+		    add(buffer, expFormat.format(res.condition_time_p), false);
+		    add(buffer, expFormat.format(res.condition_time_p_adj), false);
 
+		}
+
+	    }
+
+	    // final return
+	    buffer.append("\n");
+
+	    // setting the content type
+	    response.setContentType("text/tab-separated-values");
+	    // the contentlength is needed for MSIE!!!
+	    response.setContentLength(buffer.length());
+	    // setting some response headers
+	    String prefix = "bartontools-"+schema+"-anova";
+	    response.setHeader("Content-Disposition","attachment; filename="+makeFileName(prefix));
+	    response.setHeader("Expires", "0");
+	    response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+	    response.setHeader("Pragma", "public");
+	
+	    // write BufferedOutputStream to the ServletOutputStream
+	    ServletOutputStream out = response.getOutputStream();
+	    out.print(buffer.toString());
+	    out.flush();
+
+	    db.close();
+
+	} catch (Exception ex) {
+      
+	    System.out.println(ex.getMessage());
+      
 	}
 
-      }
-
-      // final return
-      buffer.append("\n");
-
-      // setting the content type
-      response.setContentType("text/tab-separated-values");
-      // the contentlength is needed for MSIE!!!
-      response.setContentLength(buffer.length());
-      // setting some response headers
-      String prefix = "bartontools-"+schema+"-anova";
-      response.setHeader("Content-Disposition","attachment; filename="+makeFileName(prefix));
-      response.setHeader("Expires", "0");
-      response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-      response.setHeader("Pragma", "public");
-	
-      // write BufferedOutputStream to the ServletOutputStream
-      ServletOutputStream out = response.getOutputStream();
-      out.print(buffer.toString());
-      out.flush();
-
-      db.close();
-
-    } catch (Exception ex) {
-      
-      System.out.println(ex.getMessage());
-      
     }
-
-  }
  
-  /**
-   * @see javax.servlet.GenericServlet#destroy()
-   */
-  public void destroy() {
-  }
-
-  /**
-   * Create a file name from various stuff
-   */
-  String makeFileName(String prefix) {
-    SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-    return prefix+"-"+df.format(new java.util.Date())+".txt";
-  }
-
-  /**
-   * Add a cell to the output stream, indicating whether it is starting a new row
-   */
-  void add(StringBuffer sb, String s, boolean newRow) {
-    if (newRow) {
-      sb.append("\n");
-    } else {
-      sb.append("\t");
+    /**
+     * @see javax.servlet.GenericServlet#destroy()
+     */
+    public void destroy() {
     }
-    sb.append(s);
-  }
+
+    /**
+     * Create a file name from various stuff
+     */
+    String makeFileName(String prefix) {
+	SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+	return prefix+"-"+df.format(new java.util.Date())+".txt";
+    }
+
+    /**
+     * Add a cell to the output stream, indicating whether it is starting a new row
+     */
+    void add(StringBuffer sb, String s, boolean newRow) {
+	if (newRow) {
+	    sb.append("\n");
+	} else {
+	    sb.append("\t");
+	}
+	sb.append(s);
+    }
   
 
 
