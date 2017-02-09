@@ -1,0 +1,6 @@
+*~
+classes
+.RData
+.Rhistory
+*.properties
+*.ods
