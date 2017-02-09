@@ -1,10 +1,8 @@
 # bartontools
-bartontools.dpb.carnegiescience.edu web app along with other useful analysis tools.
+bartontools.dpb.carnegiescience.edu Java web app
 
-The web app, under /webapp, runs under Tomcat and requires a number of additional Java packages that I'll list here later. The web app Java package, edu.carnegiescience.dpb.bartonlab is under /src.
+The web app runs under Tomcat and requires a number of additional Java packages that I'll list here later.
+- The web app Java package, edu.carnegiescience.dpb.bartonlab is under /src.
+- SQL used to build the database used by the web app is in /sql.
 
-Other tools include:
-- R code in /modeling 
-- various command-line Java tools under /tools 
-- sql used to build the database used by the web app in /sql 
-- some handy sql for gbrowse databases under /gbrowse
+NOTE: /tools is being migrated to the bartonlab-java repo.
