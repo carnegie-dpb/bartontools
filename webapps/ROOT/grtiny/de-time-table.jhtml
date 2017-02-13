@@ -45,7 +45,13 @@
   </tr>
   <% for (int i=0; i<genes.length; i++) { %>
       <tr>
-          <td class="geneName"><% if (genes[i].name!=null) out.print(genes[i].name); %></td>
+          <td class="geneName"><%
+              if (genes[i].name!=null && !genes[i].name.equals(genes[i].id)) {
+              out.print(genes[i].name);
+              } else if (genes[i].aliases.length>0) {
+              out.print(genes[i].aliases[0]);
+              }
+              %></td>
           <td class="geneID"><%=genes[i].id%></td>
           <%
 	  for (int j=0; j<conditions.length; j++) {
