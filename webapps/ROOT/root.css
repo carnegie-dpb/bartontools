@@ -63,6 +63,11 @@ pre {
 .bb { border-bottom: 1px solid black; }
 .bl { border-left: 1px solid black; }
 
+.bbt { border-top: 2px solid black; }
+.bbr { border-right: 2px solid black; }
+.bbb { border-bottom: 2px solid black; }
+.bbl { border-left: 2px solid black; }
+
 .al { text-align: left; }
 .ar { text-align: right; }
 .ac { text-align: center; }

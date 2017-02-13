@@ -7,6 +7,9 @@ int chartHeight = 700;
 double yMinRelative = 1e-2;
 double yMaxRelative = 1e+3;
 
+// log axis default
+double yMinLog = 1e-1;
+double yMaxLog = 1e+5;
 
 // plot controls
 boolean showMeans = Util.getBoolean(request, "showMeans");
@@ -71,13 +74,13 @@ for (int i=0; i<genes.length; i++) {
 // create chart
 String chartTitle = plotTitle;      
 JFreeChart chart = ChartFactory.createScatterPlot(chartTitle,
-												  "s",
-												  experiment.expressionlabel,
-												  exprDataset,
-												  PlotOrientation.VERTICAL,
-												  true,
-												  false,
-												  false);
+                                                  "s",
+                                                  experiment.expressionlabel,
+                                                  exprDataset,
+                                                  PlotOrientation.VERTICAL,
+                                                  true,
+                                                  false,
+                                                  false);
 XYPlot plot = chart.getXYPlot();
 
 String[] xLabels = new String[samples.length];
@@ -96,6 +99,14 @@ if (showZscores) yLabel += " z-scores";
 
 double yMin = 0;
 double yMax = 0;
+if (showRelative) {
+    yMin = yMinRelative;
+    yMax = yMaxRelative;
+} else {
+    yMin = yMinLog;
+    yMax = yMaxLog;
+}
+
 double yTimeLabel = 0;
 double yConditionLabel = 0;
 double yLineMin = 0;

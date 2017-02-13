@@ -57,6 +57,8 @@ String[] yLabels = new String[genes.length];
 for (int i=0; i<genes.length; i++) {
     if (genes[i].name!=null && !genes[i].name.equals(genes[i].id)) {
         yLabels[i] = genes[i].name+" "+genes[i].id;
+    } else if (genes[i].aliases.length>0) {
+        yLabels[i] = genes[i].aliases[0]+" "+genes[i].id;
     } else {
         yLabels[i] = genes[i].id;
     }

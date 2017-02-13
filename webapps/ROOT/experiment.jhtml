@@ -27,18 +27,26 @@
 	    <td class="bt">label</td>
 	    <td class="bt ac">condition</td>
             <% if (experiment.isTimewise) { %><td class="bt">time</td><% } %>
+            <td class="bt ac">library scale</td>
 	    <td class="bt br">comment</td>
 	</tr>
 	<%
 	Sample[] samples = Sample.getAll(application, experiment);
+        String oldCondition = "";
 	for (int i=0; i<samples.length; i++) {
-					%>
+            boolean newCondition = false;
+            if (!samples[i].condition.equals(oldCondition)) {
+                newCondition = true;
+                oldCondition = samples[i].condition;
+            }
+	%>
 	    <tr>
-		<td align="right"><%=samples[i].num%></td>
-		<td class="label"><%=samples[i].label%></td>
-		<td align="center"><%=samples[i].condition%></td>
-		<% if (experiment.isTimewise) { %><td align="right"><%=samples[i].time%></td><% } %>
-		<td class="br"><%=Util.blankIfNull(samples[i].comment)%></td>
+		<td class="ar <% if (newCondition) out.print("bbt"); %>"><%=samples[i].num%></td>
+		<td class="label <% if (newCondition) out.print("bbt"); %>"><%=samples[i].label%></td>
+		<td class="ac <% if (newCondition) out.print("bbt"); %>"><%=samples[i].condition%></td>
+		<% if (experiment.isTimewise) { %><td class="ar <% if (newCondition) out.print("bbt"); %>"><%=samples[i].time%></td><% } %>
+                <td class="ar <% if (newCondition) out.print("bbt"); %>"><%=fractionFormat.format(samples[i].internalscale)%></td>
+		<td class="br <% if (newCondition) out.print("bbt"); %>"><%=Util.blankIfNull(samples[i].comment)%></td>
 	    </tr>
 	    <%
 	    }
@@ -46,4 +54,3 @@
     </table>
 
 </div>
-

@@ -1,0 +1,6 @@
+<div class="workflow">
+  <a href="../workflow-tuxedo.jsp">Tuxedo Suite workflow (Tophat, Cufflinks, Cuffdiff)</a>
+</div>
+<div class="workflow">
+  <a href="../workflow-anova.jsp">ANOVA workflow</a>
+</div>

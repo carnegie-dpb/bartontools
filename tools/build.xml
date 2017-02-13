@@ -10,7 +10,7 @@
     
     <property name="bartonlab" value="../classes" />
 
-    <property name="servlet-api" value="/usr/share/java/tomcat-servlet-3.1-api.jar" />
+    <property name="servlet-api" value="/usr/share/java/servlet-api-3.1.jar" />
     <property name="math3" value="/usr/share/java/commons-math3.jar" />
     <property name="lang3" value="/usr/share/java/commons-lang3.jar" />
 

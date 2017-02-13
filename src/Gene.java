@@ -290,8 +290,7 @@ public class Gene implements Comparable {
 	    TreeSet<Gene> set = new TreeSet<Gene>();
 	    for (int i=0; i<ids.length; i++) {
 		Gene g = new Gene(db, ids[i]);
-		if (g.id==null) g = new Gene(ids[i]);
-		set.add(g);
+		if (g.id!=null) set.add(g);
 	    }
 	    return set.toArray(new Gene[0]);
 	} finally {
