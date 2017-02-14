@@ -95,7 +95,7 @@
           <% } %>
 	  &lang;ctrl&rang;=<%=fractionFormat.format(meanControl)%>
 	  <% for (ANOVAResult res : results) { %>
-	  <table cellspacing="0" style="border:1px solid gray;">
+	  <table cellspacing="0" class="condition">
 	    <tr>
 	      <td class="heading"><b><%=res.conditions%></b></td>
 	      <td class="heading ac">&sigma;<sup>2</sup></td>
