@@ -137,7 +137,7 @@ if (exprDataset.getSeriesCount()>0 && (showLinear || showZscores)) {
     yAxis.setNumberFormatOverride(yaxisFormat);
     if (yMin>0 && yMax>0) {
         yConditionLabel = yMax/1.01;
-        yTimeLabel = yMax/1.10;
+        yTimeLabel = yMax/2; // figure a gap of 2 is pretty reasonable on log plots
         yLineMin = yMin;
         yLineMax = yMax;
         yAxis.setRange(yMin,yMax);
