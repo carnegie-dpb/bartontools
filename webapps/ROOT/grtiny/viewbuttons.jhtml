@@ -1,13 +1,14 @@
+<!-- &#13;&#10; -->
+<% if (!user.isDefault()) { %>
+<input type="button" class="clearButton" onClick="clearSelections()" value="clear selections"/>
+Tag:<input type="text" name="tagToAdd" style="width:120px" value=""/>
+<input type="submit" name="addTag" class="addTagButton" value="tag selected genes"/>
+<% } %>
 <table cellspacing="0" class="topButtons">
     <tr>
-        <td><input type="button" class="clearButton" onClick="clearSelections()" value="clear&#13;&#10;selections"/></td>
-        <% if (!user.isDefault()) { %>
-        <td>Tag:<br/><input type="text" name="tagToAdd" size="10" value=""/></td>
-        <td><input type="submit" name="addTag" class="addTagButton" value="tag&#13;&#10;selected&#13;&#10;genes"/></td>
-        <% } %>
-        <td>
+        <td class="am ac">
             Plot Title (optional):<br/>
-            <input type="text" name="plotTitle" size="32"/><br/>
+            <input type="text" name="plotTitle" class="plotTitle"/><br/>
             <input type="submit" name="viewSamples" class="viewButton" value="samples plot"/><input type="submit" name="viewHeatmap" class="viewButton" value="heat map"/>
             <input type="submit" name="viewTimes" class="viewButton" value="time plots"/>
         </td>

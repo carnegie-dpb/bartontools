@@ -11,7 +11,6 @@
 	<td class="searchParameters"><%@ include file="../search-genes.jhtml" %></td>
 	<td class="searchParameters"><%@ include file="../search-descriptions.jhtml" %></td>
 	<% if (experiment.annotation.startsWith("TAIR")) { %><td class="searchParameters"><%@ include file="../search-tair.jhtml" %></td><% } %>
-	<td style="vertical-align:top"><%@ include file="../summary-results.jhtml" %></td>
     </tr>
 </table>
 <!-- end search forms -->
@@ -20,7 +19,8 @@
 <!-- start form for tagging and viewing operations, along with results display -->
 <form action="expression.jsp" method="post">
     <div style="position:relative; width:0; height:0">
-	<div class="topButtons">
+	<div class="topButtons" style="left:380px;">
+	    <%@ include file="../summary-results.jhtml" %>
 	    <%@ include file="viewbuttons.jhtml" %>
 	</div>
     </div>

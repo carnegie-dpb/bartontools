@@ -2,6 +2,13 @@
 
 <%@ include file="../tags.jhtml" %>
 
+<ol class="toolInstructions" style="width:800px;">
+    <li>Select the pair of conditions you would like to compare for variance. ALL covers all conditions.</li>
+    <li>Enter the minimum and maximum q values (p adjusted for FDR) accept a gene in the search results.
+        These filters can be set separately on the condition-only variance, time-only variance and condition x time variance.</li>
+</ol>
+
+<!-- search forms -->
 <table cellspacing="2" class="searchParameters">
     <tr>
 	<td class="searchParameters" >
@@ -51,9 +58,6 @@
 	<td class="searchParameters">
 	    <%@ include file="../search-tair.jhtml" %>
 	</td>
-	<td style="vertical-align:top">
-	    <%@ include file="../summary-results.jhtml" %>
-	</td>
     </tr>
 </table>
 <!-- end search forms -->
@@ -65,10 +69,9 @@
     <input type="hidden" name="maxConditionQ" value="<%=maxConditionQ%>"/>
     <input type="hidden" name="maxTimeQ" value="<%=maxTimeQ%>"/>
     <input type="hidden" name="maxConditionTimeQ" value="<%=maxConditionTimeQ%>" />
-    <div style="position:relative; width:0; height:0">
-	<div class="topButtons">
-	    <%@ include file="viewbuttons.jhtml" %>
-	</div>
+    <div class="topButtons" style="left:510px">
+        <%@ include file="../summary-results.jhtml" %>
+	<%@ include file="viewbuttons.jhtml" %>
     </div>
     <%
     // query results here for any summary stats above individual rows

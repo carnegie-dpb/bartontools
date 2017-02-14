@@ -9,6 +9,7 @@
     <li>Enter the minimum |logFC| value to accept a gene for the UP or DN conditions.</li>
     <li>Select the confidence metric: p or q (FDR-adjusted p) and enter the maximum value allowed to accept a gene for the UP or DN conditions.</li>
 </ol>
+
 <!-- search forms -->
 <table cellspacing="2" class="searchParameters">
     <tr>
@@ -51,9 +52,6 @@
         <td class="searchParameters">
             <%@ include file="../search-tair.jhtml" %>
         </td>
-        <td style="vertical-align:top">
-            <%@ include file="../summary-results.jhtml" %>
-        </td>
     </tr>
 </table>
 <!-- end search forms -->
@@ -61,10 +59,9 @@
 <%  if (genes.length>0) { %>
 <!-- form for tagging and viewing operations along with results display -->
 <form action="cuffdiff.jsp" method="post">
-    <div style="position:relative; width:0; height:0">
-        <div class="topButtons">
-            <%@ include file="viewbuttons.jhtml" %>
-        </div>
+    <div class="topButtons" style="left:670px">
+        <%@ include file="../summary-results.jhtml" %>
+        <%@ include file="viewbuttons.jhtml" %>
     </div>
     <%
     // query results here for any summary stats above individual rows
