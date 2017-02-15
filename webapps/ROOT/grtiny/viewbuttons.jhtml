@@ -1,4 +1,3 @@
-<!-- &#13;&#10; -->
 <% if (!user.isDefault()) { %>
 <input type="button" class="clearButton" onClick="clearSelections()" value="clear selections"/>
 Tag:<input type="text" name="tagToAdd" style="width:120px" value=""/>
