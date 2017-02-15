@@ -12,6 +12,7 @@ if (request.getParameter("toggleLinear")!=null) linear = !linear;
 boolean relative = Util.getBoolean(request, "relative");
 if (request.getParameter("toggleRelative")!=null) relative = !relative;
 
+// initialize for finding min,max
 double xMin = 10000.0;
 double xMax = 0.0;
 double yMin = 10000.0;
@@ -19,6 +20,7 @@ double yMax = 0.0;
 double zMin = 10000.0;
 double zMax = 0.0;
 
+// k is our x,y,z value index
 int k = 0;
 
 // loop through each gene building (x,y,z) values for each value
@@ -36,14 +38,14 @@ for (int i=0; i<genes.length; i++) {
         if (linear) {
             zvalues[k] = value;
         } else {
-            zvalues[k] = Util.log2(value+1e-6);
+            zvalues[k] = Util.log2(value+1.0); // could be something smaller like 1e-6, but that's artificial
         }
         if (xvalues[k]<xMin) xMin = xvalues[k];
         if (xvalues[k]>xMax) xMax = xvalues[k];
         if (yvalues[k]<yMin) yMin = yvalues[k];
         if (yvalues[k]>yMax) yMax = yvalues[k];
-        if (value>0 && zvalues[k]<zMin) zMin = zvalues[k];
-        if (value>0 && zvalues[k]>zMax) zMax = zvalues[k];
+        if (zvalues[k]<zMin) zMin = zvalues[k];
+        if (zvalues[k]>zMax) zMax = zvalues[k];
         k++;
     }
 }
@@ -109,8 +111,9 @@ renderer.setBlockWidth(blockSize);
 renderer.setBlockHeight(blockSize);
 renderer.setBlockAnchor(RectangleAnchor.BOTTOM_LEFT);
 
-/* boring
-   PaintScale paintScale = new GrayPaintScale(zMin, zMax, 1);
+/**
+ * boring
+ PaintScale paintScale = new GrayPaintScale(zMin, zMax, 1);
 */
 
 LookupPaintScale paintScale = new LookupPaintScale(zMin, zMax, Color.black);
@@ -118,18 +121,15 @@ String paletteName = Util.getString(request, "paletteName");
 String changePalette = Util.getString(request, "changePalette");
 if (changePalette.length()>0) paletteName = changePalette;
 Color[] palette = new Color[0];
-if (relative && !linear) {
-    paletteName = "brewerRdYlGn21";
-    palette = Palette.brewerRdYlGn21();
-    for (int i=0; i<21; i++) paintScale.add((i-10)*0.5, palette[i]);
-} else {
-    if (paletteName.length()==0 || paletteName.equals("brewerRdYlGn21")) paletteName = "heat palette";
-    if (paletteName.equals("heat palette")) palette = Palette.heat100();
-    if (paletteName.equals("rainbow palette")) palette = Palette.rainbow100();
-    if (paletteName.equals("cyan-magenta palette")) palette = Palette.cm100();
-    for (int i=0; i<100; i++) paintScale.add(zMin+(zMax-zMin)*i*0.01, palette[i]);
-    paintScale.add(zMax, Color.white);
+if (paletteName.length()==0 || paletteName.equals("brewerRdYlGn21")) paletteName = "heat palette";
+if (paletteName.equals("heat palette")) palette = Palette.heat100();
+if (paletteName.equals("rainbow palette")) palette = Palette.rainbow100();
+if (paletteName.equals("cyan-magenta palette")) palette = Palette.cm100();
+for (int i=0; i<100; i++) {
+    double cval = zMin+(zMax-zMin)*i*0.01;
+    paintScale.add(cval, palette[i]);
 }
+paintScale.add(zMax, Color.white);
 renderer.setPaintScale(paintScale);
 
 // plot
@@ -186,38 +186,36 @@ if (downloadSVG) {
 %>
     <div class="plot">
         <img class="heatmapPlot" src="/temp/<%=pngFile%>" alt="<%=chartTitle%>" border="0" width="<%=chartWidth%>" height="<%=chartHeight%>"/>
-        </div>
-
-        <div class="plotControls">
+    </div>
+    
+    <div class="plotControls">
         <form action="<%=request.getRequestURI()%>" method="post">
-        <input type="hidden" name="viewHeatmap" value="true"/>
-        <input type="hidden" name="plotTitle" value="<%=plotTitle%>"/>
-        <input type="hidden" name="linear" value="<%=linear%>"/>
-        <input type="hidden" name="relative" value="<%=relative%>"/>
-        <input type="hidden" name="paletteName" value="<%=paletteName%>"/>
-        <% for (int i=0; i<genes.length; i++) { %>
-                                                <input type="hidden" name="id" value="<%=genes[i].id%>"/>
-                                                <% } %>
-                                                    <% if (linear) { %>
-    <input type="submit" name="toggleLinear" class="viewButton" value="use log scale"/>
-                                                               <% } else { %>
-    <input type="submit" name="toggleLinear" class="viewButton" value="use linear scale"/>
-        <% } %>
-            <% if (Sample.hasControls(samples)) {
-    if (relative) { %>
-        <input type="submit" name="toggleRelative" class="viewButton" value="show absolute FPKM"/>
-            <% } else { %>
-        <input type="submit" name="toggleRelative" class="viewButton" value="divide by &lang;control&rang;"/>
-            <% } } %>
-                <% if (!relative || linear) { %>
-    <select name="changePalette" onChange="submit()">
-                           <option <% if (paletteName.equals("heat palette")) out.print("selected"); %> value="heat palette">heat palette</option>
-                                                                                                            <option <% if (paletteName.equals("rainbow palette")) out.print("selected"); %> value="rainbow palette">rainbow palette</option>
-                                                                                                                                                                                                <option <% if (paletteName.equals("cyan-magenta palette")) out.print("selected"); %> value="cyan-magenta palette">cyan-magenta palette</option>
-                                                                                                                                                                                                                                                                                         </select>
-                                                                                                                                                                                                                                                                                         <% } %>
-                                                                                                                                                                                                                                                                                             <input type="submit" name="downloadSVG" class="download" value="download SVG file"/>
-                                                                                                                                                                                                                                                                                                 </form>
-                                                                                                                                                                                                                                                                                                 </div>
-
-
+            <input type="hidden" name="viewHeatmap" value="true"/>
+            <input type="hidden" name="plotTitle" value="<%=plotTitle%>"/>
+            <input type="hidden" name="linear" value="<%=linear%>"/>
+            <input type="hidden" name="relative" value="<%=relative%>"/>
+            <input type="hidden" name="paletteName" value="<%=paletteName%>"/>
+            <% for (int i=0; i<genes.length; i++) { %>
+                <input type="hidden" name="id" value="<%=genes[i].id%>"/>
+                <% } %>
+                <% if (linear) { %>
+                <input type="submit" name="toggleLinear" class="viewButton" value="use log scale"/>
+                <% } else { %>
+                <input type="submit" name="toggleLinear" class="viewButton" value="use linear scale"/>
+                <% } %>
+                <% if (Sample.hasControls(samples)) {
+                if (relative) { %>
+                <input type="submit" name="toggleRelative" class="viewButton" value="show absolute FPKM"/>
+                <% } else { %>
+                <input type="submit" name="toggleRelative" class="viewButton" value="divide by &lang;control&rang;"/>
+                <% } } %>
+                    <% // if (!relative || linear) { %>
+                <select name="changePalette" onChange="submit()">
+                    <option <% if (paletteName.equals("heat palette")) out.print("selected"); %> value="heat palette">heat palette</option>
+                    <option <% if (paletteName.equals("rainbow palette")) out.print("selected"); %> value="rainbow palette">rainbow palette</option>
+                    <option <% if (paletteName.equals("cyan-magenta palette")) out.print("selected"); %> value="cyan-magenta palette">cyan-magenta palette</option>
+                </select>
+    <% // } %>
+                <input type="submit" name="downloadSVG" class="download" value="download SVG file"/>
+        </form>
+    </div>
