@@ -338,11 +338,10 @@ td.edgerdata table {
     width: 200px;
 }
 
-td.anovadata { 
-    width: 280px;
+td.anovadata {
 }
-td.anovadata table { 
-    width: 280px;
+td.anovadata table {
+    width:100%;
 }
 
 td.rcfitdata { 

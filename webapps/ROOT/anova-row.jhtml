@@ -10,10 +10,10 @@ if (res.condition_f>0 && res.condition_p_adj<0.05) {
 %>
 <tr>
   <td class="<%=style%>">condition</td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.condition_meansq)%></td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.condition_f)%></td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.condition_p)%></td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.condition_p_adj)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.condition_meansq)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.condition_f)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.condition_p)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.condition_p_adj)%></td>
 </tr>
 <%
   if (res.time_f>0 && res.time_p_adj<0.05) {
@@ -24,10 +24,10 @@ if (res.condition_f>0 && res.condition_p_adj<0.05) {
 %>
 <tr>
   <td class="<%=style%>">time</td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.time_meansq)%></td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.time_f)%></td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.time_p)%></td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.time_p_adj)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.time_meansq)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.time_f)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.time_p)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.time_p_adj)%></td>
 </tr>
 <%
   if (res.condition_time_f>0 && res.condition_time_p_adj<0.05) {
@@ -38,8 +38,8 @@ if (res.condition_f>0 && res.condition_p_adj<0.05) {
 %>
 <tr>
   <td class="<%=style%>">condition x time</td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.condition_time_meansq)%></td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.condition_time_f)%></td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.condition_time_p)%></td>
-  <td class="<%=style%>" align="right"><%=fractionFormat.format(res.condition_time_p_adj)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.condition_time_meansq)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.condition_time_f)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.condition_time_p)%></td>
+  <td class="<%=style%>" align="right"><%=expFormat.format(res.condition_time_p_adj)%></td>
 </tr>
