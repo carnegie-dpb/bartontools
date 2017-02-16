@@ -305,7 +305,6 @@ table.gene {
 }
 
 table.condition {
-    border: 1px solid gray;
     margin-bottom: 1px;
 }
 
@@ -341,7 +340,7 @@ td.edgerdata table {
 td.anovadata {
 }
 td.anovadata table {
-    width:100%;
+    width:320px;
 }
 
 td.rcfitdata { 
