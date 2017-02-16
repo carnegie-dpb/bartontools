@@ -146,7 +146,7 @@ public class ANOVAResult extends AnalysisResult implements Comparable {
     }
 
     /**
-     * Return an array of Genes selected against the given result values
+     * Return an array of Genes selected against the given result values. Does NOT cull on mean control expression, do that downstream.
      */
     public static Gene[] searchOnValues(DB db, String conditions,
 					double minConditionPAdj, double minTimePAdj, double minConditionTimePAdj, double maxConditionPAdj, double maxTimePAdj, double maxConditionTimePAdj)

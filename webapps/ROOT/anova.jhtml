@@ -13,6 +13,13 @@
     <tr>
 	<td class="searchParameters" >
 	    <form action="anova.jsp" method="post">
+                <input type="hidden" name="minConditionQ" value="<%=minConditionQ%>"/>
+                <input type="hidden" name="maxConditionQ" value="<%=maxConditionQ%>"/>
+                <input type="hidden" name="minTimeQ" value="<%=minTimeQ%>"/>
+                <input type="hidden" name="maxTimeQ" value="<%=maxTimeQ%>"/>
+                <input type="hidden" name="minConditionTimeQ" value="<%=minConditionTimeQ%>"/>
+                <input type="hidden" name="maxConditionTimeQ" value="<%=maxConditionTimeQ%>"/>
+                <input type="hidden" name="minCtrl" value="<%=minCtrl%>"/>
 		<select name="anovaCondition" onChange="submit()">
 		    <option value="">-- select ANOVA conditions --</option>
 		    <% for (int i=0; i<anovaConditions.length; i++) { %>
@@ -44,10 +51,11 @@
 			<td class="searchInput"><input type="text" name="minConditionTimeQ" size="3" value="<%=minConditionTimeQ%>"/></td>
 			<td class="searchInput"><input type="text" name="maxConditionTimeQ" size="3" value="<%=maxConditionTimeQ%>"/></td>
 		    </tr>
-		    <tr>
-			<td></td>
-			<td colspan="2" align="center"><input type="submit" class="searchButton" name="conditionSearch" value="search"/></td>
-		    </tr>
+                    <tr>
+                        <td>min &lang;ctrl&rang;</td>
+                        <td class="searchInput"><input type="text" name="minCtrl" size="3" value="<%=minCtrl%>"/></td>
+			<td class="searchInput ac"><input type="submit" class="searchButton" name="conditionSearch" value="search"/></td>
+                    </tr>
 		</table>
 	    </form>
 	    <% } %>
@@ -77,23 +85,21 @@
     // query results here for any summary stats above individual rows
     for (int i=0; i<genes.length; i++) {
 	Expression expr = new Expression(application, experiment, genes[i]);
-	double minControl = expr.getMinControlValue();
-	double meanControl = expr.getMeanControlValue();
-	double logMeanControl = Util.log2(meanControl);
-	List<ANOVAResult> results;
-	if (anovaCondition.length()>0) {
-	    // single condition
-	    results = new ArrayList<ANOVAResult>();
-	    results.add(new ANOVAResult(application, experiment, anovaCondition, genes[i]));
-	} else {
-	    // all conditions
-	    results = ANOVAResult.getResults(application, experiment, genes[i]);
-	}
-	%>
+        double meanControl = expr.getMeanControlValue();
+        List<ANOVAResult> results;
+        if (anovaCondition.length()>0) {
+            // single condition
+            results = new ArrayList<ANOVAResult>();
+            results.add(new ANOVAResult(application, experiment, anovaCondition, genes[i]));
+        } else {
+            // all conditions
+            results = ANOVAResult.getResults(application, experiment, genes[i]);
+        }
+    %>
     <table cellspacing="0" class="gene">
       <tr>
 	<td valign="top" class="anovadata">
-          <% if (meanControl>0.0) { %>
+          <% if (meanControl>=minCtrl) { %>
 	  <input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
           <% } %>
 	  &lang;ctrl&rang;=<%=fractionFormat.format(meanControl)%>

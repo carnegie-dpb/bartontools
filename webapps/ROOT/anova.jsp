@@ -3,23 +3,22 @@
 <%@ include file="../common.inc" %>
 <%
 if (idSearch) {
-  genes = Gene.searchOnIDs(application, searchIDs);
+    genes = Gene.searchOnIDs(application, searchIDs);
 } else if (tagSearch && tags.length>0) {
-  genes = Gene.getForTags(application, tags, tagMode);
+    genes = Gene.getForTags(application, tags, tagMode);
 } else if (tairSearch) {
-  genes = TAIRGene.searchOnComputationalDescription(application, experiment, tairterm);
+    genes = TAIRGene.searchOnComputationalDescription(application, experiment, tairterm);
 } else if (conditionSearch) {
-  genes = ANOVAResult.searchOnValues(application, experiment, anovaCondition, minConditionQ, minTimeQ, minConditionTimeQ, maxConditionQ, maxTimeQ, maxConditionTimeQ);
+    genes = ANOVAResult.searchOnValues(application, experiment, anovaCondition, minConditionQ, minTimeQ, minConditionTimeQ, maxConditionQ, maxTimeQ, maxConditionTimeQ);
 } else if (geneIDs.length>0) {
-  genes = Gene.searchOnIDs(application, geneIDs);
+    genes = Gene.searchOnIDs(application, geneIDs);
 }
-
 
 // abort if too many genes for display
 boolean tooMany = genes.length>MAXMATCHES;
 if (tooMany) {
-  error = "Your search returned "+genes.length+" results; please narrow your search criteria.";
-  genes = new TAIRGene[0];
+    error = "Your search returned "+genes.length+" results; please narrow your search criteria.";
+    genes = new TAIRGene[0];
 }
 %>
 <%@ include file="../header.jhtml" %>
