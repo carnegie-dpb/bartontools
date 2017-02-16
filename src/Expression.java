@@ -77,7 +77,7 @@ public class Expression implements Comparable {
         if (gene==null) gene = new Gene(rs.getString("id"));
         values = Util.getDoubles(rs, "values");
         // normalize for library size
-        // for (int i=0; i<samples.length; i++) values[i] = values[i]/samples[i].internalscale;
+        for (int i=0; i<samples.length; i++) values[i] = values[i]/samples[i].internalscale;
     }
 
     /**
