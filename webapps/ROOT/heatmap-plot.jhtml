@@ -17,8 +17,13 @@ double xMin = 10000.0;
 double xMax = 0.0;
 double yMin = 10000.0;
 double yMax = 0.0;
-double zMin = 10000.0;
-double zMax = 0.0;
+
+// fixed z ranges
+double zMin = 0.0;
+double zMax = 1.0e3;
+if (!linear) {
+    zMax = Util.log2(zMax+1.0);
+}
 
 // k is our x,y,z value index
 int k = 0;
@@ -44,8 +49,8 @@ for (int i=0; i<genes.length; i++) {
         if (xvalues[k]>xMax) xMax = xvalues[k];
         if (yvalues[k]<yMin) yMin = yvalues[k];
         if (yvalues[k]>yMax) yMax = yvalues[k];
-        if (zvalues[k]<zMin) zMin = zvalues[k];
-        if (zvalues[k]>zMax) zMax = zvalues[k];
+        // if (zvalues[k]<zMin) zMin = zvalues[k];
+        // if (zvalues[k]>zMax) zMax = zvalues[k];
         k++;
     }
 }
@@ -111,11 +116,7 @@ renderer.setBlockWidth(blockSize);
 renderer.setBlockHeight(blockSize);
 renderer.setBlockAnchor(RectangleAnchor.BOTTOM_LEFT);
 
-/**
- * boring
- PaintScale paintScale = new GrayPaintScale(zMin, zMax, 1);
-*/
-
+// pallete scaling
 LookupPaintScale paintScale = new LookupPaintScale(zMin, zMax, Color.black);
 String paletteName = Util.getString(request, "paletteName");
 String changePalette = Util.getString(request, "changePalette");
