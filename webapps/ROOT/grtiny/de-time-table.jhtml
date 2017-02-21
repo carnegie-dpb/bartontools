@@ -45,19 +45,13 @@
   </tr>
   <% for (int i=0; i<genes.length; i++) { %>
       <tr>
-          <td class="geneName"><%
-              if (genes[i].name!=null && !genes[i].name.equals(genes[i].id)) {
-              out.print(genes[i].name);
-              } else if (genes[i].aliases.length>0) {
-              out.print(genes[i].aliases[0]);
-              }
-              %></td>
+          <td class="geneName"><% if (genes[i].name!=null && !genes[i].name.equals(genes[i].id)) { out.print(genes[i].name); } else if (genes[i].aliases.length>0) { out.print(genes[i].aliases[0]); } %></td>
           <td class="geneID"><%=genes[i].id%></td>
           <%
 	  for (int j=0; j<conditions.length; j++) {
-					     CuffdiffTimeResult res = new CuffdiffTimeResult(application, experiment, conditions[j], genes[i]);
-					     if (res.status==null) {
-					     %>
+              CuffdiffTimeResult res = new CuffdiffTimeResult(application, experiment, conditions[j], genes[i]);
+	      if (res!=null && res.status==null) {
+	      %>
 	      <td class="base missing"></td>
 	      <% for (int k=0; k<times.length-1; k++) { %>
 	          <td class="logFC missing">NO DATA</td>
@@ -71,7 +65,7 @@
 					          String bg = Util.bgFC(res.logFC[k]);
 					          String sig = "";
 					          if (res.q[k]<0.05) sig = "significant";
-		      if (res.status[k]==null || res.status[k].equals("OK")) {
+		      if (res!=null && res.status[k]==null || res.status[k].equals("OK")) {
 		      if (res.baseMean[k]>0 && res.deMean[k]>0) {
 	              %>
 	              <td class="logFC <%=bg%>"><span class="<%=sig%>"><%=logFCFormat.format(res.logFC[k])%></span> (<%=pFormat.format(res.q[k])%>)</td>

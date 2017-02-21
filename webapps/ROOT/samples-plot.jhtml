@@ -8,7 +8,7 @@ double yMinRelative = 1e-3;
 double yMaxRelative = 1e+3;
 
 // log axis default
-double yMinLog = 1e-1;
+double yMinLog = 1e-2;
 double yMaxLog = 1e+5;
 
 // plot controls

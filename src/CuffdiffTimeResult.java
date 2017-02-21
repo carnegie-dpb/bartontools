@@ -87,18 +87,22 @@ public class CuffdiffTimeResult extends AnalysisResult {
         shortname = rs.getString("gene");
         locus = rs.getString("locus");
         condition = rs.getString("condition");
-        // arrays
-        baseMean = Util.getDoubles(rs,"value_1");
-        deMean = Util.getDoubles(rs,"value_2");
-        logFC = Util.getDoubles(rs,"logfc");
-        stat = Util.getDoubles(rs,"test_stat");
-        p = Util.getDoubles(rs,"p_value");
-        q = Util.getDoubles(rs,"q_value");
-        status = Util.getStrings(rs,"status");
-        String[] sigString = Util.getStrings(rs,"significant");
-        significant = new boolean[sigString.length];
-        for (int i=0; i<significant.length; i++) {
-            significant[i] = sigString[i].equals("yes");
+        try {
+            // catch exception when we have non-doubles in PG array
+            baseMean = Util.getDoubles(rs,"value_1");
+            deMean = Util.getDoubles(rs,"value_2");
+            logFC = Util.getDoubles(rs,"logfc");
+            stat = Util.getDoubles(rs,"test_stat");
+            p = Util.getDoubles(rs,"p_value");
+            q = Util.getDoubles(rs,"q_value");
+            status = Util.getStrings(rs,"status");
+            String[] sigString = Util.getStrings(rs,"significant");
+            significant = new boolean[sigString.length];
+            for (int i=0; i<significant.length; i++) {
+                significant[i] = sigString[i].equals("yes");
+            }
+        } catch (Exception e) {
+            System.err.println("CuffdiffTimeResult error on gene "+gene.id+": "+e.toString());
         }
     }
 

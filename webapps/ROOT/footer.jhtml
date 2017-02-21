@@ -9,7 +9,7 @@ String commitString = repo.readCommitEditMsg();
 %>
 
 <div class="footer">
-	&copy; 2015 Carnegie Institution for Science
+	&copy; 2013-2017 Carnegie Institution for Science
 	This software is under development and almost certainly has bugs. Please report them to <a href="mailto:shokin@carnegiescience.edu">Sam Hokin</a>.
 </div>
 

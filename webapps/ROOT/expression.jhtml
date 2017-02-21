@@ -27,19 +27,19 @@
     <%
     // query results here for any summary stats above individual rows
     for (int i=0; i<genes.length; i++) {
-       Expression expr = new Expression(application, experiment, genes[i]);
+        Expression expr = new Expression(application, experiment, genes[i]);
+        double meanValue = expr.getMeanValue();
     %>
 	<table cellspacing="0" class="gene">
 	    <tr>
 		<td valign="top">
-		    <% if (expr.values!=null) { %>
-		    <table class="barChart" cellspacing="0">
+                    <table class="barChart" cellspacing="0">
                         <tr>
-		            <input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
+                            <% if (meanValue>1.0e-5) { %><input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" /><% } %>
+                            &lang;expr&rang; = <%=expFormat.format(meanValue)%>
 			    <%@ include file="bars.jhtml" %>
                         </tr>
 		    </table>
-                    <% } %>
 		</td>
 		<td valign="top">
 		    <%@ include file="../gene.jhtml" %>

@@ -54,7 +54,7 @@
                     <tr>
                         <td>min &lang;ctrl&rang;</td>
                         <td class="searchInput"><input type="text" name="minCtrl" size="3" value="<%=minCtrl%>"/></td>
-			<td class="searchInput ac"><input type="submit" class="searchButton" name="conditionSearch" value="search"/></td>
+			<td class="searchInput ac"><input type="submit" class="searchButton" name="conditionSearch" onClick="new Spinner(opts).spin(document.getElementById('spinner'));" value="search"/></td>
                     </tr>
 		</table>
 	    </form>
