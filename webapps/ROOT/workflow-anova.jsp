@@ -159,7 +159,6 @@ anova.twoway = function(expr, samples, conditions, takeLog2=FALSE) {
 
     return(anovaResult)
 
-}
-        </pre>
+}</pre>
 
 <%@ include file="footer.jhtml" %>

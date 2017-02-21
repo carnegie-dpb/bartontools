@@ -9,7 +9,7 @@ if (idSearch) {
 } else if (tairSearch) {
     genes = TAIRGene.searchOnComputationalDescription(application, experiment, tairterm);
 } else if (conditionSearch) {
-    genes = ANOVAResult.searchOnValues(application, experiment, anovaCondition, minConditionQ, minTimeQ, minConditionTimeQ, maxConditionQ, maxTimeQ, maxConditionTimeQ);
+    genes = ANOVAResult.searchOnValues(application, experiment, anovaCondition, minCtrl, minConditionQ, minTimeQ, minConditionTimeQ, maxConditionQ, maxTimeQ, maxConditionTimeQ);
 } else if (geneIDs.length>0) {
     genes = Gene.searchOnIDs(application, geneIDs);
 }

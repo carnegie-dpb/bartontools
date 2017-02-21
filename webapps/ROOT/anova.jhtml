@@ -1,4 +1,4 @@
-<h2>One-way ANOVA on time or two-way ANOVA on condition X time</h2>
+<h2>Two-way ANOVA on condition X time</h2>
 
 <%@ include file="../tags.jhtml" %>
 
@@ -82,8 +82,9 @@
 	<%@ include file="viewbuttons.jhtml" %>
     </div>
     <%
-    // query results here for any summary stats above individual rows
+    // loop over genes
     for (int i=0; i<genes.length; i++) {
+        // query results here for any summary stats above individual rows
 	Expression expr = new Expression(application, experiment, genes[i]);
         double meanControl = expr.getMeanControlValue();
         List<ANOVAResult> results;
@@ -94,14 +95,12 @@
         } else {
             // all conditions
             results = ANOVAResult.getResults(application, experiment, genes[i]);
-        }
+       }
     %>
     <table cellspacing="0" class="gene">
       <tr>
 	<td valign="top" class="anovadata">
-          <% if (meanControl>=minCtrl) { %>
 	  <input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
-          <% } %>
 	  &lang;ctrl&rang;=<%=fractionFormat.format(meanControl)%>
 	  <% for (ANOVAResult res : results) { %>
 	  <table cellspacing="0" class="condition">
@@ -123,9 +122,15 @@
       </tr>
     </table>
     <%
-       } // for each gene
+    } // for each gene
     %>
 </form>
 <%
-} // have genes
+} else if (conditionSearch) {
+%>
+<div class="topButtons" style="left:550px">
+<%@ include file="../summary-results.jhtml" %>
+</div>
+<%
+} // have / don't have genes
 %>

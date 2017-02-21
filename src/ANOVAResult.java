@@ -148,39 +148,35 @@ public class ANOVAResult extends AnalysisResult implements Comparable {
     /**
      * Return an array of Genes selected against the given result values. Does NOT cull on mean control expression, do that downstream.
      */
-    public static Gene[] searchOnValues(DB db, String conditions,
-					double minConditionPAdj, double minTimePAdj, double minConditionTimePAdj, double maxConditionPAdj, double maxTimePAdj, double maxConditionTimePAdj)
+    public static Gene[] searchOnValues(DB db, String conditions, double minCtrl,
+					double minConditionQ, double minTimeQ, double minConditionTimeQ, double maxConditionQ, double maxTimeQ, double maxConditionTimeQ)
 	throws SQLException {
-	db.executeQuery("SELECT id FROM anovaresults WHERE conditions='"+conditions+"' " +
-			"AND condition_p_adj>="+minConditionPAdj+" AND condition_p_adj<="+maxConditionPAdj+" " +
-			"AND time_p_adj>="+minTimePAdj+" AND time_p_adj<="+maxTimePAdj+" " +
-			"AND condition_time_p_adj>="+minConditionTimePAdj+" AND condition_time_p_adj<="+maxConditionTimePAdj+" " +
-			"ORDER BY id");
 	ArrayList<Gene> candidateList = new ArrayList<Gene>();
+	db.executeQuery("SELECT id FROM anovaresults WHERE conditions='"+conditions+"' " +
+			"AND condition_p_adj>="+minConditionQ+" AND condition_p_adj<="+maxConditionQ+" " +
+			"AND time_p_adj>="+minTimeQ+" AND time_p_adj<="+maxTimeQ+" " +
+			"AND condition_time_p_adj>="+minConditionTimeQ+" AND condition_time_p_adj<="+maxConditionTimeQ+" " +
+			"ORDER BY id");
 	while (db.rs.next()) candidateList.add(new Gene(db.rs.getString("id")));
-	Gene[] candidates = candidateList.toArray(new Gene[0]);
-
-	// now cull out genes for which we don't have non-zero expression for all samples
-	// TO DO: update anovaresults table to store specific conditions of analysis so we can restrict cull to just those conditions that are used in ANOVA
-	//ArrayList<Gene> winnerList = new ArrayList<Gene>();
-	//for (int k=0; k<candidates.length; k++) {
-	//  Expression expr = new Expression(db, candidates[k]);
-	//  if (!expr.hasMissingValue()) winnerList.add(candidates[k]);
-	// }
-    
-	//return winnerList.toArray(new Gene[0]);
-	return candidates;  
+	// cull out low-expression genes
+	ArrayList<Gene> resultList = new ArrayList<Gene>();
+	for (Gene g : candidateList) {
+	    Expression expr = new Expression(db, g);
+	    double meanControl = expr.getMeanControlValue();
+	    if (meanControl>=minCtrl) resultList.add(g);
+	}
+	return resultList.toArray(new Gene[0]);
     }
     /**
      * Return an array of Genes selected against the given result values
      */
-    public static Gene[] searchOnValues(ServletContext context, Experiment experiment, String conditions,
-					double minConditionPAdj, double minTimePAdj, double minConditionTimePAdj, double maxConditionPAdj, double maxTimePAdj, double maxConditionTimePAdj) 
+	public static Gene[] searchOnValues(ServletContext context, Experiment experiment, String conditions, double minCtrl,
+					    double minConditionQ, double minTimeQ, double minConditionTimeQ, double maxConditionQ, double maxTimeQ, double maxConditionTimeQ) 
 	throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
 	DB db = null;
 	try {
 	    db = new DB(context, experiment.schema);
-	    return searchOnValues(db, conditions, minConditionPAdj, minTimePAdj, minConditionTimePAdj, maxConditionPAdj, maxTimePAdj, maxConditionTimePAdj);
+	    return searchOnValues(db, conditions, minCtrl, minConditionQ, minTimeQ, minConditionTimeQ, maxConditionQ, maxTimeQ, maxConditionTimeQ);
 	} finally {
 	    if (db!=null) db.close();
 	}

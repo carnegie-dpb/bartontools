@@ -25,14 +25,16 @@ boolean downloadSVG = request.getParameter("downloadSVG")!=null;
 DefaultXYDataset exprDataset = new DefaultXYDataset();
 
 // loop through each gene and add to dataset
+double meanControl = 0.0; // this is used if we have only one gene being displayed
 for (int i=0; i<genes.length; i++) {
     Expression expr = new Expression(application, experiment, genes[i]);
     double[][] xyData = new double[2][expr.values.length];
     for (int j=0; j<expr.values.length; j++) {
         xyData[0][j] = (double)j;
         xyData[1][j] = expr.values[j];
-        if (showRelative) xyData[1][j] = xyData[1][j]/expr.getMeanControlValue();
-        if (showZscores) xyData[1][j] = (xyData[1][j]-expr.getMeanControlValue())/expr.getControlStandardDeviation();
+	meanControl = expr.getMeanControlValue();
+        if (showRelative) xyData[1][j] = xyData[1][j]/meanControl;
+        if (showZscores) xyData[1][j] = (xyData[1][j]-meanControl)/expr.getControlStandardDeviation();
     }
     String label = genes[i].id;
     if (genes[i].name!=null && !genes[i].name.equals(genes[i].id)) {
@@ -99,7 +101,7 @@ plot.setDomainAxis(xAxis);
 
 String yLabel = experiment.expressionlabel;
 if (showRelative) yLabel += "  / <control>";
-if (showZscores) yLabel += " z-scores";
+if (showZscores) yLabel += "   z-scores";
 
 double yMin = 0;
 double yMax = 0;
@@ -178,14 +180,15 @@ for (int i=0; i<samples.length; i++) {
 // final condition vertical line
 plot.addAnnotation(new XYLineAnnotation(samples[samples.length-1].num-0.5, yLineMin, samples[samples.length-1].num-0.5, yLineMax, new BasicStroke(1.0f), Color.black));
 
-// add a horizontal line at 1.0 for relative scale
 if (showRelative) {
+    // add a horizontal line at 1.0 for relative scale
     plot.addAnnotation(new XYLineAnnotation(-0.5, 1.0, samples[samples.length-1].num-0.5, 1.0, new BasicStroke(0.4f), Color.black));
-}
-
-// add a horizontal line at 0 for z-scores
-if (showZscores) {
+} else if (showZscores) {
+    // add a horizontal line at 0 for z-scores
     plot.addAnnotation(new XYLineAnnotation(-0.5, 0.0, samples[samples.length-1].num-0.5, 0.0, new BasicStroke(0.4f), Color.black));
+} else if (genes.length==1) {
+    // add a horizontal line at meanControl if we have only one gene
+    plot.addAnnotation(new XYLineAnnotation(-0.5, meanControl, samples[samples.length-1].num-0.5, meanControl, new BasicStroke(0.4f), Color.black));
 }
 
 // use a small font on the legend so it doesn't take up so much room

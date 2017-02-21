@@ -130,7 +130,7 @@ double maxConditionQ = 1.00; if (request.getParameter("maxConditionQ")!=null) ma
 double minTimeQ = 0.00; if (request.getParameter("minTimeQ")!=null) minTimeQ = Util.getDouble(request, "minTimeQ");
 double maxTimeQ = 1.00; if (request.getParameter("maxTimeQ")!=null) maxTimeQ = Util.getDouble(request, "maxTimeQ");
 double minConditionTimeQ = 0.00; if (request.getParameter("minConditionTimeQ")!=null) minConditionTimeQ = Util.getDouble(request, "minConditionTimeQ");
-double maxConditionTimeQ = 0.01; if (request.getParameter("maxConditionTimeQ")!=null) maxConditionTimeQ = Util.getDouble(request, "maxConditionTimeQ");
+double maxConditionTimeQ = 0.05; if (request.getParameter("maxConditionTimeQ")!=null) maxConditionTimeQ = Util.getDouble(request, "maxConditionTimeQ");
 double minCtrl = 0.1; if (request.getParameter("minCtrl")!=null) minCtrl = Util.getDouble(request, "minCtrl");
 
 // Cuffdiff, limma

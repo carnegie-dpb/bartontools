@@ -4,20 +4,21 @@
     <div class="description"><%=experiment.description%></div>
     <% } %>
     
-    <% if (!experiment.publicdata) { %>
-    <div class="privatedata">This data is currently under analysis and is NOT public. Please do not share.</div>
-    <% } %>
-
     <table class="experiment" cellspacing="0">
 	<tr><td class="item">Species:</td><td class="species"><%=experiment.genus%> <%=experiment.species%></td></tr>
 	<tr><td class="item">Assay:</td><td><%=experiment.assay%></td></tr>
+	<tr><td class="item">Expression unit:</td><td><%=experiment.expressionlabel%></td></tr>
 	<tr><td class="item">Annotation:</td><td><%=experiment.annotation%></td></tr>
 	<% if (experiment.notes!=null) { %><tr><td class="item">Notes:</td><td><%=experiment.notes%></td></tr><% } %>
-	<% if (experiment.contributors!=null) { %><tr class="item"><td>Contributors:</td><td><%=experiment.contributors%></td></tr><% } %>
+	<% if (experiment.contributors!=null) { %><tr><td class="item">Contributors:</td><td><%=experiment.contributors%></td></tr><% } %>
 	<% if (experiment.geoseries!=null) { %><tr><td class="item">GEO Series:</td><td><a target="_blank" href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=<%=experiment.geoseries%>"><%=experiment.geoseries%></a></td></tr><% } %>
 	<% if (experiment.geodataset!=null) { %><tr><td class="item">GEO Dataset:</td><td><%=experiment.geodataset%></td></tr><% } %>
 	<% if (experiment.pmid!=0) { %><tr><td class="item">Pub Med:</td><td><a target="_blank" href="http://www.ncbi.nlm.nih.gov/pubmed/<%=experiment.pmid%>"><%=experiment.pmid%></a></td></tr><% } %>
     </table>
+
+    <% if (!experiment.publicdata) { %>
+    <div class="privatedata">This data is currently under analysis and is NOT public. Please do not share.</div>
+    <% } %>
 
     <h2>Samples</h2>
 
