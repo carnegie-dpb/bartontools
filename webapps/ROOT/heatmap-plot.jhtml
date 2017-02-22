@@ -13,14 +13,14 @@ boolean relative = Util.getBoolean(request, "relative");
 if (request.getParameter("toggleRelative")!=null) relative = !relative;
 
 // initialize for finding min,max
-double xMin = 10000.0;
+double xMin = 1e10;
 double xMax = 0.0;
-double yMin = 10000.0;
+double yMin = 1e10;
 double yMax = 0.0;
 
 // fixed z ranges
 double zMin = 0.0;
-double zMax = 1.0e3;
+double zMax = 1.0e4;
 if (!linear) {
     zMax = Util.log2(zMax+1.0);
 }

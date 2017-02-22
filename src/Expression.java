@@ -47,9 +47,10 @@ public class Expression implements Comparable {
     }
 
     /**
-     * Construct given a populated ResultSet - only populates id and values
+     * Construct given a populated ResultSet and samples array for scaling.
      */
-    public Expression(ResultSet rs) throws SQLException {
+    public Expression(ResultSet rs, Sample[] samples) throws SQLException {
+        this.samples = samples;
         populate(rs);
     }
 
@@ -70,14 +71,18 @@ public class Expression implements Comparable {
     }
 
     /**
-     * Populate instance variables from a populated ResultSet. DOES NOT POPULATE samples!
+     * Populate instance variables from a populated ResultSet. DOES NOT POPULATE samples, do that before calling this!!
      */
     void populate(ResultSet rs) throws SQLException {
         // instantiate the gene only if it hasn't been already by the caller
         if (gene==null) gene = new Gene(rs.getString("id"));
-        values = Util.getDoubles(rs, "values");
-        // normalize for library size
-        for (int i=0; i<samples.length; i++) values[i] = values[i]/samples[i].internalscale;
+        try {
+            values = Util.getDoubles(rs, "values");
+            // normalize for library size
+            for (int i=0; i<samples.length; i++) values[i] = values[i]/samples[i].internalscale;
+        } catch (Exception e) {
+            System.err.println("Expression error on gene "+gene.id+": "+e.toString());
+        }
     }
 
     /**
@@ -380,9 +385,10 @@ public class Expression implements Comparable {
      * Return an array of all expression rows, ordered by gene ID
      */
     public static Expression[] getAll(DB db) throws SQLException {
+        Sample[] samples = Sample.getAll(db); 
         ArrayList<Expression> list = new ArrayList<Expression>();
         db.executeQuery("SELECT * FROM expression ORDER BY id");
-        while (db.rs.next()) list.add(new Expression(db.rs));
+        while (db.rs.next()) list.add(new Expression(db.rs, samples));
         return list.toArray(new Expression[0]);
     }
 
