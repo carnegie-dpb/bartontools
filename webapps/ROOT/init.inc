@@ -27,26 +27,26 @@ if (session.getAttribute("user")!=null) user = (User) session.getAttribute("user
 
 // execute login
 if (request.getParameter("login")!=null) {
-	user = new User(application, Util.getString(request,"email"), Util.getString(request,"password"));
-	if (user.isConfirmed() && !user.isDefault()) {
-		session.setAttribute("user", user);
-	} else {
-		session.removeAttribute("user");
-		user = new User();
-		error = "You have provided invalid account credentials, or your account has not yet been activated.";
-	}
+    user = new User(application, Util.getString(request,"email"), Util.getString(request,"password"));
+    if (user.isConfirmed() && !user.isDefault()) {
+        session.setAttribute("user", user);
+    } else {
+        session.removeAttribute("user");
+        user = new User();
+        error = "You have provided invalid account credentials, or your account has not yet been activated.";
+    }
 }
 
 // execute logout
 if (request.getParameter("logout")!=null) {
-	session.removeAttribute("user");
-	user = new User();
+    session.removeAttribute("user");
+    user = new User();
 }
 
 // bump user if not authorized for selected experiment
 if (experiment!=null && !experiment.publicdata) {
-	if (user.isDefault() || !user.mayView(application,experiment)) {
-		response.sendRedirect("/index.jsp");
-	}
+    if (user.isDefault() || !user.mayView(application,experiment)) {
+        response.sendRedirect("/index.jsp");
+    }
 }
 %>

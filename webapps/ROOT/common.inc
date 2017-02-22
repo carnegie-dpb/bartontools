@@ -131,10 +131,10 @@ double minTimeQ = 0.00; if (request.getParameter("minTimeQ")!=null) minTimeQ = U
 double maxTimeQ = 1.00; if (request.getParameter("maxTimeQ")!=null) maxTimeQ = Util.getDouble(request, "maxTimeQ");
 double minConditionTimeQ = 0.00; if (request.getParameter("minConditionTimeQ")!=null) minConditionTimeQ = Util.getDouble(request, "minConditionTimeQ");
 double maxConditionTimeQ = 0.05; if (request.getParameter("maxConditionTimeQ")!=null) maxConditionTimeQ = Util.getDouble(request, "maxConditionTimeQ");
-double minCtrl = 0.1; if (request.getParameter("minCtrl")!=null) minCtrl = Util.getDouble(request, "minCtrl");
+double minCtrl = 0.0; if (request.getParameter("minCtrl")!=null) minCtrl = Util.getDouble(request, "minCtrl");
 
 // Cuffdiff, limma
-double minlogFC = 2.0; 
+double minlogFC = 1.2; 
 double maxpq = 0.01;
 if (request.getParameter("minlogFC")!=null) minlogFC = Math.abs(Util.getDouble(request, "minlogFC"));
 if (request.getParameter("maxpq")!=null) maxpq = Math.abs(Util.getDouble(request, "maxpq"));
