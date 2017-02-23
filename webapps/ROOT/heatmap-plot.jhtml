@@ -23,7 +23,7 @@ double yMax = 0.0;
 double zMin = 0.0;
 double zMax = 1.0e5;
 if (relative) {
-    zMax = 1.0e3;
+    zMax = 1.0e2;
 }
 if (logarithmic) {
     zMax = Util.log2(zMax);
