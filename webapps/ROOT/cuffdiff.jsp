@@ -9,13 +9,13 @@ if (idSearch) {
 } else if (tairSearch) {
     genes = TAIRGene.searchOnComputationalDescription(application, experiment, tairterm); 
 } else if (experiment.isTimewise && conditionSearch && includeDirections) {
-    genes = CuffdiffTimeResult.searchOnDirections(application, experiment, conditions, minlogFC, maxpq, confidenceTerm, directions);
+    genes = CuffdiffTimeResult.searchOnDirections(application, experiment, conditions, minBase, minlogFC, maxpq, confidenceTerm, directions);
 } else if (conditionSearch && includeDirections) {
-    // genes = CuffdiffResult.searchOnDirections(application, experiment, conditions, minlogFC, maxpq, confidenceTerm, directions);
+    // genes = CuffdiffResult.searchOnDirections(application, experiment, conditions, minBase, minlogFC, maxpq, confidenceTerm, directions);
 } else if (experiment.isTimewise && conditionSearch) {
-    genes = CuffdiffTimeResult.search(application, experiment, conditions, minlogFC, maxpq, confidenceTerm);
+    genes = CuffdiffTimeResult.search(application, experiment, conditions, minBase, minlogFC, maxpq, confidenceTerm);
 } else if (conditionSearch) {
-    // genes = CuffdiffResult.search(application, experiment, conditions, minlogFC, maxpq, confidenceTerm);
+    // genes = CuffdiffResult.search(application, experiment, conditions, minBase, minlogFC, maxpq, confidenceTerm);
 } else if (geneIDs.length>0) {
     genes = Gene.searchOnIDs(application, geneIDs);
 }

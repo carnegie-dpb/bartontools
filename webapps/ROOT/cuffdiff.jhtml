@@ -33,6 +33,7 @@
                 </table>
                 <table cellspacing="0" align="center">
                     <tr>
+                        <td class="searchInput">Min base<br/><input type="text" name="minBase" size="4" value="<%=minBase%>"/></td>
                         <td class="searchInput">Min |logFC|<br/><input type="text" name="minlogFC" size="4" value="<%=minlogFC%>"/></td>
                         <td class="searchInput">
                             Max

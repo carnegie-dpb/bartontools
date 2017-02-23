@@ -113,11 +113,11 @@ int[] times = Sample.getTimes(application, experiment);
 
 // ------------------------ tool or genome-specific initialization (could be put in includes) ------------------------
 
-// TAIR
+// TAIR defaults
 boolean tairSearch = request.getParameter("tairSearch")!=null;
 String tairterm = Util.getString(request, "tairterm");
 
-// ANOVA
+// ANOVA defaults
 String[] anovaConditions = new String[0];
 try {
     anovaConditions = ANOVAResult.getConditions(application, experiment);
@@ -133,9 +133,10 @@ double minConditionTimeQ = 0.00; if (request.getParameter("minConditionTimeQ")!=
 double maxConditionTimeQ = 0.05; if (request.getParameter("maxConditionTimeQ")!=null) maxConditionTimeQ = Util.getDouble(request, "maxConditionTimeQ");
 double minCtrl = 0.0; if (request.getParameter("minCtrl")!=null) minCtrl = Util.getDouble(request, "minCtrl");
 
-// Cuffdiff, limma
+// Cuffdiff, limma defaults
+double minBase = 1.0;
 double minlogFC = 2.0; 
-double maxpq = 0.05;
+double maxpq = 0.01;
 if (request.getParameter("minlogFC")!=null) minlogFC = Math.abs(Util.getDouble(request, "minlogFC"));
 if (request.getParameter("maxpq")!=null) maxpq = Math.abs(Util.getDouble(request, "maxpq"));
 String confidenceTerm = Util.getString(request, "confidenceTerm");

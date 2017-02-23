@@ -117,7 +117,7 @@ public class CuffdiffTimeResult extends AnalysisResult {
      * Return an array of genes selected against minimum logFC and max q with given change directions.
      * Requires: public.array_avg(double precision[])
      */
-    public static Gene[] searchOnDirections(DB db, String[] conditions, double minlogFC, double maxQ, int[] directions) throws SQLException {
+    public static Gene[] searchOnDirections(DB db, String[] conditions, double minBase, double minlogFC, double maxQ, int[] directions) throws SQLException {
         // build the query for all the conditions with non-zero directions
         String query = "";
         boolean first = true;
@@ -136,14 +136,14 @@ public class CuffdiffTimeResult extends AnalysisResult {
                     query += " AND (";
                     for (int j=1; j<=len; j++) {
                         if (j>1) query += " OR ";
-                        query += "(status["+j+"]='OK' AND q_value["+j+"]<"+maxQ+" AND logfc["+j+"]>"+minlogFC+")";
+                        query += "(status["+j+"]='OK' AND q_value["+j+"]<"+maxQ+" AND value_1["+j+"]>="+minBase+" AND logfc["+j+"]>"+minlogFC+")";
                     }
                     query += ")";
                 } else if (directions[i]==DN) {
                     query += " AND (";
                     for (int j=1; j<=len; j++) {
                         if (j>1) query += " OR ";
-                        query += "(status["+j+"]='OK' AND q_value["+j+"]<"+maxQ+" AND -logfc["+j+"]>"+minlogFC+")";
+                        query += "(status["+j+"]='OK' AND q_value["+j+"]<"+maxQ+" AND value_1["+j+"]>="+minBase+" AND -logfc["+j+"]>"+minlogFC+")";
                     }
                     query += ")";
                 } else if (directions[i]==NC) {
@@ -166,12 +166,12 @@ public class CuffdiffTimeResult extends AnalysisResult {
     /**
      * Return an array of genes selected against minimum logFC and max q with given change directions.
      */
-    public static Gene[] searchOnDirections(ServletContext context, Experiment experiment, String[] conditions, double minlogFC, double maxQ, int[] directions)
+    public static Gene[] searchOnDirections(ServletContext context, Experiment experiment, String[] conditions, double minBase, double minlogFC, double maxQ, int[] directions)
         throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
         DB db = null;
         try {
             db = new DB(context, experiment.schema);
-            return searchOnDirections(db, conditions, minlogFC, maxQ, directions);
+            return searchOnDirections(db, conditions, minBase, minlogFC, maxQ, directions);
         } finally {
             if (db!=null) db.close();
         }
@@ -181,7 +181,7 @@ public class CuffdiffTimeResult extends AnalysisResult {
      * Return an array of genes selected against minimum logFC and max q with given change directions. Confidence term ("p" or "q") to minimize is supplied.
      * Requires: public.array_avg(double precision[])
      */
-    public static Gene[] searchOnDirections(DB db, String[] conditions, double minlogFC, double maxPQ, String confidenceTerm, int[] directions) throws SQLException {
+    public static Gene[] searchOnDirections(DB db, String[] conditions, double minBase, double minlogFC, double maxPQ, String confidenceTerm, int[] directions) throws SQLException {
         // build the query for all the conditions with non-zero directions
         String query = "";
         boolean first = true;
@@ -201,14 +201,14 @@ public class CuffdiffTimeResult extends AnalysisResult {
                     query += " AND (";
                     for (int j=1; j<=len; j++) {
                         if (j>1) query += " OR ";
-                        query += "(status["+j+"]='OK' AND "+pq_value+"["+j+"]<"+maxPQ+" AND logfc["+j+"]>"+minlogFC+")";
+                        query += "(status["+j+"]='OK' AND "+pq_value+"["+j+"]<"+maxPQ+" AND value_1["+j+"]>="+minBase+" AND logfc["+j+"]>"+minlogFC+")";
                     }
                     query += ")";
                 } else if (directions[i]==DN) {
                     query += " AND (";
                     for (int j=1; j<=len; j++) {
                         if (j>1) query += " OR ";
-                        query += "(status["+j+"]='OK' AND "+pq_value+"["+j+"]<"+maxPQ+" AND -logfc["+j+"]>"+minlogFC+")";
+                        query += "(status["+j+"]='OK' AND "+pq_value+"["+j+"]<"+maxPQ+" AND value_1["+j+"]>="+minBase+" AND -logfc["+j+"]>"+minlogFC+")";
                     }
                     query += ")";
                 } else if (directions[i]==NC) {
@@ -231,12 +231,12 @@ public class CuffdiffTimeResult extends AnalysisResult {
     /**
      * Return an array of genes selected against minimum logFC and max q with given change directions. Confidence term is supplied.
      */
-    public static Gene[] searchOnDirections(ServletContext context, Experiment experiment, String[] conditions, double minlogFC, double maxPQ, String confidenceTerm, int[] directions)
+    public static Gene[] searchOnDirections(ServletContext context, Experiment experiment, String[] conditions, double minBase, double minlogFC, double maxPQ, String confidenceTerm, int[] directions)
         throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
         DB db = null;
         try {
             db = new DB(context, experiment.schema);
-            return searchOnDirections(db, conditions, minlogFC, maxPQ, confidenceTerm, directions);
+            return searchOnDirections(db, conditions, minBase, minlogFC, maxPQ, confidenceTerm, directions);
         } finally {
             if (db!=null) db.close();
         }
@@ -247,7 +247,7 @@ public class CuffdiffTimeResult extends AnalysisResult {
      * Return an array of genes selected against minimum logFC and max q for at least one condition and time
      * Requires: public.array_avg(double precision[])
      */
-    public static Gene[] search(DB db, String[] conditions, double minlogFC, double maxPQ) throws SQLException {
+    public static Gene[] search(DB db, String[] conditions, double minBase, double minlogFC, double maxPQ) throws SQLException {
         String query = "";
         boolean first = true;
         // determine the size of the full arrays, we don't include genes that are not fully populated
@@ -263,7 +263,7 @@ public class CuffdiffTimeResult extends AnalysisResult {
             query += " AND (";
             for (int j=1; j<=len; j++) {
                 if (j>1) query += " OR ";
-                query += "(status["+j+"]='OK' AND q_value["+j+"]<"+maxPQ+" AND abs(logfc["+j+"])>"+minlogFC+")";
+                query += "(status["+j+"]='OK' AND q_value["+j+"]<"+maxPQ+" AND value_1["+j+"]>="+minBase+" AND abs(logfc["+j+"])>"+minlogFC+")";
             }
             query += ")";
         }
@@ -279,12 +279,12 @@ public class CuffdiffTimeResult extends AnalysisResult {
     /**
      * Return an array of genes selected against minimum logFC[2] and max adjusted p[2] for at least one condition
      */
-    public static Gene[] search(ServletContext context, Experiment experiment, String[] conditions, double minlogFC, double maxPQ) 
+    public static Gene[] search(ServletContext context, Experiment experiment, String[] conditions, double minBase, double minlogFC, double maxPQ) 
         throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
         DB db = null;
         try {
             db = new DB(context, experiment.schema);
-            return search(db, conditions, minlogFC, maxPQ);
+            return search(db, conditions, minBase, minlogFC, maxPQ);
         } finally {
             if (db!=null) db.close();
         }
@@ -294,7 +294,7 @@ public class CuffdiffTimeResult extends AnalysisResult {
      * Return an array of genes selected against minimum logFC and max q for at least one condition. Confidence term "p" or "q" is given.
      * Requires: public.array_avg(double precision[])
      */
-    public static Gene[] search(DB db, String[] conditions, double minlogFC, double maxPQ, String confidenceTerm) throws SQLException {
+    public static Gene[] search(DB db, String[] conditions, double minBase, double minlogFC, double maxPQ, String confidenceTerm) throws SQLException {
         String query = "";
         boolean first = true;
         String pq_value = confidenceTerm+"_value";
@@ -311,7 +311,7 @@ public class CuffdiffTimeResult extends AnalysisResult {
             query += " AND (";
             for (int j=1; j<=len; j++) {
                 if (j>1) query += " OR ";
-                query += "(status["+j+"]='OK' AND "+pq_value+"["+j+"]<"+maxPQ+" AND abs(logfc["+j+"])>"+minlogFC+")";
+                query += "(status["+j+"]='OK' AND "+pq_value+"["+j+"]<"+maxPQ+" AND value_1["+j+"]>="+minBase+" AND abs(logfc["+j+"])>"+minlogFC+")";
             }
             query += ")";
         }
@@ -328,12 +328,12 @@ public class CuffdiffTimeResult extends AnalysisResult {
     /**
      * Return an array of genes selected against minimum logFC[2] and max adjusted p[2] for at least one condition
      */
-    public static Gene[] search(ServletContext context, Experiment experiment, String[] conditions, double minlogFC, double maxPQ, String confidenceTerm) 
+    public static Gene[] search(ServletContext context, Experiment experiment, String[] conditions, double minBase, double minlogFC, double maxPQ, String confidenceTerm) 
         throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
         DB db = null;
         try {
             db = new DB(context, experiment.schema);
-            return search(db, conditions, minlogFC, maxPQ, confidenceTerm);
+            return search(db, conditions, minBase, minlogFC, maxPQ, confidenceTerm);
         } finally {
             if (db!=null) db.close();
         }
