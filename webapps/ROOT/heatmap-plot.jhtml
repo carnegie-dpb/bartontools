@@ -8,6 +8,7 @@ boolean downloadSVG = request.getParameter("downloadSVG")!=null;
 // plot controls
 boolean linear = Util.getBoolean(request, "linear");
 if (request.getParameter("toggleLinear")!=null) linear = !linear;
+boolean logarithmic = !linear;
 
 boolean relative = Util.getBoolean(request, "relative");
 if (request.getParameter("toggleRelative")!=null) relative = !relative;
@@ -20,9 +21,13 @@ double yMax = 0.0;
 
 // fixed z ranges
 double zMin = 0.0;
-double zMax = 1.0e4;
-if (!linear) {
-    zMax = Util.log2(zMax+1.0);
+double zMax = 1.0e5;
+if (relative) {
+    zMax = 1.0e3;
+}
+if (logarithmic) {
+    zMax = Util.log2(zMax+1e-6);
+    zMin = Util.log2(zMin+1e-6);
 }
 
 // k is our x,y,z value index
@@ -43,7 +48,7 @@ for (int i=0; i<genes.length; i++) {
         if (linear) {
             zvalues[k] = value;
         } else {
-            zvalues[k] = Util.log2(value+1.0); // could be something smaller like 1e-6, but that's artificial
+            zvalues[k] = Util.log2(value+1e-6); // don't want to throw off relative values which can be small fractions
         }
         if (xvalues[k]<xMin) xMin = xvalues[k];
         if (xvalues[k]>xMax) xMax = xvalues[k];
