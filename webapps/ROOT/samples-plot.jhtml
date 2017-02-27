@@ -4,7 +4,7 @@ int chartWidth = 1400;
 int chartHeight = 700;
 
 // relative axis default
-double yMinRelative = 1e-3;
+double yMinRelative = 1e-2;
 double yMaxRelative = 1e+3;
 
 // log axis default
