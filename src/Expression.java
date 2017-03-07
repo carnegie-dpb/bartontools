@@ -209,13 +209,11 @@ public class Expression implements Comparable {
     }
 
     /**
-     * Return the ARITHMETIC mean value across ALL samples for this gene, excluding missing values
+     * Return the ARITHMETIC mean value across ALL samples for this gene
      */
     public double getMeanValue() {
         if (values==null || values.length==0 || StatUtils.sum(values)==0) {
             return 0.0;
-        } else if (hasMissingValue()) {
-            return Util.meanExcludingZeros(values);
         } else {
             return StatUtils.mean(values);
         }
@@ -227,10 +225,19 @@ public class Expression implements Comparable {
     public double getMeanValue(String condition) {
         if (values==null || values.length==0) {
             return 0.0;
-        } else if (hasMissingValue(condition)) {
-            return Util.meanExcludingZeros(getValues(condition));
         } else {
             return StatUtils.mean(getValues(condition));
+        }
+    }
+
+    /**
+     * Return the arithmetic mean value across the given conditions
+     */
+    public double getMeanValue(String[] conditions) {
+        if (values==null || values.length==0) {
+            return 0.0;
+        } else {
+            return StatUtils.mean(getValues(conditions));
         }
     }
 
@@ -240,8 +247,6 @@ public class Expression implements Comparable {
     public double getMeanValue(String condition, int time) {
         if (values==null || values.length==0) {
             return 0.0;
-        } else if (hasMissingValue(condition,time)) {
-            return Util.meanExcludingZeros(getValues(condition,time));
         } else {
             return StatUtils.mean(getValues(condition,time));
         }
@@ -292,15 +297,56 @@ public class Expression implements Comparable {
 
 
     /**
-     * Return the standard deviation of values
+     * Return the standard deviation of values (wrapper for getVariance())
      */
     public double getStandardDeviation() {
+        return Math.sqrt(getVariance());
+    }
+
+    /**
+     * Return the standard deviation of values over the given condition (wrapper for getVariance(condition))
+     */
+    public double getStandardDeviation(String condition) {
+        return Math.sqrt(getVariance(condition));
+    }
+
+    /**
+     * Return the standard deviation of values over the given conditions (wrapper for getVariance(conditions))
+     */
+    public double getStandardDeviation(String[] conditions) {
+        return Math.sqrt(getVariance(conditions));
+    }
+
+    /**
+     * Return the variance of values
+     */
+    public double getVariance() {
         if (values==null || values.length==0 || StatUtils.sum(values)==0) {
             return 0.0;
-        } else if (hasMissingValue()) {
-            return Util.sdExcludingZeros(values);
         } else {
-            return Math.sqrt(StatUtils.variance(values));
+            return StatUtils.variance(values);
+        }
+    }
+
+    /**
+     * Return the variance of values over the given condition
+     */
+    public double getVariance(String condition) {
+        if (values==null || values.length==0 || StatUtils.sum(values)==0) {
+            return 0.0;
+        } else {
+            return StatUtils.variance(getValues(condition));
+        }
+    }
+
+    /**
+     * Return the variance of values over the given conditions
+     */
+    public double getVariance(String[] conditions) {
+        if (values==null || values.length==0 || StatUtils.sum(values)==0) {
+            return 0.0;
+        } else {
+            return StatUtils.variance(getValues(conditions));
         }
     }
 
@@ -345,6 +391,17 @@ public class Expression implements Comparable {
             return 1e20; // placeholder
         } else {
             return StatUtils.min(values);
+        }
+    }
+
+    /**
+     * Return the minimum value across the given conditions
+     */
+    public double getMinValue(String[] conditions) {
+        if (values==null || values.length==0) {
+            return 1e20; // placeholder
+        } else {
+            return StatUtils.min(getValues(conditions));
         }
     }
 

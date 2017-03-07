@@ -17,8 +17,7 @@ import javax.servlet.ServletContext;
 /**
  * Extends Gene to contain the data for a TAIR annotation entry.
  *
- * @author Sam Hokin <hokin@stanford.edu>
- * @version $Revision: 2835 $ $Date: 2015-09-16 16:21:26 -0500 (Wed, 16 Sep 2015) $
+ * @author Sam Hokin
  */
 public class TAIRGene extends Gene {
 

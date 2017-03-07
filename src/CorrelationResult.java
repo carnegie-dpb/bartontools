@@ -16,8 +16,7 @@ import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 /**
  * Analyses correlation between two genes; method to searches for correlating genes subject to user-specified cutoffs and conditions.
  *
- * @author Sam Hokin <hokin@stanford.edu>
- * @version $Revision: 2357 $ $Date: 2013-12-10 09:58:32 -0600 (Tue, 10 Dec 2013) $
+ * @author Sam Hokin
  */
 public class CorrelationResult extends AnalysisResult {
 
@@ -75,8 +74,8 @@ public class CorrelationResult extends AnalysisResult {
         // samples over which to compute correlation
         Sample[] samples = Sample.get(db, conditions);
 
-        // compute Pearson's correlation of log2 values
-        corrPearson = pearsonsCorrelation(Util.log2(expr1.values), Util.log2(expr2.values), samples);
+        // compute Pearson's correlation of transformed values
+        corrPearson = pearsonsCorrelation(transform(expr1.values), transform(expr2.values), samples);
 
         // Spearman's correlation is based on rank, so no need to log-transform the values
         corrSpearman = spearmansCorrelation(expr1.values, expr2.values, samples);
@@ -88,7 +87,7 @@ public class CorrelationResult extends AnalysisResult {
 
     /**
      * Search for genes that exceed the given Pearson's correlation coefficient with the given gene across the given conditions.
-     * USES LOG2 VALUES so down-expression is treated equally with up-expression.
+     * USES TRANSFORMED VALUES.
      * Supply polarity flag to determine whether co- (1), anti- (-1) or both (0) are returned.
      */
     public static Gene[] search(DB db, Gene gene1, String[] conditions, double threshold, int polarity) throws SQLException {
@@ -96,7 +95,7 @@ public class CorrelationResult extends AnalysisResult {
         // first gene's expression
         Expression expr1 = new Expression(db, gene1);
         if (expr1.gene==null) return new Gene[0];
-        double[] values1 = Util.log2(expr1.values);
+        double[] values1 = transform(expr1.values);
 
         // expression for all genes
         Expression[] exprAll = Expression.getAll(db);
@@ -107,7 +106,7 @@ public class CorrelationResult extends AnalysisResult {
         // scan across all genes
         TreeSet<Gene> set = new TreeSet<Gene>();
         for (int j=0; j<exprAll.length; j++) {
-            double[] values2 = Util.log2(exprAll[j].values);
+            double[] values2 = transform(exprAll[j].values);
             double corr = pearsonsCorrelation(values1, values2, samples);
             if ((+corr>threshold && (polarity==0 || polarity==+1)) || (-corr>threshold && (polarity==0 || polarity==-1))) set.add(exprAll[j].gene);
         }
@@ -137,12 +136,12 @@ public class CorrelationResult extends AnalysisResult {
         // first gene's expression
         Expression expr1 = new Expression(db, gene1);
         if (expr1.gene==null) return new Gene[0];
-        double[] values1 = Util.log2(expr1.values);
+        double[] values1 = transform(expr1.values);
 
         // second gene's expression
         Expression expr2 = new Expression(db, gene2);
         if (expr2.gene==null) return new Gene[0];
-        double[] values2 = Util.log2(expr2.values);
+        double[] values2 = transform(expr2.values);
 
         // expression for all genes
         Expression[] exprAll = Expression.getAll(db);
@@ -153,7 +152,7 @@ public class CorrelationResult extends AnalysisResult {
         // scan across all genes
         TreeSet<Gene> set = new TreeSet<Gene>();
         for (int j=0; j<exprAll.length; j++) {
-            double[] valuesj = Util.log2(exprAll[j].values);
+            double[] valuesj = transform(exprAll[j].values);
             double corr1 = pearsonsCorrelation(values1, valuesj, samples);
             double corr2 = pearsonsCorrelation(values2, valuesj, samples);
             if (Math.abs(corr1)>threshold && Math.abs(corr2)>threshold) set.add(exprAll[j].gene);
@@ -172,6 +171,14 @@ public class CorrelationResult extends AnalysisResult {
         } finally {
             if (db!=null) db.close();
         }
+    }
+
+    /**
+     * Transform values, e.g. taking log2, so the transform is in one place for use throughout.
+     */
+    static double[] transform(double[] values) {
+        // return Util.log2(values);
+        return values;
     }
 
     // -----------------------------------------------------------------------------------------

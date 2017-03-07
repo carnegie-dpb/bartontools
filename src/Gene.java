@@ -16,8 +16,7 @@ import javax.servlet.ServletContext;
  * Base class which contains the core gene data for a single gene, based on Ensembl GFF3 fields.
  * Extend this class to hold additional data from an annotation library like TAIR.
  *
- * @author Sam Hokin <shokin@carnegiescience.edu>
- * @version $Revision: 2835 $ $Date: 2015-09-16 16:21:26 -0500 (Wed, 16 Sep 2015) $
+ * @author Sam Hokin
  */
 public class Gene implements Comparable {
 
@@ -195,18 +194,35 @@ public class Gene implements Comparable {
     }
 
     /**
-     * Return the URL to the Gene Ontology listing for this gene, by making a call to the GO database
+     * Return an array of all genes that have expression records, ordered alphabetically by id/locus
      */
-    public String getGOURL() throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
+    public static Gene[] getAll(DB db) throws SQLException {
+        ArrayList<Gene> list = new ArrayList<Gene>();
+        db.executeQuery("SELECT id FROM expression ORDER BY id");
+        while (db.rs.next()) list.add(new Gene(db.rs.getString("id")));
+        return list.toArray(new Gene[0]);
+    }
+
+    
+    /**
+     * Return the name for the given gene ID
+     */
+    public static String getNameForID(DB db, String id) throws SQLException {
+	db.executeQuery("SELECT * FROM public.genes WHERE ID='"+id+"'");
+	if (db.rs.next()) {
+	    return db.rs.getString("name");
+	} else {
+	    return id;
+	}
+    }
+    /**
+     * Return the ID for the given gene ID
+     */
+    public static String getNameForID(ServletContext context, String id) throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
 	DB db = null;
 	try {
-	    db = new DB(GOTerm.dsName);
-	    db.executeQuery("SELECT * FROM gene_product_J_dbxref WHERE id=(SELECT gene_product_id FROM gene_product_synonym WHERE product_synonym='"+id+"')");
-	    if (db.rs.next()) {
-		return "http://amigo.geneontology.org/cgi-bin/amigo/gp-details.cgi?gp="+db.rs.getString("xref_dbname")+":"+db.rs.getString("xref_key");
-	    } else {
-		return null;
-	    }
+	    db = new DB(context);
+	    return getNameForID(db, id);
 	} finally {
 	    if (db!=null) db.close();
 	}
@@ -370,5 +386,22 @@ public class Gene implements Comparable {
 	}
     }
 
+    /**
+     * Return the URL to the Gene Ontology listing for this gene, by making a call to the GO database
+     */
+    public String getGOURL() throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
+	DB db = null;
+	try {
+	    db = new DB(GOTerm.dsName);
+	    db.executeQuery("SELECT * FROM gene_product_J_dbxref WHERE id=(SELECT gene_product_id FROM gene_product_synonym WHERE product_synonym='"+id+"')");
+	    if (db.rs.next()) {
+		return "http://amigo.geneontology.org/cgi-bin/amigo/gp-details.cgi?gp="+db.rs.getString("xref_dbname")+":"+db.rs.getString("xref_key");
+	    } else {
+		return null;
+	    }
+	} finally {
+	    if (db!=null) db.close();
+	}
+    }
 
 }
