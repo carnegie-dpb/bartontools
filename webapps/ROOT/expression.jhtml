@@ -24,23 +24,12 @@
 	    <%@ include file="viewbuttons.jhtml" %>
 	</div>
     </div>
-    <%
-    // query results here for any summary stats above individual rows
-    for (int i=0; i<genes.length; i++) {
-        Expression expr = new Expression(application, experiment, genes[i]);
-        double meanValue = expr.getMeanValue();
-    %>
+    <% for (int i=0; i<genes.length; i++) { %>
 	<table cellspacing="0" class="gene">
 	    <tr>
 		<td valign="top">
-                    <table class="barChart" cellspacing="0">
-                        <tr>
-                            <% if (meanValue>1.0e-5) { %><input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" /><% } %>
-                            &lang;expr&rang; = <%=expFormat.format(meanValue)%>
-			    <%@ include file="bars.jhtml" %>
-                        </tr>
-		    </table>
-		</td>
+                    <%@ include file="bars.jhtml" %>
+                </td>
 		<td valign="top">
 		    <%@ include file="../gene.jhtml" %>
 		    <% if (experiment.annotation.startsWith("TAIR")) { %><%@ include file="../tairinfo.jhtml" %><% } %>
@@ -48,9 +37,7 @@
 		</td>
 	    </tr>
 	</table>
-	<%
-	} // for each gene
-	%>
+	<% } %>
 </form>
 <!-- end form -->
 <% } // have genes %>

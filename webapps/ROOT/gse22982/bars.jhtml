@@ -1,7 +1,32 @@
 <%
-for (int j=0; j<samples.length; j++) {
-				   String bg = "evening";
-				   if (j%2==0) bg = "morning";
-				   %>
-    <td><img class="<%=bg%>" src="/images/spacer.gif" width="7" height="<%=Math.round(Util.log2(expr.getValues(samples[j].condition)[0])*10)%>"/></td>
-    <% } %>
+Expression expr = new Expression(application, experiment, genes[i]);
+if (expr.values!=null) {
+    double meanValue = expr.getMeanValue();
+%>
+<% if (meanValue>1.0e-5) { %><input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" /><% } %>
+&lang;expr&rang; = <%=expFormat.format(meanValue)%>
+<table class="barChart" cellspacing="0">
+    <tr>
+        <%
+        for (int j=0; j<samples.length; j++) {
+				        String bg = "evening";
+				        if (j%2==0) bg = "morning";
+				        %>
+        <td><img class="<%=bg%>" src="/images/spacer.gif" width="7" height="<%=Math.round(Util.log2(expr.getValues(samples[j].condition)[0])*10)%>"/></td>
+        <% } %>
+    </tr>
+</table>
+<%
+} else {
+%>
+No expression.
+<table class="barChart" cellspacing="0">
+    <tr>
+        <% for (int l=0; l<samples.length; l++) { %>
+        <td><img src="/images/spacer.gif" width="2" height="1"/></td>
+        <% } %>
+    </tr>
+</table>
+<%
+}
+%>

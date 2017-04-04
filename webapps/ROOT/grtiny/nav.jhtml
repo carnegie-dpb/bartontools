@@ -1,8 +1,8 @@
 <ul class="nav">
-        <li><a href="index.jsp">Experiment</a></li>
-  	<li><a href="expression.jsp">Expression Viewer</a></li>
-	<li><a href="cuffdiff.jsp">Cuffdiff DE</a></li>
-  	<li><a href="anova.jsp">ANOVA</a></li>
-  	<li><a href="cminer.jsp">Correlation Miner</a></li>
-<!--  	<li><a href="scoreminer.jsp">DE Score Miner</a></li> -->
+    <li><a href="/index.jsp">Home</a></li>
+    <li><a href="index.jsp">Experiment</a></li>
+    <li><a href="expression.jsp">Expression Viewer</a></li>
+    <li><a href="cuffdiff.jsp">Cuffdiff DE</a></li>
+    <li><a href="anova.jsp">ANOVA</a></li>
+    <li><a href="cminer.jsp">Correlation Miner</a></li>
 </ul>
