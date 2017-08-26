@@ -1,0 +1,18 @@
+#!/bin/bash
+# download the biojava libs that we want
+
+wget https://repo1.maven.org/maven2/org/biojava/biojava-aa-prop/4.2.8/biojava-aa-prop-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-alignment/4.2.8/biojava-alignment-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-core/4.2.8/biojava-core-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-genome/4.2.8/biojava-genome-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-integrationtest/4.2.8/biojava-integrationtest-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-modfinder/4.2.8/biojava-modfinder-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-modfinder/4.2.8/biojava-modfinder-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-ontology/4.2.8/biojava-ontology-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-phylo/4.2.8/biojava-phylo-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-protein-disorder/4.2.8/biojava-protein-disorder-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-sequencing/4.2.8/biojava-sequencing-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-structure-gui/4.2.8/biojava-structure-gui-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-structure/4.2.8/biojava-structure-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-survival/4.2.8/biojava-survival-4.2.8.jar
+wget https://repo1.maven.org/maven2/org/biojava/biojava-ws/4.2.8/biojava-ws-4.2.8.jar
