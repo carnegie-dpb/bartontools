@@ -9,16 +9,16 @@
     <property name="passay" value="webapps/ROOT/WEB-INF/lib/passay-1.0.jar" />
     <property name="commons-email" value="webapps/ROOT/WEB-INF/lib/commons-email-1.4.jar" />
 
-    <property name="servletapi" value="/usr/share/java/tomcat8-servlet-api.jar" />
-    <property name="math3" value="/usr/share/java/commons-math3.jar" />
-    <property name="lang3" value="/usr/share/java/commons-lang3.jar" />
-    <property name="validator" value="/usr/share/java/commons-validator.jar" />
-    <property name="batik-all" value="/usr/share/java/batik-all.jar" />
+    <property name="servletapi" value="tools/lib/servlet-api.jar" />
+    <property name="math3" value="tools/lib/commons-math3.jar" />
+    <property name="lang3" value="tools/lib/commons-lang3.jar" />
+    <property name="validator" value="tools/lib/commons-validator.jar" />
+    <property name="batik-all" value="tools/lib/batik-all.jar" />
 
-    <property name="jcommon" value="/usr/share/java/jcommon.jar" />
-    <property name="jfreechart" value="/usr/share/java/jfreechart.jar" />
+    <property name="jcommon" value="tools/lib/jcommon.jar" />
+    <property name="jfreechart" value="tools/lib/jfreechart.jar" />
     
-    <property name="mailapi" value="/usr/share/java/mailapi.jar" />
+    <property name="mailapi" value="tools/lib/mailapi.jar" />
 
   </target>
 

@@ -1,0 +1,2 @@
+#!/bin/bash
+java -cp classes PSL2GFF $1 $2 $3 $4 $5 $6
