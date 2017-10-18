@@ -38,8 +38,9 @@
 	</td>
     </tr>
 </table>
-
-<%  if (genes.length>0) { %>
+<% if (genes.length==0) { %>
+	<%@ include file="../summary-results.jhtml" %>
+<% } else { %>
 <!-- form for tagging and viewing operations along with results display -->
 <form action="cminer.jsp" method="post">
     <input type="hidden" name="gene1input" value="<%=gene1input%>"/>
