@@ -82,6 +82,7 @@ public class Expression implements Comparable {
             for (int i=0; i<samples.length; i++) values[i] = values[i]/samples[i].internalscale;
         } catch (Exception e) {
             System.err.println("Expression error on gene "+gene.id+": "+e.toString());
+            values = new double[samples.length]; // set to zero
         }
     }
 
