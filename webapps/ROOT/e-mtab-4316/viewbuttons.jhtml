@@ -1,10 +1,10 @@
 <% if (!user.isDefault()) { %>
-<input type="button" class="clearButton" onClick="clearSelections()" value="clear selections"/>
 Tag:<input type="text" name="tagToAdd" style="width:120px" value=""/>
 <input type="submit" name="addTag" class="addTagButton" value="tag selected genes"/>
 <% } %>
-<table cellspacing="0" class="topButtons">
+<table class="topButtons">
     <tr>
+        <td><input type="button" class="clearButton" onClick="clearSelections()" value="clear selections"/></td>
         <td class="am ac">
             Plot Title (optional):<br/>
             <input type="text" name="plotTitle" class="plotTitle"/><br/>

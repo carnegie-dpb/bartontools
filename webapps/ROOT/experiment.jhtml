@@ -28,6 +28,7 @@
 	    <td class="bt">label</td>
 	    <td class="bt ac">condition</td>
             <% if (experiment.isTimewise) { %><td class="bt">time</td><% } %>
+            <td class="bt">control</td>
             <td class="bt ac">library scale</td>
 	    <td class="bt br">comment</td>
 	</tr>
@@ -46,6 +47,7 @@
 		<td class="label <% if (newCondition) out.print("bbt"); %>"><%=samples[i].label%></td>
 		<td class="ac <% if (newCondition) out.print("bbt"); %>"><%=samples[i].condition%></td>
 		<% if (experiment.isTimewise) { %><td class="ar <% if (newCondition) out.print("bbt"); %>"><%=samples[i].time%></td><% } %>
+                <td class="ac <% if (newCondition) out.print("bbt"); %>"><%=samples[i].control%></td>
                 <td class="ar <% if (newCondition) out.print("bbt"); %>"><%=fractionFormat.format(samples[i].internalscale)%></td>
 		<td class="br <% if (newCondition) out.print("bbt"); %>"><%=Util.blankIfNull(samples[i].comment)%></td>
 	    </tr>

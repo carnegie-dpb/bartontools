@@ -1,12 +1,12 @@
 <h3>Expression</h3>
 <p>
-  The expression data for these analyses is FPKM from Tophat2 and Cufflinks. Sample-to-sample normalization is geometric/median.
+  The expression data for these analyses is FPKM from Tophat2 and Cufflinks. The data are currently not sample-normalized (scale=1 throughout).
 </p>
 
 <h3>Analyses</h3>
 
 <p>
-  <b>Cuffdiff DE</b><br/>Results from Cuffdiff runs on all samples per condition, and samples per condition per time.
+  <b>Cuffdiff DE</b><br/>Results from Cuffdiff run on samples per condition per time.
 </p>
 
 <p>

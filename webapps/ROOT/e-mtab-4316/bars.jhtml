@@ -11,11 +11,11 @@ double meanValue = expr.getMeanValue();
         for (int l=0; l<samples.length; l++) {
                                         String bg = "";
                                         if (samples[l].condition.equals("WT")) bg = "bg0";
-                                        if (samples[l].condition.equals("OSH1")) bg = "bg2";
+                                        if (samples[l].condition.equals("OSH1-GR")) bg = "bg2";
                                         long height = 0;
                                         if (expr.values[l]>0.0) height = Math.round(Math.log(expr.values[l]*10)*10);
         %>
-        <td><img class="<%=bg%>" src="/images/spacer.gif" width="2" height="<%=height%>"/></td>
+        <td><img class="<%=bg%>" src="/images/spacer.gif" width="10" height="<%=height%>"/><br/><%=samples[l].time%></td>
         <%
         } // samples loop
         %>
