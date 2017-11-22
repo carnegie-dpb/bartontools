@@ -65,8 +65,8 @@ if (conditions.length<10) {
 		String group = "";
 		if (normal) group = groups[i];
 		if (conditional) {
-        group = "WT";
-        if (!groups[i].equals("WT")) group += " + "+groups[i];
+		    group = "WT";
+		    if (!groups[i].equals("WT")) group += " + "+groups[i];
 		}
 		if (differential) group = groups[i]+" - WT";
 		%>
