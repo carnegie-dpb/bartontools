@@ -290,7 +290,7 @@ public class DB {
 
   /** Sets the search path to be the given schema and NOT public */
   public void setSearchPath(String schema) throws SQLException {
-    executeUpdate("SET search_path TO "+schema);
+    executeUpdate("SET search_path TO \""+schema+"\"");
   }
 
 }

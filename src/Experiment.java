@@ -96,7 +96,7 @@ public class Experiment implements Comparable {
     protected void select(DB db, String schema) throws SQLException {
         db.executeQuery("SELECT * FROM public.experiments WHERE schema='"+schema+"'");
         if (db.rs.next()) populate(db.rs);
-        db.executeQuery("SELECT count(DISTINCT time) AS count FROM "+schema+".samples");
+        db.executeQuery("SELECT count(DISTINCT time) AS count FROM \""+schema+"\".samples");
         db.rs.next();
         isTimewise = db.rs.getInt("count")>1;
     }
