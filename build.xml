@@ -8,16 +8,15 @@
     <property name="cos" value="webapps/ROOT/WEB-INF/lib/cos.jar" />
     <property name="passay" value="webapps/ROOT/WEB-INF/lib/passay-1.0.jar" />
     <property name="commons-email" value="webapps/ROOT/WEB-INF/lib/commons-email-1.4.jar" />
+    <property name="commons-text" value="webapps/ROOT/WEB-INF/lib/commons-text-1.1.jar" />
 
     <property name="servletapi" value="tools/lib/servlet-api.jar" />
     <property name="math3" value="tools/lib/commons-math3.jar" />
     <property name="lang3" value="tools/lib/commons-lang3.jar" />
     <property name="validator" value="tools/lib/commons-validator.jar" />
     <property name="batik-all" value="tools/lib/batik-all.jar" />
-
     <property name="jcommon" value="tools/lib/jcommon.jar" />
     <property name="jfreechart" value="tools/lib/jfreechart.jar" />
-    
     <property name="mailapi" value="tools/lib/mailapi.jar" />
 
   </target>
@@ -30,7 +29,7 @@
 
   <target name="classes" depends="init">
     <javac srcdir="src"
-	   classpath="classes:${cos}:${passay}:${commons-email}:${servletapi}:${mailapi}:${math3}:${lang3}:${validator}:${jfreechart}:${jcommon}:${batik-all}"
+	   classpath="classes:${cos}:${passay}:${commons-email}:${commons-text}:${servletapi}:${mailapi}:${math3}:${lang3}:${validator}:${jfreechart}:${jcommon}:${batik-all}"
            deprecation="true"
            includeantruntime="false"
 	   destdir="classes">
@@ -44,7 +43,7 @@
   
   <target name="javadoc" depends="classes">
     <javadoc destdir="javadoc"
-	     classpath="classes:${cos}:${passay}:${commons-email}:${servletapi}:${mailapi}:${math3}:${lang3}:${validator}:${jfreechart}:${jcommon}:${batik-all}">
+	     classpath="classes:${cos}:${passay}:${commons-email}:${commons-text}:${servletapi}:${mailapi}:${math3}:${lang3}:${validator}:${jfreechart}:${jcommon}:${batik-all}">
       <fileset dir="src" />
     </javadoc>
   </target>

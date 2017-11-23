@@ -31,11 +31,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.time.DateUtils;
-
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import com.oreilly.servlet.MultipartRequest;
 
