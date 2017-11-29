@@ -11,12 +11,11 @@
 </ol>
 
 <!-- search forms -->
-<table cellspacing="2" class="searchParameters">
+<table class="searchParameters">
     <tr>
         <td class="searchParameters">
-            <div class="searchTitle"><b>Cuffdiff Parameters</b></div>
             <form action="cuffdiff.jsp" method="post">
-                <table cellspacing="0" align="center">
+                <table align="center">
                     <tr>
                         <% for (int i=0; i<conditions.length; i++) { %>
                         <td align="center">
@@ -31,7 +30,7 @@
                         <% } %>	    
                     </tr>
                 </table>
-                <table cellspacing="0" align="center">
+                <table align="center">
                     <tr>
                         <td class="searchInput">Min base<br/><input type="text" name="minBase" size="4" value="<%=minBase%>"/></td>
                         <td class="searchInput">Min |logFC|<br/><input type="text" name="minlogFC" size="4" value="<%=minlogFC%>"/></td>
@@ -51,7 +50,7 @@
             <%@ include file="../search-genes.jhtml" %>
         </td>
         <td class="searchParameters">
-            <%@ include file="../search-tair.jhtml" %>
+            <%@ include file="../search-descriptions.jhtml" %>
         </td>
     </tr>
 </table>
@@ -74,10 +73,10 @@
             if (res[j].q!=null) exists = true;
         }
         %>
-        <table cellspacing="0" class="gene">
+        <table class="gene">
             <tr>
                 <td valign="top" class="dedata">
-                    <table cellspacing="0" class="deChart">
+                    <table class="deChart">
                         <% if (exists) { %>
                         <tr>
                             <td class="checkbox">

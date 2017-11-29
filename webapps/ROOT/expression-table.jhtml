@@ -11,29 +11,22 @@
 	</td>
 	<% for (int j=0; j<samples.length; j++) { %>
 	    <td class="sampleLabel nw">
-		<%=samples[j].num%>
-		<br/><%=samples[j].label%>
-		<br/><%=samples[j].condition%>
+		<%=samples[j].num%><br/>
+                <%=samples[j].label%><br/>
+                <%=samples[j].condition%>
                 <% if (experiment.isTimewise) { %><br/><%=timeFormat.format(samples[j].time)%><% } %>
 	    </td>
 	    <% } %>
     </tr>
-    <%
-    for (int i=0; i<genes.length; i++) {
-				  String bg = "";
-				  if (i%2==1) bg = "shaded";
-				  %>
+    <% for (int i=0; i<genes.length; i++) { boolean odd=(i%2==1); %>
 	<tr>
-	    <td class="geneID <%=bg%>"><%=genes[i].id%></td>
-	    <td class="geneName br <%=bg%>"><%=Util.blankIfNull(genes[i].name)%></td>
+	    <td class="geneID <% if (odd) out.print("shaded"); %>"><%=genes[i].id%></td>
+	    <td class="geneName br <% if (odd) out.print("shaded"); %>"><%=Util.blankIfNull(genes[i].name)%></td>
 	    <%
 	    Expression expr = new Expression(application, experiment, genes[i]);
-	    for (int j=0; j<expr.values.length; j++) {
-						%>
-		<td class="readCount <% if (i%2==1) out.print("shaded"); %>"><%=fractionFormat.format(expr.values[j])%></td>
-		<%
-		}
-		%>
+	    for (int j=0; j<expr.values.length; j++) { %>
+		<td class="readCount <% if (odd) out.print("shaded"); %>"><%=fractionFormat.format(expr.values[j])%></td>
+		<% } %>
 	</tr>
 	<% } %>
 </table>

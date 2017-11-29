@@ -89,18 +89,22 @@ UPDATE cuffdifftimeresults SET significant=array(SELECT significant FROM gene_ex
 UPDATE cuffdifftimeresults SET condition='OSH1-GR' WHERE condition='OSH1-0';
 UPDATE cuffdifftimeresults SET condition='WT' WHERE condition='WT-0';
 
--- get rid of genes that are not in our public.genes table (loaded from the GFF)
-DELETE FROM cuffdifftimeresults WHERE gene NOT IN (
-       SELECT id FROM public.genes WHERE genus='Oryza' AND species='sativa'
-       UNION
-       SELECT name FROM public.genes WHERE genus='Oryza' AND species='sativa'
-       );
+-- -- get rid of genes that are not in our public.genes table (loaded from the GFF)
+-- DELETE FROM cuffdifftimeresults WHERE gene NOT IN (
+--        SELECT id FROM public.genes WHERE genus='Oryza' AND species='sativa'
+--        UNION
+--        SELECT name FROM public.genes WHERE genus='Oryza' AND species='sativa'
+--        );
 
 -- update IDs with gene IDs where gene is an ID
 UPDATE cuffdifftimeresults SET id=gene WHERE gene LIKE 'OS%';
 
+-- clean out stuff we don't want
+DELETE FROM cuffdifftimeresults WHERE status[1]!='OK' OR status[2]!='OK' OR status[2]!='OK';
+DELETE FROM cuffdifftimeresults WHERE id LIKE 'E%';
+
 -- update IDs from genes table where gene is a gene name
-UPDATE cuffdifftimeresults SET id=(SELECT id FROM public.genes WHERE name=gene AND genus='Oryza' AND species='sativa' LIMIT 1) WHERE gene NOT LIKE 'OS%';
+-- UPDATE cuffdifftimeresults SET id=(SELECT id FROM public.genes WHERE name=gene AND genus='Oryza' AND species='sativa' LIMIT 1) WHERE gene NOT LIKE 'OS%';
 
 
 

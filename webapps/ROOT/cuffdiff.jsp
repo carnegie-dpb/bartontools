@@ -6,8 +6,8 @@ if (idSearch) {
     genes = Gene.searchOnIDs(application, searchIDs);
 } else if (tagSearch && tags.length>0) {
     genes = Gene.getForTags(application, tags, tagMode);
-} else if (tairSearch) {
-    genes = TAIRGene.searchOnComputationalDescription(application, experiment, tairterm); 
+} else if (descriptionSearch) {
+    genes = Gene.searchOnDescriptions(application, experiment, searchDescriptionString);
 } else if (experiment.isTimewise && conditionSearch && includeDirections) {
     genes = CuffdiffTimeResult.searchOnDirections(application, experiment, conditions, minBase, minlogFC, maxpq, confidenceTerm, directions);
 } else if (conditionSearch && includeDirections) {

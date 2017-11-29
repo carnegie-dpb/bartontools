@@ -17,7 +17,7 @@ public class GFF2Genes {
     public static void main(String[] args) {
         
         if (args.length!=3) {
-            System.out.println("Usage: GFF2Genes <GFF3File> <Species> <genus>");
+            System.out.println("Usage: GFF2Genes <GFF3File> <genus> <species>");
             System.exit(1);
         }
         

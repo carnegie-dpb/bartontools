@@ -467,12 +467,12 @@ td.downreg {
     font-weight:bold;
 }
 
-div.topButtons { 
+div.topButtons {
     width: 700px;
     vertical-align: bottom;
     position: relative;
     top: -130px;
-    margin-bottom: -120px;
+    margin-bottom: -90px;
 }
 table.topButtons { 
 }
@@ -771,7 +771,7 @@ div.affxheading {
     font-style: italic;
 }
 
-table.searchParameters { 
+table.searchParameters {
 }
 td.searchParameters { 
     background-color: #ddd;

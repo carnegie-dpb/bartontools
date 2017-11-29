@@ -18,7 +18,7 @@ SET search_path TO "e-mtab-4316";
 
 DROP TABLE genes_fpkm;
 CREATE TEMP TABLE genes_fpkm (
-       tracking_id         character varying	NOT NULL,
+       tracking_id         character varying,
        class_code	   character varying,
        nearest_ref_id	   character varying,
        gene_id             character varying,
@@ -32,11 +32,11 @@ CREATE TEMP TABLE genes_fpkm (
        fpkm_conf_hi        double precision,
        fpkm_status         character varying
 );
-CREATE INDEX genes_fpkm_gene_id ON genes_fpkm(gene_id);
+CREATE INDEX genes_fpkm_locus ON genes_fpkm(locus);
 
 DROP TABLE isoforms_fpkm;
 CREATE TEMP TABLE isoforms_fpkm (
-       tracking_id         character varying	NOT NULL,
+       tracking_id         character varying,
        class_code	   character varying,
        nearest_ref_id	   character varying,
        gene_id             character varying,
@@ -50,11 +50,11 @@ CREATE TEMP TABLE isoforms_fpkm (
        fpkm_conf_hi        double precision,
        fpkm_status         character varying
 );
-CREATE INDEX isoforms_fpkm_gene_id ON isoforms_fpkm(gene_id);
+CREATE INDEX isoforms_fpkm_locus ON isoforms_fpkm(locus);
 
 DROP TABLE all_fpkm;
 CREATE TEMP TABLE all_fpkm (
-       tracking_id         character varying	NOT NULL,
+       tracking_id         character varying,
        class_code	   character varying,
        nearest_ref_id	   character varying,
        gene_id             character varying,
@@ -75,12 +75,10 @@ CREATE INDEX all_fpkm_tracking_id ON all_fpkm(tracking_id);
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019486.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019486.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019486.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019486.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,1 FROM genes_fpkm;
 
@@ -88,12 +86,10 @@ INSERT INTO all_fpkm SELECT *,1 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019494.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019494.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019494.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019494.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,2 FROM genes_fpkm;
 
@@ -101,12 +97,10 @@ INSERT INTO all_fpkm SELECT *,2 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019487.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019487.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019487.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019487.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,3 FROM genes_fpkm;
 
@@ -114,12 +108,10 @@ INSERT INTO all_fpkm SELECT *,3 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019495.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019495.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019495.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019495.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,4 FROM genes_fpkm;
 
@@ -127,12 +119,10 @@ INSERT INTO all_fpkm SELECT *,4 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019488.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019488.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019488.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019488.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,5 FROM genes_fpkm;
 
@@ -140,12 +130,10 @@ INSERT INTO all_fpkm SELECT *,5 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019496.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019496.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019496.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019496.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,6 FROM genes_fpkm;
 
@@ -153,12 +141,10 @@ INSERT INTO all_fpkm SELECT *,6 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019489.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019489.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019489.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019489.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,7 FROM genes_fpkm;
 
@@ -166,12 +152,10 @@ INSERT INTO all_fpkm SELECT *,7 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019497.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019497.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019497.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019497.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,8 FROM genes_fpkm;
 
@@ -179,12 +163,10 @@ INSERT INTO all_fpkm SELECT *,8 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019482.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019482.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019482.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019482.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,9 FROM genes_fpkm;
 
@@ -192,12 +174,10 @@ INSERT INTO all_fpkm SELECT *,9 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019490.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019490.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019490.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019490.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,10 FROM genes_fpkm;
 
@@ -205,12 +185,10 @@ INSERT INTO all_fpkm SELECT *,10 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019483.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019483.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019483.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019483.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,11 FROM genes_fpkm;
 
@@ -218,12 +196,10 @@ INSERT INTO all_fpkm SELECT *,11 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019491.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019491.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019491.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019491.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,12 FROM genes_fpkm;
 
@@ -231,12 +207,10 @@ INSERT INTO all_fpkm SELECT *,12 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019484.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019484.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019484.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019484.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,13 FROM genes_fpkm;
 
@@ -244,12 +218,10 @@ INSERT INTO all_fpkm SELECT *,13 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019492.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019492.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019492.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019492.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,14 FROM genes_fpkm;
 
@@ -257,12 +229,10 @@ INSERT INTO all_fpkm SELECT *,14 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019485.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019485.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019485.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019485.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,15 FROM genes_fpkm;
 
@@ -270,12 +240,10 @@ INSERT INTO all_fpkm SELECT *,15 FROM genes_fpkm;
 DELETE FROM genes_fpkm;
 DELETE FROM isoforms_fpkm;
 COPY genes_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019493.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019493.genes.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
 COPY isoforms_fpkm (tracking_id,class_code,nearest_ref_id,gene_id,gene_short_name,tss_id,locus,length,coverage,fpkm,fpkm_conf_lo,fpkm_conf_hi,fpkm_status)
-     FROM '/home/shokin/BartonLab/E-MTAB-4316/Cufflinks/DRR019493.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
-UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE gene_id=genes_fpkm.gene_id ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'CUFF.%';
-DELETE FROM genes_fpkm WHERE tracking_id LIKE 'E%';
+     FROM '/home/sam/BartonLab/E-MTAB-4316/Cufflinks/DRR019493.isoforms.fpkm_tracking' WITH CSV HEADER DELIMITER AS '	';
+UPDATE genes_fpkm SET tracking_id=(SELECT substring(tracking_id,1,12) FROM isoforms_fpkm WHERE locus=genes_fpkm.locus ORDER BY tracking_id DESC LIMIT 1) WHERE gene_id LIKE 'CUFF.%';
 UPDATE genes_fpkm SET tracking_id = replace(tracking_id,'T','G');
 INSERT INTO all_fpkm SELECT *,16 FROM genes_fpkm;
 
@@ -289,6 +257,12 @@ INSERT INTO expression (id) SELECT DISTINCT tracking_id FROM all_fpkm;
 
 -- update the table data column by data column using array(), being sure to order by num to get the array values in the correct order
 UPDATE expression SET values=array(SELECT fpkm FROM all_fpkm WHERE all_fpkm.tracking_id=expression.id ORDER BY num);
+
+-- remove bad data
+DELETE FROM expression WHERE id IS NULL;
+DELETE FROM expression WHERE id LIKE 'CUFF.%';
+DELETE FROM expression WHERE id LIKE 'E.%';
+DELETE FROM expression WHERE array_length(values,1)!=16;
 
 -- restore NOT NULL
 ALTER TABLE expression ALTER COLUMN values SET NOT NULL;
