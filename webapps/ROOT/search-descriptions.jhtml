@@ -1,5 +1,5 @@
 <form action="<%=request.getRequestURI()%>" method="post">
-    <div class="textareaHeading">Search gene<br/>descriptions or aliases</div>
+    <div class="textareaHeading">Search gene names,<br/>descriptions or aliases</div>
 	<textarea class="searchDescription" name="searchDescriptionString"><%=searchDescriptionString%></textarea>
 	<br/>
 	<input type="submit" class="searchButton" name="descriptionSearch" value="submit"/>

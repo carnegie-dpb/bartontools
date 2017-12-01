@@ -1,0 +1,3 @@
+#!/bin/sh
+
+java -cp classes:../classes:/usr/share/java/postgresql.jar RapGFF2Genes $1 $2 $3

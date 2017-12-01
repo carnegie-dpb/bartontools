@@ -7,15 +7,16 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 
 /**
- * Loads the gene records from an Ensemble Plants GFF3 file into the bartonlab.genes table.
+ * Loads the gene records from a RapDB file into the bartonlab.genes table.
  * Gene records in the GFF3 file are assumed to be labeled with type "gene".
+ *
  */
-public class GFF2Genes {
+public class RapGFF2Genes {
     
     public static void main(String[] args) {
         
         if (args.length!=3) {
-            System.out.println("Usage: GFF2Genes <GFF3File> <genus> <species>");
+            System.out.println("Usage: RapGFF2Genes <GFF3File> <genus> <species>");
             System.exit(1);
         }
         
@@ -38,9 +39,9 @@ public class GFF2Genes {
             // read in the GFF3 lines
             BufferedReader in = new BufferedReader(new FileReader(filename));
             while ((line=in.readLine())!=null) {
-                GFFRecord gff = new GFFRecord(line);
+                RapGFFRecord gff = new RapGFFRecord(line);
                 if (gff.seqid!=null && gff.type.equals("gene")) {
-                    String insert = "INSERT INTO genes (" +
+                    String insert = "INSERT INTO rapgenes (" +
                         "seqid, source, type, start, \"end\", strand, id, name, biotype, description, version, genus, species" +
                         ") VALUES (" +
                         Util.charsOrNull(gff.seqid)+","+
@@ -51,9 +52,9 @@ public class GFF2Genes {
                         "'"+gff.strand+"'," +
                         Util.charsOrNull(gff.attributeID)+"," +
                         Util.charsOrNull(gff.attributeName)+"," +
-                        Util.charsOrNull(gff.attributeBiotype)+"," +
-                        Util.charsOrNull(gff.attributeDescription)+"," +
-                        Util.intOrNull(gff.attributeVersion)+"," +
+                        "'protein_coding'," +
+                        Util.charsOrNull(gff.attributeNote)+"," +
+                        "NULL," +
                         Util.charsOrNull(genus)+"," +
                         Util.charsOrNull(species) +
                         ")";

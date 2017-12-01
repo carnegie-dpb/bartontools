@@ -323,10 +323,9 @@ public class Gene implements Comparable {
 	try {
 	    db = new DB(context);
 	    TreeSet<Gene> set = new TreeSet<Gene>();
-	    db.executeQuery("SELECT DISTINCT * FROM public.genes WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND description ILIKE '%"+term+"%'" +
-			    " OR id IN " +
-			    "(SELECT id FROM genealiases WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND (name ILIKE '%"+term+"%' OR fullname ILIKE '"+term+"'))" +
-			    " LIMIT 1000");
+	    db.executeQuery("SELECT DISTINCT * FROM public.genes WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND (name ILIKE '%"+term+"%' OR description ILIKE '%"+term+"%') " +
+			    "OR id IN (SELECT id FROM genealiases WHERE genus='"+experiment.genus+"' AND species='"+experiment.species+"' AND (name ILIKE '%"+term+"%' OR fullname ILIKE '"+term+"')) " +
+			    "LIMIT 1000");
 	    while (db.rs.next()) set.add(new Gene(db.rs));
 	    return set.toArray(new Gene[0]);
 	} finally {

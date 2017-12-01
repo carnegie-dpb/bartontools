@@ -1,10 +1,11 @@
 <%
 Expression expr = new Expression(application, experiment, genes[i]);
 if (expr.values!=null) {
-double meanValue = expr.getMeanValue();
+double minValue = expr.getMinValue();
+double maxValue = expr.getMaxValue();
 %>
-<% if (meanValue>1.0e-5) { %><input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" /><% } %>
-&lang;expr&rang; = <%=expFormat.format(meanValue)%>
+<% if (minValue>1.0e-5) { %><input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" /><% } else { %><input class="checkbox" type="checkbox" disabled /><% } %>
+<%=expFormat.format(minValue)%> &le; expr &le; <%=expFormat.format(maxValue)%>
 <table class="barChart" cellspacing="0">
     <tr>
         <%
@@ -24,11 +25,12 @@ double meanValue = expr.getMeanValue();
 <%
 } else {
 %>
+<input class="checkbox" type="checkbox" disabled />
 No expression.
 <table class="barChart" cellspacing="0">
     <tr>
         <% for (int l=0; l<samples.length; l++) { %>
-        <td><img src="/images/spacer.gif" width="2" height="1"/></td>
+        <td><img src="/images/spacer.gif" width="10" height="1"/><br/><%=samples[l].time%></td>
         <% } %>
     </tr>
 </table>
