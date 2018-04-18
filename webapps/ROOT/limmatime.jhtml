@@ -1,0 +1,99 @@
+<h2>Limma Timewise Differential Expression Analysis</h2>
+
+<%@ include file="../tags.jhtml" %>
+
+<table cellspacing="2" class="searchParameters">
+    <tr>
+	<td class="searchParameters">
+	    <!-- analysis-specific search form starts -->
+	    <form action="limmatime.jsp" method="post">
+		<table cellspacing="0" align="center">
+		    <tr>
+			<% for (int i=0; i<conditions.length; i++) { %>
+			<td align="center">
+			    <%=conditions[i]%><br/>
+			    <select name="<%=conditions[i]%>">
+				<option <% if (directions[i]==0) out.print("selected"); %> value="0">--</option>
+				<option <% if (directions[i]==LimmaTimeResult.UP) out.print("selected"); %> value="<%=LimmaTimeResult.UP%>">UP</option>
+				<option <% if (directions[i]==LimmaTimeResult.DN) out.print("selected"); %> value="<%=LimmaTimeResult.DN%>">DN</option>
+				<option <% if (directions[i]==LimmaTimeResult.NC) out.print("selected"); %> value="<%=LimmaTimeResult.NC%>">NC</option>
+			    </select>
+			</td>
+			<% } %>	    
+		    </tr>
+		</table>
+		<table cellspacing="0" align="center">
+		    <tr>
+			<td class="searchInput">Min |logFC|<br/><input type="text" name="minlogFC" size="4" value="<%=minlogFC%>"/></td>
+			<td class="searchInput">
+			    Max
+			    <input type="radio" name="confidenceTerm" <% if (confidenceTerm.equals("p")) out.print("checked"); %> value="p">p
+			    <input type="radio" name="confidenceTerm" <% if (confidenceTerm.equals("q")) out.print("checked"); %> value="q">q
+			    <br/>
+			    <input type="text" name="maxpq" size="4" value="<%=maxpq%>"/>
+			</td>
+		    </tr>
+		</table>
+		<input type="submit" class="searchButton" name="conditionSearch" value="search"/>
+	    </form>
+	    <!-- analysis-specific search form ends -->
+	</td>
+	<td class="searchParameters"><%@ include file="../search-genes.jhtml" %></td>
+	<td class="searchParameters"><%@ include file="../search-descriptions.jhtml" %></td>
+	<% if (experiment.annotation.startsWith("TAIR")) { %><td class="searchParameters"><%@ include file="../search-tair.jhtml" %></td><% } %>
+	<td style="vertical-align:top"><%@ include file="../summary-results.jhtml" %></td>
+    </tr>
+</table>
+
+<!-- form for tagging and viewing operations -->
+<%  if (genes.length>0) { %>
+<div style="position:relative; width:0; height:0">
+    <div class="topButtons">
+	<form action="limmatime.jsp" method="post">
+	    <input type="hidden" name="minlogFC" value="<%=minlogFC%>"/>
+	    <input type="hidden" name="maxpq" value="<%=maxpq%>"/>
+	    <%@ include file="viewbuttons.jhtml" %>
+    </div>
+</div>
+<% } // have genes %>
+<!-- end tagging/viewing form -->
+
+<%
+// query results here for any summary stats above individual rows
+for (int i=0; i<genes.length; i++) {
+			      LimmaTimeResult[] res = new LimmaTimeResult[conditions.length];
+			      boolean showCheckbox = true;
+			      for (int j=0; j<conditions.length; j++) {
+								 res[j] = new LimmaTimeResult(application, experiment, conditions[j], genes[i]);
+								 if (res[j].logFC==null) showCheckbox = false;
+								 }
+								 %>
+    <table cellspacing="0" class="gene">
+	<tr>
+	    <td valign="top" class="dedata">
+		<table cellspacing="0" class="deChart">
+		    <tr>
+			<td><input class="checkbox" type="checkbox" name="id" <% if (showCheckbox) out.print("checked"); else out.print("disabled"); %> value="<%=genes[i].id%>" /></td>
+			<td class="ac">base</td>
+			<% for (int k=0; k<times.length-1; k++) { %>
+			    <td class="ac bb">logFC(<%=times[k+1]%>)</td>
+			    <% } %>
+		    </tr>
+		    <% for (int j=0; j<conditions.length; j++) { %>
+			<%@ include file="../limmatime-row.jhtml" %>
+			<% } %>
+		</table>
+	    </td>
+	    <td valign="top">
+		<%@ include file="../gene.jhtml" %>
+		<% if (experiment.annotation.startsWith("TAIR")) { %><%@ include file="../tairinfo.jhtml" %><% } %>
+		<% if (experiment.annotation.startsWith("EnsemblGRCh")) { %><%@ include file="../ensembl-grch.jhtml" %><% } %>
+	    </td>
+	</tr>
+    </table>
+    <%
+    } // for each gene
+    %>
+    <hr/>
+	</form>
+	

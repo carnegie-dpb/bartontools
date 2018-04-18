@@ -133,7 +133,7 @@ double minConditionTimeQ = 0.00; if (request.getParameter("minConditionTimeQ")!=
 double maxConditionTimeQ = 0.05; if (request.getParameter("maxConditionTimeQ")!=null) maxConditionTimeQ = Util.getDouble(request, "maxConditionTimeQ");
 double minCtrl = 0.0; if (request.getParameter("minCtrl")!=null) minCtrl = Util.getDouble(request, "minCtrl");
 
-// Cuffdiff, limma defaults
+// Cuffdiff parameters
 double minBase = 1.0;
 double minlogFC = 2.0; 
 double maxpq = 0.01;
@@ -146,6 +146,16 @@ int[] directions = new int[conditions.length];
 boolean includeDirections = false;
 for (int i=0; i<conditions.length; i++) {
     directions[i] = Util.getInt(request, conditions[i]);
+    if (directions[i]!=0) includeDirections = true;
+}
+
+// limma parameters; assume only one base condition
+String baseCondition = LimmaResult.getBaseConditions(application, experiment)[0];
+String[] deConditions = LimmaResult.getDEConditions(application, experiment);
+directions = new int[deConditions.length];
+includeDirections = false;
+for (int i=0; i<deConditions.length; i++) {
+    directions[i] = Util.getInt(request, deConditions[i]);
     if (directions[i]!=0) includeDirections = true;
 }
 %>

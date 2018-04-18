@@ -3,26 +3,30 @@
 <%@ include file="../common.inc" %>
 <%
 if (idSearch) {
-	genes = Gene.searchOnIDs(application, searchIDs);
+    genes = Gene.searchOnIDs(application, searchIDs);
 } else if (descriptionSearch) {
-	genes = Gene.searchOnDescriptions(application, experiment, searchDescriptionString);
+    genes = Gene.searchOnDescriptions(application, experiment, searchDescriptionString);
 } else if (tagSearch) {
-	genes = Gene.getForTags(application, tags, tagMode);
+    genes = Gene.getForTags(application, tags, tagMode);
 } else if (tairSearch) {
-	genes = TAIRGene.searchOnComputationalDescription(application, experiment, tairterm);
+    genes = TAIRGene.searchOnComputationalDescription(application, experiment, tairterm);
 } else if (conditionSearch && includeDirections) {
-	genes = LimmaTimeResult.searchOnDirections(application, experiment, conditions, minlogFC, maxpq, confidenceTerm, directions);
+    genes = LimmaResult.searchOnDirections(application, experiment, baseCondition, deConditions, minlogFC, maxpq, confidenceTerm, directions);
+
+
+
 } else if (conditionSearch) {
-	genes = LimmaTimeResult.search(application, experiment, conditions, minlogFC, maxpq, confidenceTerm);
+    // genes = LimmaResult.search(application, experiment, deConditions, minlogFC, maxpq, confidenceTerm);
+
 } else if (geneIDs.length>0) {
-	genes = Gene.searchOnIDs(application, geneIDs);
+    genes = Gene.searchOnIDs(application, geneIDs);
 }
 
 // abort if too many genes for display
 boolean tooMany = genes.length>MAXMATCHES;
 if (tooMany) {
-	error = "Your search returned "+genes.length+" results; please narrow your search criteria.";
-	genes = new Gene[0];
+    error = "Your search returned "+genes.length+" results; please narrow your search criteria.";
+    genes = new Gene[0];
 }
 %>
 <%@ include file="../header.jhtml" %>

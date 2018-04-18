@@ -24,6 +24,12 @@ boolean downloadSVG = request.getParameter("downloadSVG")!=null;
 // create the dataset for the plot
 DefaultXYDataset exprDataset = new DefaultXYDataset();
 
+// override for certain types of data
+boolean logData = experiment.expressionlabel.equals("RMA intensity");
+if (logData) {
+    showLinear = true;
+}
+
 // loop through each gene and add to dataset
 double meanControl = 0.0; // this is used if we have only one gene being displayed
 for (int i=0; i<genes.length; i++) {
@@ -33,7 +39,13 @@ for (int i=0; i<genes.length; i++) {
         xyData[0][j] = (double)j;
         xyData[1][j] = expr.values[j];
 	meanControl = expr.getMeanControlValue();
-        if (showRelative) xyData[1][j] = xyData[1][j]/meanControl;
+        if (showRelative) {
+            if (logData) {
+                xyData[1][j] = xyData[1][j] - meanControl;
+            } else {
+                xyData[1][j] = xyData[1][j]/meanControl;
+            }
+        }
         if (showZscores) xyData[1][j] = (xyData[1][j]-meanControl)/expr.getControlStandardDeviation();
     }
     String label = genes[i].id;
@@ -100,7 +112,13 @@ xAxis.setVerticalTickLabels(true);
 plot.setDomainAxis(xAxis);
 
 String yLabel = experiment.expressionlabel;
-if (showRelative) yLabel += "  / <control>";
+if (showRelative) {
+    if (logData) {
+        yLabel += " -- <control>";
+    } else {
+        yLabel += " / <control>";
+    }
+}
 if (showZscores) yLabel += "   z-scores";
 
 double yMin = 0;
@@ -181,8 +199,10 @@ for (int i=0; i<samples.length; i++) {
 plot.addAnnotation(new XYLineAnnotation(samples[samples.length-1].num-0.5, yLineMin, samples[samples.length-1].num-0.5, yLineMax, new BasicStroke(1.0f), Color.black));
 
 if (showRelative) {
-    // add a horizontal line at 1.0 for relative scale
-    plot.addAnnotation(new XYLineAnnotation(-0.5, 1.0, samples[samples.length-1].num-0.5, 1.0, new BasicStroke(0.4f), Color.black));
+    // add a horizontal line at 1.0 for relative scale (or 0.0 for log data)
+    double linePos = 1.0;
+    if (logData) linePos = 0.0;
+    plot.addAnnotation(new XYLineAnnotation(-0.5, linePos, samples[samples.length-1].num-0.5, linePos, new BasicStroke(0.4f), Color.black));
 } else if (showZscores) {
     // add a horizontal line at 0 for z-scores
     plot.addAnnotation(new XYLineAnnotation(-0.5, 0.0, samples[samples.length-1].num-0.5, 0.0, new BasicStroke(0.4f), Color.black));
@@ -219,10 +239,14 @@ if (downloadSVG) {
 		&nbsp;&nbsp;
 		<% if (Sample.hasControls(samples)) { %>
 		<input type="radio" class="radio" name="yOption" <% if (showValues) out.print("checked"); %> onClick="submit()" value="values"/>values
+                <% if (logData) { %>
+                <input type="radio" class="radio" name="yOption" <% if (showRelative) out.print("checked"); %> onClick="submit()" value="relative"/>values&minus;&lang;control&rang;
+                <% } else { %>
 		<input type="radio" class="radio" name="yOption" <% if (showRelative) out.print("checked"); %> onClick="submit()" value="relative"/>values/&lang;control&rang;
+                <% } %>
+                <% } %>
 		<input type="radio" class="radio" name="yOption" <% if (showZscores) out.print("checked"); %> onClick="submit()" value="z-scores"/>z-scores
-		<% } %>
-		<% if (!showZscores) { %>
+                <% if (!showZscores && !logData) { %>
 		&nbsp;&nbsp;
 		<input type="radio" class="radio" name="showLinear" <% if (!showLinear) out.print("checked"); %> onClick="submit()" value="false"/>log scale
 		<input type="radio" class="radio" name="showLinear" <% if (showLinear) out.print("checked"); %> onClick="submit()" value="true"/>linear scale

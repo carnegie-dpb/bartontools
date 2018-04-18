@@ -1,40 +1,21 @@
 <%
-if (res[j].q!=null) {
-	String style = "normal";
-	int tMax = 0;
-	double logFCMax = 0;
-	for (int k=0; k<res[j].q.length; k++) {
-		if (res[j].q[k]<0.05) {
-			style = "significant";
-			if (res[j].logFC[1]> 1.0) style = "upreg";
-			if (res[j].logFC[1]<-1.0) style = "downreg";
-			if (Math.abs(res[j].logFC[k])>logFCMax) {
-				logFCMax = Math.abs(res[j].logFC[k]);
-				tMax = times[k+1];
-			}
-		}
-	}
-	%>
-	<tr>
-		<td class="<%=style%>"><%=conditions[j]%><% if (tMax>0) out.print("["+tMax+"]"); %></td>
-		<td class="ar br"><%=expFormat.format(Util.mean(res[j].aveExpr))%></td>
-		<%
-		for (int k=0; k<times.length-1; k++) {
-						   if (k<res[j].logFC.length) {
-									String bg = Util.bgFC(res[j].logFC[k]);
-									String sig = "";
-									if (res[j].q[k]<0.05) sig = "significant";
-			%>
-			<td class="logFC <%=bg%>"><span class="<%=sig%>"><%=logFCFormat.format(res[j].logFC[k])%></span>  (<%=pFormat.format(res[j].p[k])%>,<%=pFormat.format(res[j].q[k])%>)</td>
-			<%
-			} else {
-			%>
-			<td class="logFC gray"></td>
-			<%
-			}
-			}
-			%>
-	</tr>
-	<%
-	}
-	%>
+if (res[j]!=null) {
+    String style = "normal";
+    if (res[j].q<0.05) {
+        style = "significant";
+        if (res[j].logFC>1.0) style = "upreg";
+        if (res[j].logFC<-1.0) style = "downreg";
+    }
+%>
+<tr>
+    <td class="bl bb <%=style%>"><%=deConditions[j]%></td>
+    <%
+    String bg = Util.bgFC(res[j].logFC);
+    String sig = "";
+    if (res[j].q<0.05) sig = "significant";
+    %>
+    <td class="bl logFC <%=bg%>"><span class="<%=sig%>"><%=logFCFormat.format(res[j].logFC)%></span>  (<%=pFormat.format(res[j].p)%>,<%=pFormat.format(res[j].q)%>)</td>
+</tr>
+<%
+}    
+%>

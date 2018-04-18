@@ -2,6 +2,5 @@
         <li><a href="/index.jsp">Home</a></li>
         <li><a href="index.jsp">Experiment</a></li>
   	<li><a href="expression.jsp">Expression Viewer</a></li>
-	<li><a href="limmatime.jsp">Limma time-wise DE</a></li> 
-  	<li><a href="cminer.jsp">Correlation Miner</a></li>
+	<li><a href="limma.jsp">Limma DE</a></li> 
 </ul>

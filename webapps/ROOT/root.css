@@ -39,8 +39,8 @@ textarea {
 }
 
 input {
-	padding: 1px;
-	margin: 1px;
+    padding: 1px;
+    margin: 1px;
 }
 
 p {}
@@ -110,17 +110,17 @@ ul.nav a:hover {
 }
 
 form.login {	
-	width: 400px;
-	padding: 10px;
-	border: 1px solid gray;
-	background-color: lightgray;
+    width: 400px;
+    padding: 10px;
+    border: 1px solid gray;
+    background-color: lightgray;
 }
 table.login {
 }
 
 .message {
-	font-weight: bold;
-	color: green;
+    font-weight: bold;
+    color: green;
 }
 
 .genus { font-style: italic; }
@@ -157,7 +157,7 @@ table.samples td {
 }
 
 table.samples td.label {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 div.comment { 
@@ -175,8 +175,8 @@ div.tool,li.tool a {
     text-decoration: none;
 }
 div.tool,li.tool a:hover { 
-			 color: darkred;
-		 }
+	     color: darkred;
+	 }
 
 div.workflow { padding:5px 0; font-size:13px; }
 div.workflow a { color: darkgreen; text-decoration: none; }
@@ -213,35 +213,35 @@ table.data td {
 
 div.error {
     padding: 10px;
-	margin: 5px 0;
+    margin: 5px 0;
     border: 1px solid red;
     width: 800px;
 }
 div.message {
-	padding: 10px;
-	margin: 5px 0;
-	border: 1px solid green;
-	width: 800px;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid green;
+    width: 800px;
 }
 
 table.header {
 }
 table.header td.logo {
-	padding-right: 30px;
+    padding-right: 30px;
 }
 table.header img.logo {
 }
 table.header td.heading {
-	vertical-align: top;
-	padding-top: 26px;
+    vertical-align: top;
+    padding-top: 26px;
 }
 table.header .title {
     font-size: 44px;
     font-weight: normal;
-	color: gray;
+    color: gray;
 }
 table.header .loginStatus {
-	font-size: 18px;
+    font-size: 18px;
 }
 
 .footer {
@@ -251,30 +251,30 @@ table.header .loginStatus {
 }
 
 .git {
-	padding: 2px 0;
-	font-family: "Lucida Console", Monaco, monospace;
-	color: gray;
+    padding: 2px 0;
+    font-family: "Lucida Console", Monaco, monospace;
+    color: gray;
 }
 
 div.toolBlurb {
-	font-style: italic;
-	padding-bottom: 5px;
+    font-style: italic;
+    padding-bottom: 5px;
 }
 
 ol.toolInstructions {
-	margin: 0 0 0 2px;
-	padding: 5px 20px;
-	background: #ddd;
-	border: 1px solid gray;
+    margin: 0 0 0 2px;
+    padding: 5px 20px;
+    background: #ddd;
+    border: 1px solid gray;
 }
 
 div.searchTitle {
-	padding-bottom: 5px;
+    padding-bottom: 5px;
 }
 
 div.tagHeading {
-	border-bottom: 1px solid lightgray;
-	padding: 2px;
+    border-bottom: 1px solid lightgray;
+    padding: 2px;
 }
 
 div.combineTags {
@@ -305,7 +305,7 @@ table.condition {
 td.dedata { 
 }
 td.dedata table {
-	width: 350px;
+    width: 350px;
 }
 
 td.cuffdata {
@@ -357,14 +357,14 @@ table.expressionTable td.value {
 }
 
 .geneID {
-	font-weight: bold;
+    font-weight: bold;
 }
 .geneName { 
-	font-weight: bold;
+    font-weight: bold;
     font-style: italic;
 }
 .alias {
-	font-weight: normal;
+    font-weight: normal;
     font-style: italic;
 }
 
@@ -469,9 +469,9 @@ td.downreg {
 
 div.topButtons {
     width: 700px;
-    vertical-align: bottom;
     position: relative;
-    top: -130px;
+    bottom: 98px;
+    vertical-align: bottom;
     margin-bottom: -90px;
 }
 table.topButtons { 
@@ -593,8 +593,8 @@ table.deChart td.logFC {
     border-bottom: 1px solid black;
 }
 table.deChart td.missing {
-	background-color: lightgray;
-	text-align: center;
+    background-color: lightgray;
+    text-align: center;
 }
 
 
@@ -839,9 +839,8 @@ table.barChart {
     border: 2px solid white;
 }
 table.barChart td {
-    height: 100px;
     font-size: 10px;
-    padding: 0 1px 0 0;
+    padding: 10px 1px 0 0;
     vertical-align: bottom;
 }
 
