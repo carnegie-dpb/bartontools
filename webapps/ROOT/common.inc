@@ -150,12 +150,17 @@ for (int i=0; i<conditions.length; i++) {
 }
 
 // limma parameters; assume only one base condition
-String baseCondition = LimmaResult.getBaseConditions(application, experiment)[0];
-String[] deConditions = LimmaResult.getDEConditions(application, experiment);
-directions = new int[deConditions.length];
-includeDirections = false;
-for (int i=0; i<deConditions.length; i++) {
-    directions[i] = Util.getInt(request, deConditions[i]);
-    if (directions[i]!=0) includeDirections = true;
+String baseCondition = null;
+String[] deConditions = null;
+String[] baseConditions = LimmaResult.getBaseConditions(application, experiment);
+if (baseConditions.length>0) {
+    baseCondition = baseConditions[0];
+    deConditions = LimmaResult.getDEConditions(application, experiment);
+    directions = new int[deConditions.length];
+    includeDirections = false;
+    for (int i=0; i<deConditions.length; i++) {
+	directions[i] = Util.getInt(request, deConditions[i]);
+	if (directions[i]!=0) includeDirections = true;
+    }
 }
 %>

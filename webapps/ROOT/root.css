@@ -468,11 +468,8 @@ td.downreg {
 }
 
 div.topButtons {
-    width: 700px;
     position: relative;
-    bottom: 98px;
     vertical-align: bottom;
-    margin-bottom: -90px;
 }
 table.topButtons { 
 }

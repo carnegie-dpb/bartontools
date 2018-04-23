@@ -77,7 +77,7 @@
     <input type="hidden" name="maxConditionQ" value="<%=maxConditionQ%>"/>
     <input type="hidden" name="maxTimeQ" value="<%=maxTimeQ%>"/>
     <input type="hidden" name="maxConditionTimeQ" value="<%=maxConditionTimeQ%>" />
-    <div class="topButtons" style="left:550px">
+    <div class="topButtons" style="width:450px;left:540px;top:-130px;margin-bottom:-120px;">
         <%@ include file="../summary-results.jhtml" %>
 	<%@ include file="viewbuttons.jhtml" %>
     </div>

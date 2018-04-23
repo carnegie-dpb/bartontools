@@ -59,7 +59,7 @@
 <%  if (genes.length>0) { %>
 <!-- form for tagging and viewing operations along with results display -->
 <form action="cuffdiff.jsp" method="post">
-    <div class="topButtons" style="left:670px">
+    <div class="topButtons" style="width:450px;left:700px;top:-140px;margin-bottom:-120px;">
         <%@ include file="../summary-results.jhtml" %>
         <%@ include file="viewbuttons.jhtml" %>
     </div>

@@ -47,11 +47,9 @@
     <input type="hidden" name="gene2input" value="<%=gene2input%>"/>
     <input type="hidden" name="polarity" value="<%=polarity%>"/>
     <input type="hidden" name="corrThreshold" value="<%=corrThreshold%>"/>
-    <div style="position:relative; width:0; height:0">
-	<div class="topButtons" style="left:550px;">
-	    <%@ include file="../summary-results.jhtml" %>
-	    <%@ include file="viewbuttons.jhtml" %>
-	</div>
+    <div class="topButtons" style="width:450px;left:540px;top:-130px;margin-bottom:-120px;">
+        <%@ include file="../summary-results.jhtml" %>
+	<%@ include file="viewbuttons.jhtml" %>
     </div>
     <% for (int i=0; i<genes.length; i++) { %>
 	<table cellspacing="0" class="gene">

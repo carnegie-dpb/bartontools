@@ -49,7 +49,7 @@
 <%  if (genes.length>0) { %>
 <form action="limma.jsp" method="post">
     <div style="position:relative; width:0; height:0">
-        <div class="topButtons" style="left:680px;">
+	<div class="topButtons" style="width:600px;left:680px;top:-120px;margin-bottom:-120px;">
             <!-- tagging and viewing operations form starts -->
             <input type="hidden" name="minlogFC" value="<%=minlogFC%>"/>
             <input type="hidden" name="maxpq" value="<%=maxpq%>"/>

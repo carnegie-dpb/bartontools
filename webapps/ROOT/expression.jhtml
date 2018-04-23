@@ -19,7 +19,7 @@
 <!-- start form for tagging and viewing operations, along with results display -->
 <form action="expression.jsp" method="post">
     <div style="position:relative; width:0; height:0">
-	<div class="topButtons" style="left:430px;">
+	<div class="topButtons" style="width:600px;left:430px;top:-130px;margin-bottom:-120px;">
 	    <%@ include file="../summary-results.jhtml" %>
 	    <%@ include file="viewbuttons.jhtml" %>
 	</div>
