@@ -30,6 +30,14 @@ if (logarithmic) {
     zMin = Util.log2(1/zMax);
 }
 
+// override for certain types of data
+boolean logData = experiment.expressionlabel.equals("RMA intensity");
+if (logData) {
+    linear = true;
+    zMin = 1e5;
+    zMax = 0;
+}
+
 // k is our x,y,z value index
 int k = 0;
 
@@ -44,9 +52,19 @@ for (int i=0; i<genes.length; i++) {
         xvalues[k] = (double)j - 0.5;
         yvalues[k] = (double)i - 0.5;
         double value = expr.values[j];
-        if (relative) value = value/meanControlValue;
+        if (relative) {
+            if (logData) {
+                value = value - meanControlValue;
+            } else {
+                value = value/meanControlValue;
+            }
+        }
         if (linear) {
             zvalues[k] = value;
+            if (logData) {
+                if (value<zMin) zMin = value;
+                if (value>zMax) zMax = value;
+            }
         } else if (value==0.0) {
             zvalues[k] = zMin;
         } else {
@@ -57,8 +75,6 @@ for (int i=0; i<genes.length; i++) {
         if (xvalues[k]>xMax) xMax = xvalues[k];
         if (yvalues[k]<yMin) yMin = yvalues[k];
         if (yvalues[k]>yMax) yMax = yvalues[k];
-        // if (zvalues[k]<zMin) zMin = zvalues[k];
-        // if (zvalues[k]>zMax) zMax = zvalues[k];
         k++;
     }
 }
@@ -173,7 +189,13 @@ chart.setBackgroundPaint(Color.white);
 
 ArrayList<TextTitle> subtitles = new ArrayList<TextTitle>();
 String subTitle = experiment.expressionlabel;
-if (relative) subTitle += " / <control>";
+if (relative) {
+    if (logData) {
+        subTitle += " - <control>";
+    } else {
+        subTitle += " / <control>";
+    }
+}
 subtitles.add(new TextTitle(subTitle));
 chart.setSubtitles(subtitles);
 
@@ -193,11 +215,8 @@ if (downloadSVG) {
     pngFile = ServletUtilities.saveChartAsPNG(chart, chartWidth, chartHeight, session);
 }
 %>
-    <div class="plot">
+    <div class="heatmap">
         <img class="heatmapPlot" src="/temp/<%=pngFile%>" alt="<%=chartTitle%>" border="0" width="<%=chartWidth%>" height="<%=chartHeight%>"/>
-    </div>
-    
-    <div class="plotControls">
         <form action="<%=request.getRequestURI()%>" method="post">
             <input type="hidden" name="viewHeatmap" value="true"/>
             <input type="hidden" name="plotTitle" value="<%=plotTitle%>"/>
@@ -207,24 +226,26 @@ if (downloadSVG) {
             <% for (int i=0; i<genes.length; i++) { %>
                 <input type="hidden" name="id" value="<%=genes[i].id%>"/>
                 <% } %>
-                <% if (linear) { %>
-                <input type="submit" name="toggleLinear" class="viewButton" value="use log scale"/>
-                <% } else { %>
-                <input type="submit" name="toggleLinear" class="viewButton" value="use linear scale"/>
+                <% if (linear && !logData) { %>
+                <input type="submit" name="toggleLinear" class="viewButton" value="use log scale"/><br/>
+                <% } else if (!logData) { %>
+                <input type="submit" name="toggleLinear" class="viewButton" value="use linear scale"/><br/>
                 <% } %>
                 <% if (Sample.hasControls(samples)) {
                 if (relative) { %>
-                <input type="submit" name="toggleRelative" class="viewButton" value="show absolute FPKM"/>
+                <input type="submit" name="toggleRelative" class="viewButton" value="show <%=experiment.expressionlabel%>"/><br/>
+                <% } else if (logData) { %>
+                <input type="submit" name="toggleRelative" class="viewButton" value="show <%=experiment.expressionlabel%> &minus; &lang;control&rang;"/><br/>
                 <% } else { %>
-                <input type="submit" name="toggleRelative" class="viewButton" value="divide by &lang;control&rang;"/>
+                <input type="submit" name="toggleRelative" class="viewButton" value="divide by &lang;control&rang;"/><br/>
                 <% } } %>
-                    <% // if (!relative || linear) { %>
                 <select name="changePalette" onChange="submit()">
                     <option <% if (paletteName.equals("heat palette")) out.print("selected"); %> value="heat palette">heat palette</option>
                     <option <% if (paletteName.equals("rainbow palette")) out.print("selected"); %> value="rainbow palette">rainbow palette</option>
                     <option <% if (paletteName.equals("cyan-magenta palette")) out.print("selected"); %> value="cyan-magenta palette">cyan-magenta palette</option>
                 </select>
-    <% // } %>
+                <br/>
                 <input type="submit" name="downloadSVG" class="download" value="download SVG file"/>
         </form>
     </div>
+

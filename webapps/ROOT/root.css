@@ -39,7 +39,7 @@ textarea {
 }
 
 input {
-    padding: 1px;
+    padding: 2px;
     margin: 1px;
 }
 
@@ -508,8 +508,8 @@ input.addTagButton {
 }
 input.viewButton { 
     font-size: 11px;
-    color: white;
     font-weight: bold;
+    color: white;
     background-color: #0aa;
     padding: 2px;
     border: 1px solid gray;
@@ -749,11 +749,11 @@ img.samplesPlot {
 }
 
 div.plot { 
+    display:inline-block;
 }
 
 div.plotControls {
-    width: 1400px;
-    text-align: center;
+    display:inline-block;
 }
 
 div.affxheading { 
@@ -895,3 +895,8 @@ table.dtChart td {
 
 button.sort { font-size: 11px; font-weight: bold; }
 button.selected { color: blue; }
+
+.heatmap {
+    display:inline-block;
+    text-align:center;
+}
