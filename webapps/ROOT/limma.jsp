@@ -11,7 +11,7 @@ if (idSearch) {
 } else if (tairSearch) {
     genes = TAIRGene.searchOnComputationalDescription(application, experiment, tairterm);
 } else if (conditionSearch && includeDirections) {
-    genes = LimmaResult.searchOnDirections(application, experiment, baseCondition, deConditions, minlogFC, maxpq, confidenceTerm, directions);
+    genes = LimmaResult.searchOnDirections(application, experiment, baseConditions, deConditions, minlogFC, maxpq, confidenceTerm, directions);
 
 
 

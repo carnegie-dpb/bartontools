@@ -96,7 +96,7 @@ public class LimmaResult extends AnalysisResult {
      */
     public static String[] getBaseConditions(DB db) throws SQLException {
         ArrayList<String> list = new ArrayList<String>();
-        db.executeQuery("SELECT DISTINCT basecondition FROM limmaresults ORDER BY basecondition");
+        db.executeQuery("SELECT DISTINCT basecondition,decondition FROM limmaresults ORDER BY basecondition,decondition");
         while (db.rs.next()) list.add(new String(db.rs.getString("basecondition")));
         return list.toArray(new String[0]);
     }
@@ -118,7 +118,7 @@ public class LimmaResult extends AnalysisResult {
      */
     public static String[] getDEConditions(DB db) throws SQLException {
         ArrayList<String> list = new ArrayList<String>();
-        db.executeQuery("SELECT DISTINCT decondition FROM limmaresults ORDER BY decondition");
+        db.executeQuery("SELECT DISTINCT basecondition,decondition FROM limmaresults ORDER BY basecondition,decondition");
         while (db.rs.next()) list.add(new String(db.rs.getString("decondition")));
         return list.toArray(new String[0]);
     }
@@ -137,9 +137,9 @@ public class LimmaResult extends AnalysisResult {
 
 
     /**
-     * Return an array of genes selected against minimum counts and max adjusted p with given change directions.
+     * Return an array of genes selected against minimum RMA value and max adjusted p with given change directions.
      */
-    public static Gene[] searchOnValuesAndDirections(ServletContext context, Experiment experiment, String baseCondition, String[] deConditions,
+    public static Gene[] searchOnValuesAndDirections(ServletContext context, Experiment experiment, String[] baseConditions, String[] deConditions,
                                                      double minAveExpr, double minlogFC, double maxAdjPValue, int[] directions)
         throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
         DB db = null;
@@ -155,7 +155,7 @@ public class LimmaResult extends AnalysisResult {
                     } else {
                         query += " INTERSECT ";
                     }
-                    query += "SELECT id FROM limmaresults WHERE basecondition='"+baseCondition+"' AND decondition='"+deConditions[i]+"' AND aveexpr>"+minAveExpr+" AND adjpvalue<"+maxAdjPValue;
+                    query += "SELECT id FROM limmaresults WHERE basecondition='"+baseConditions[i]+"' AND decondition='"+deConditions[i]+"' AND aveexpr>"+minAveExpr+" AND adjpvalue<"+maxAdjPValue;
                     if (directions[i]==-1) query += " AND logfc<-"+minlogFC;
                     if (directions[i]==+1) query += " AND logfc>" +minlogFC;
                 }
@@ -171,9 +171,9 @@ public class LimmaResult extends AnalysisResult {
     }
 
     /**
-     * Return an array of genes selected against minimum counts and max adjusted p for at least one condition
+     * Return an array of genes selected against minimum RMA value and max adjusted p for at least one condition
      */
-    public static Gene[] searchOnValues(DB db, String baseCondition, String[] deConditions, double minAveExpr, double minlogFC, double maxAdjPValue)
+    public static Gene[] searchOnValues(DB db, String[] baseConditions, String[] deConditions, double minAveExpr, double minlogFC, double maxAdjPValue)
         throws SQLException {
         String query = "";
         boolean first = true;
@@ -183,7 +183,8 @@ public class LimmaResult extends AnalysisResult {
             } else {
                 query += " UNION ";
             }
-            query += "SELECT id FROM limmaresults WHERE basecondition='"+baseCondition+"' AND decondition='"+deConditions[i]+"' AND aveexpr>"+minAveExpr+" AND adjpvalue<"+maxAdjPValue+" AND abs(logfc)>"+minlogFC;
+            query += "SELECT id FROM limmaresults WHERE basecondition='"+baseConditions[i]+"' AND decondition='"+deConditions[i]+
+                "' AND aveexpr>"+minAveExpr+" AND adjpvalue<"+maxAdjPValue+" AND abs(logfc)>"+minlogFC;
         }
         query += " ORDER BY id";
         db.executeQuery(query);
@@ -192,14 +193,14 @@ public class LimmaResult extends AnalysisResult {
         return list.toArray(new Gene[0]);
     }
     /**
-     * Return an array of genes selected against minimum counts and max adjusted p for at least one condition
+     * Return an array of genes selected against minimum RMA value and max adjusted p for at least one condition
      */
-    public static Gene[] searchOnValues(ServletContext context, Experiment experiment, String baseCondition, String[] deConditions, double minAveExpr, double minlogFC, double maxAdjPValue)
+    public static Gene[] searchOnValues(ServletContext context, Experiment experiment, String[] baseConditions, String[] deConditions, double minAveExpr, double minlogFC, double maxAdjPValue)
         throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
         DB db = null;
         try {
             db = new DB(context, experiment.schema);
-            return searchOnValues(db, baseCondition, deConditions, minAveExpr, minlogFC, maxAdjPValue);
+            return searchOnValues(db, baseConditions, deConditions, minAveExpr, minlogFC, maxAdjPValue);
         } finally {
             if (db!=null) db.close();
         }
@@ -209,14 +210,14 @@ public class LimmaResult extends AnalysisResult {
      * Return an array of genes selected against minimum logFC and max q with given change directions. Confidence term ("p" or "q") to minimize is supplied.
      * Requires: public.array_avg(double precision[])
      */
-    public static Gene[] searchOnDirections(DB db, String baseCondition, String[] deConditions, double minlogFC, double maxPQ, String confidenceTerm, int[] directions)
+    public static Gene[] searchOnDirections(DB db, String[] baseConditions, String[] deConditions, double minlogFC, double maxPQ, String confidenceTerm, int[] directions)
         throws SQLException {
         // build the query for all the deConditions with non-zero directions
         String query = "";
         boolean first = true;
         String pq_value = "pvalue";
         if (confidenceTerm.equals("q")) pq_value = "adjpvalue";
-        // build the query - NOTE PostgreSQL arrays are 1-based, so j starts with 1!
+        // build the query
         for (int i=0; i<deConditions.length; i++) {
             if (directions[i]!=0) {
                 if (first) {
@@ -224,7 +225,7 @@ public class LimmaResult extends AnalysisResult {
                 } else {
                     query += " INTERSECT ";
                 }
-                query += "SELECT id FROM limmaresults WHERE basecondition='"+baseCondition+"' AND decondition='"+deConditions[i]+"'";
+                query += "SELECT id FROM limmaresults WHERE basecondition='"+baseConditions[i]+"' AND decondition='"+deConditions[i]+"'";
                 if (directions[i]==UP) {
                     query += " AND ("+pq_value+"<"+maxPQ+" AND logfc>"+minlogFC+")";
                 } else if (directions[i]==DN) {
@@ -247,13 +248,13 @@ public class LimmaResult extends AnalysisResult {
     /**
      * Return an array of genes selected against minimum logFC and max q with given change directions. Confidence term is supplied.
      */
-    public static Gene[] searchOnDirections(ServletContext context, Experiment experiment, String baseCondition, String[] deConditions,
+    public static Gene[] searchOnDirections(ServletContext context, Experiment experiment, String[] baseConditions, String[] deConditions,
                                             double minlogFC, double maxPQ, String confidenceTerm, int[] directions)
         throws SQLException, FileNotFoundException, NamingException, ClassNotFoundException {
         DB db = null;
         try {
             db = new DB(context, experiment.schema);
-            return searchOnDirections(db, baseCondition, deConditions, minlogFC, maxPQ, confidenceTerm, directions);
+            return searchOnDirections(db, baseConditions, deConditions, minlogFC, maxPQ, confidenceTerm, directions);
         } finally {
             if (db!=null) db.close();
         }

@@ -229,29 +229,31 @@ if (downloadSVG) {
     <!-- samples-plot.jhtml -->
     <div class="plot">
         <img class="samplesPlot" src="/temp/<%=pngFile%>" alt="<%=chartTitle%>" border="0" width="<%=chartWidth%>" height="<%=chartHeight%>" />
-    </div>
-    <div class="plotControls">
-        <form action="<%=request.getRequestURI()%>" method="post">
-            <input type="hidden" name="viewSamples" value="true"/>
-            <% for (int i=0; i<genes.length; i++) { %><input type="hidden" name="id" value="<%=genes[i].id%>"/><% } %>
-                <input type="radio" class="radio" name="showMeans" <% if (!showMeans) out.print("checked"); %> onClick="submit()" value="false"/>samples
-                <input type="radio" class="radio" name="showMeans" <% if (showMeans) out.print("checked"); %> onClick="submit()" value="true"/>means
-		&nbsp;&nbsp;
-		<% if (Sample.hasControls(samples)) { %>
-		<input type="radio" class="radio" name="yOption" <% if (showValues) out.print("checked"); %> onClick="submit()" value="values"/>values
-                <% if (logData) { %>
-                <input type="radio" class="radio" name="yOption" <% if (showRelative) out.print("checked"); %> onClick="submit()" value="relative"/>values&minus;&lang;control&rang;
-                <% } else { %>
-		<input type="radio" class="radio" name="yOption" <% if (showRelative) out.print("checked"); %> onClick="submit()" value="relative"/>values/&lang;control&rang;
-                <% } %>
-                <% } %>
-		<input type="radio" class="radio" name="yOption" <% if (showZscores) out.print("checked"); %> onClick="submit()" value="z-scores"/>z-scores
-                <% if (!showZscores && !logData) { %>
-		&nbsp;&nbsp;
-		<input type="radio" class="radio" name="showLinear" <% if (!showLinear) out.print("checked"); %> onClick="submit()" value="false"/>log scale
-		<input type="radio" class="radio" name="showLinear" <% if (showLinear) out.print("checked"); %> onClick="submit()" value="true"/>linear scale
-		<% } %>
-		&nbsp;&nbsp;
-		<input type="submit" name="downloadSVG" class="download" value="download SVG file"/>
-	</form>
+
+        <div class="plotControls">
+            <form action="<%=request.getRequestURI()%>" method="post">
+                <input type="hidden" name="viewSamples" value="true"/>
+                <% for (int i=0; i<genes.length; i++) { %><input type="hidden" name="id" value="<%=genes[i].id%>"/><% } %>
+                    <input type="radio" class="radio" name="showMeans" <% if (!showMeans) out.print("checked"); %> onClick="submit()" value="false"/>samples
+                    <input type="radio" class="radio" name="showMeans" <% if (showMeans) out.print("checked"); %> onClick="submit()" value="true"/>means
+		    &nbsp;&nbsp;
+		    <% if (Sample.hasControls(samples)) { %>
+		    <input type="radio" class="radio" name="yOption" <% if (showValues) out.print("checked"); %> onClick="submit()" value="values"/>values
+                    <% if (logData) { %>
+                    <input type="radio" class="radio" name="yOption" <% if (showRelative) out.print("checked"); %> onClick="submit()" value="relative"/>values&minus;&lang;control&rang;
+                    <% } else { %>
+		    <input type="radio" class="radio" name="yOption" <% if (showRelative) out.print("checked"); %> onClick="submit()" value="relative"/>values/&lang;control&rang;
+                    <% } %>
+                    <% } %>
+		    <input type="radio" class="radio" name="yOption" <% if (showZscores) out.print("checked"); %> onClick="submit()" value="z-scores"/>z-scores
+                    <% if (!showZscores && !logData) { %>
+		    &nbsp;&nbsp;
+		    <input type="radio" class="radio" name="showLinear" <% if (!showLinear) out.print("checked"); %> onClick="submit()" value="false"/>log scale
+		    <input type="radio" class="radio" name="showLinear" <% if (showLinear) out.print("checked"); %> onClick="submit()" value="true"/>linear scale
+		    <% } %>
+		    &nbsp;&nbsp;
+		    <input type="submit" name="downloadSVG" class="download" value="download SVG file"/>
+	    </form>
+        </div>
+
     </div>

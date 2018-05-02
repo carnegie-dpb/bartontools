@@ -12,8 +12,8 @@
                     <tr>
                         <% for (int i=0; i<deConditions.length; i++) { %>
                         <td align="center">
-                            <%=deConditions[i]%>/<%=baseCondition%><br/>
-                            <select name="<%=deConditions[i]%>">
+                            <%=deConditions[i]%>/<%=baseConditions[i]%><br/>
+                            <select name="<%=deConditions[i]%>/<%=baseConditions[i]%>">
                                 <option <% if (directions[i]==0) out.print("selected"); %> value="0">--</option>
                                 <option <% if (directions[i]==LimmaResult.UP) out.print("selected"); %> value="<%=LimmaResult.UP%>">UP</option>
                                 <option <% if (directions[i]==LimmaResult.DN) out.print("selected"); %> value="<%=LimmaResult.DN%>">DN</option>
@@ -63,7 +63,7 @@ for (int i=0; i<genes.length; i++) {
     LimmaResult[] res = new LimmaResult[deConditions.length];
     boolean showCheckbox = true;
     for (int j=0; j<deConditions.length; j++) {
-        res[j] = new LimmaResult(application, experiment, baseCondition, deConditions[j], genes[i]);
+        res[j] = new LimmaResult(application, experiment, baseConditions[j], deConditions[j], genes[i]);
         if (res[j]==null) showCheckbox = false;
     }
     %>
@@ -72,11 +72,9 @@ for (int i=0; i<genes.length; i++) {
 	    <td valign="top">
 		<table cellspacing="0" class="deChart">
 		    <tr>
-			<td class="al bb">
-                            <input class="checkbox" type="checkbox" name="id" <% if (showCheckbox) out.print("checked"); else out.print("disabled"); %> value="<%=genes[i].id%>" />
-                            base=<%=fractionFormat.format(res[0].aveexpr)%>
-                        </td>
-			<td class="ac bb">logFC</td>
+			<td class="al bb"><input class="checkbox" type="checkbox" name="id" <% if (showCheckbox) out.print("checked"); else out.print("disabled"); %> value="<%=genes[i].id%>" /></td>
+                        <td class="ac bb">base=<%=fractionFormat.format(res[0].aveexpr)%></td>
+			<td class="ac bb">logFC (p,q)</td>
 		    </tr>
 		    <% for (int j=0; j<deConditions.length; j++) { %>
 			<%@ include file="../limma-row.jhtml" %>

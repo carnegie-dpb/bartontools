@@ -744,16 +744,13 @@ img.sr-plot {
 img.samplesPlot { 
     margin: 10px 0;
 }
-img.samplesPlot { 
-    margin: 10px 0;
-}
 
 div.plot { 
     display:inline-block;
+    text-align: center;
 }
 
 div.plotControls {
-    display:inline-block;
 }
 
 div.affxheading { 
