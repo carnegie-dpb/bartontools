@@ -139,8 +139,11 @@ if (exprDataset.getSeriesCount()>0 && (showLinear || showZscores)) {
     NumberAxis yAxis = new NumberAxis(yLabel);
     yAxis.setTickLabelsVisible(true);
     yAxis.setAutoRangeIncludesZero(true);
-    yMin = Math.min(DatasetUtilities.findRangeBounds(exprDataset).getLowerBound()*1.1, 0.0);
-    yMax = DatasetUtilities.findRangeBounds(exprDataset).getUpperBound()*1.1;
+    yMin = DatasetUtilities.findRangeBounds(exprDataset).getLowerBound();
+    yMax = DatasetUtilities.findRangeBounds(exprDataset).getUpperBound();
+    double diff = yMax - yMin;
+    yMin = yMin - diff/10;
+    yMax = yMax + diff/10;
     yLineMin = yMin;
     yLineMax = yMax;
     yConditionLabel = yMin + (yMax-yMin)*0.99;
