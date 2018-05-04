@@ -130,7 +130,7 @@ double maxConditionQ = 1.00; if (request.getParameter("maxConditionQ")!=null) ma
 double minTimeQ = 0.00; if (request.getParameter("minTimeQ")!=null) minTimeQ = Util.getDouble(request, "minTimeQ");
 double maxTimeQ = 1.00; if (request.getParameter("maxTimeQ")!=null) maxTimeQ = Util.getDouble(request, "maxTimeQ");
 double minConditionTimeQ = 0.00; if (request.getParameter("minConditionTimeQ")!=null) minConditionTimeQ = Util.getDouble(request, "minConditionTimeQ");
-double maxConditionTimeQ = 0.05; if (request.getParameter("maxConditionTimeQ")!=null) maxConditionTimeQ = Util.getDouble(request, "maxConditionTimeQ");
+double maxConditionTimeQ = 0.01; if (request.getParameter("maxConditionTimeQ")!=null) maxConditionTimeQ = Util.getDouble(request, "maxConditionTimeQ");
 double minCtrl = 0.0; if (request.getParameter("minCtrl")!=null) minCtrl = Util.getDouble(request, "minCtrl");
 
 // Cuffdiff parameters
@@ -149,14 +149,25 @@ for (int i=0; i<conditions.length; i++) {
     if (directions[i]!=0) includeDirections = true;
 }
 
-// limma parameters; assume only one base condition
+// limma (non time-course) parameters
 String[] baseConditions = LimmaResult.getBaseConditions(application, experiment);
 String[] deConditions = LimmaResult.getDEConditions(application, experiment);
 if (baseConditions.length>0) {
     directions = new int[deConditions.length];
     includeDirections = false;
-    for (int i=0; i<deConditions.length; i++) {
+    for (int i=0; i<directions.length; i++) {
 	directions[i] = Util.getInt(request, deConditions[i]+"/"+baseConditions[i]);
+	if (directions[i]!=0) includeDirections = true;
+    }
+}
+
+// limma (time-course) parameters
+if (request.getServletPath().contains("limmatime")) {
+    conditions = LimmaTimeResult.getConditions(application, experiment);
+    directions = new int[conditions.length];
+    includeDirections = false;
+    for (int i=0; i<directions.length; i++) {
+	directions[i] = Util.getInt(request, conditions[i]);
 	if (directions[i]!=0) includeDirections = true;
     }
 }

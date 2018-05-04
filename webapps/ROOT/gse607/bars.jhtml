@@ -1,1 +1,43 @@
+<!-- start experiment-specific bars.jhtml -->
+<%
+Expression expr = new Expression(application, experiment, genes[i]);
+if (expr.values!=null) {
+double meanValue = expr.getMeanValue();
+%>
+<div style="width:130px; border:1px solid purple;">
+    <% if (meanValue>1.0) { %>
+    <input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
+    <% } %>
+    &lang;expr&rang; = <%=fractionFormat.format(meanValue)%>
+</div>
+<table class="barChart" cellspacing="0">
+    <tr>
+        <%
+        for (int j=0; j<samples.length; j++) {
+            String bg = "";
+            if (samples[j].condition.equals("LEAF")) bg = "bg1";
+            if (samples[j].condition.equals("STEM")) bg = "bg3";
+            if (samples[j].condition.equals("FLOWER")) bg = "bg5";
+            int height = (int) (Math.log(expr.values[j])*8);
+        %>
+	<td><img class="<%=bg%>" src="/images/spacer.gif" width="5" height="<%=height%>" title="<%=expr.values[j]%>"/></td>
+        <%
+        } // samples loop
+        %>
+    </tr>
+</table>
+<%
+} else {
+%>
+No expression.
+<table class="barChart" cellspacing="0">
+    <tr>
+        <% for (int l=0; l<samples.length; l++) { %>
+        <td><img src="/images/spacer.gif" width="2" height="1"/></td>
+        <% } %>
+    </tr>
+</table>
+<%
+}
+%>
 <!-- no bars -->

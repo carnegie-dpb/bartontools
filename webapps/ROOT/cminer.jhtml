@@ -39,7 +39,7 @@
     </tr>
 </table>
 <% if (genes.length==0) { %>
-	<%@ include file="../summary-results.jhtml" %>
+<%@ include file="../summary-results.jhtml" %>
 <% } else { %>
 <!-- form for tagging and viewing operations along with results display -->
 <form action="cminer.jsp" method="post">
@@ -47,7 +47,7 @@
     <input type="hidden" name="gene2input" value="<%=gene2input%>"/>
     <input type="hidden" name="polarity" value="<%=polarity%>"/>
     <input type="hidden" name="corrThreshold" value="<%=corrThreshold%>"/>
-    <div class="topButtons" style="width:450px;left:540px;top:-130px;margin-bottom:-120px;">
+    <div class="topButtons" style="width:600px;left:520px;top:-95px;margin-bottom:-90px;">
         <%@ include file="../summary-results.jhtml" %>
 	<%@ include file="viewbuttons.jhtml" %>
     </div>

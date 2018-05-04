@@ -139,8 +139,14 @@ if (exprDataset.getSeriesCount()>0 && (showLinear || showZscores)) {
     NumberAxis yAxis = new NumberAxis(yLabel);
     yAxis.setTickLabelsVisible(true);
     yAxis.setAutoRangeIncludesZero(true);
-    yMin = DatasetUtilities.findRangeBounds(exprDataset).getLowerBound();
-    yMax = DatasetUtilities.findRangeBounds(exprDataset).getUpperBound();
+    try {
+        yMin = DatasetUtilities.findRangeBounds(exprDataset).getLowerBound();
+        yMax = DatasetUtilities.findRangeBounds(exprDataset).getUpperBound();
+    } catch (Exception e) {
+        // punt
+        yMin = 0.0;
+        yMax = 1e3;
+    }
     double diff = yMax - yMin;
     yMin = yMin - diff/10;
     yMax = yMax + diff/10;
@@ -248,7 +254,9 @@ if (downloadSVG) {
 		    <input type="radio" class="radio" name="yOption" <% if (showRelative) out.print("checked"); %> onClick="submit()" value="relative"/>values/&lang;control&rang;
                     <% } %>
                     <% } %>
+                    <% if (Sample.hasControls(samples)) { %>
 		    <input type="radio" class="radio" name="yOption" <% if (showZscores) out.print("checked"); %> onClick="submit()" value="z-scores"/>z-scores
+                    <% } %>
                     <% if (!showZscores && !logData) { %>
 		    &nbsp;&nbsp;
 		    <input type="radio" class="radio" name="showLinear" <% if (!showLinear) out.print("checked"); %> onClick="submit()" value="false"/>log scale

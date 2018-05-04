@@ -48,7 +48,7 @@
 <!-- form for tagging and viewing operations -->
 <%  if (genes.length>0) { %>
 <div style="position:relative; width:0; height:0">
-    <div class="topButtons">
+    <div class="topButtons" style="width:600px;left:720px;top:-80px;margin-bottom:-120px;">
 	<form action="limmatime.jsp" method="post">
 	    <input type="hidden" name="minlogFC" value="<%=minlogFC%>"/>
 	    <input type="hidden" name="maxpq" value="<%=maxpq%>"/>

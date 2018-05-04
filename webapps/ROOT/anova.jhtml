@@ -77,59 +77,55 @@
     <input type="hidden" name="maxConditionQ" value="<%=maxConditionQ%>"/>
     <input type="hidden" name="maxTimeQ" value="<%=maxTimeQ%>"/>
     <input type="hidden" name="maxConditionTimeQ" value="<%=maxConditionTimeQ%>" />
-    <div class="topButtons" style="width:450px;left:540px;top:-130px;margin-bottom:-120px;">
+    <div class="topButtons" style="width:600px;left:580px;top:-95px;margin-bottom:-95px;">
         <%@ include file="../summary-results.jhtml" %>
 	<%@ include file="viewbuttons.jhtml" %>
     </div>
     <%
     // loop over genes
     for (int i=0; i<genes.length; i++) {
-        // query results here for any summary stats above individual rows
-	Expression expr = new Expression(application, experiment, genes[i]);
-        double meanControl = expr.getMeanControlValue();
-        List<ANOVAResult> results;
+                                  // query results here for any summary stats above individual rows
+                                  Expression expr = new Expression(application, experiment, genes[i]);
+                                  double meanControl = expr.getMeanControlValue();
+                                  List<ANOVAResult> results = new ArrayList<ANOVAResult>();
         if (anovaCondition.length()>0) {
-            // single condition
-            results = new ArrayList<ANOVAResult>();
-            results.add(new ANOVAResult(application, experiment, anovaCondition, genes[i]));
-        } else {
-            // all conditions
-            results = ANOVAResult.getResults(application, experiment, genes[i]);
-       }
-    %>
-    <table cellspacing="0" class="gene">
-      <tr>
-	<td valign="top" class="anovadata">
-	  <input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
-	  &lang;ctrl&rang;=<%=fractionFormat.format(meanControl)%>
-	  <% for (ANOVAResult res : results) { %>
-	  <table cellspacing="0" class="condition">
-	    <tr>
-	      <td class="heading"><b><%=res.conditions%></b></td>
-	      <td class="heading ac">&sigma;<sup>2</sup></td>
-	      <td class="heading ac">F</td>
-	      <td class="heading ac">p</td>
-	      <td class="heading ac">q</td>
-	    </tr>
-	    <%@ include file="../anova-row.jhtml" %>
-	  </table>
-	  <% } %>
-	</td>
-	<td valign="top">
-          <%@ include file="../gene.jhtml" %>
-          <% if (experiment.annotation.startsWith("TAIR")) { %><%@ include file="../tairinfo.jhtml" %><% } %>
-	</td>
-      </tr>
-    </table>
-    <%
-    } // for each gene
-    %>
+        // single condition
+        results.add(new ANOVAResult(application, experiment, anovaCondition, genes[i]));
+        }
+        %>
+        <table cellspacing="0" class="gene">
+            <tr>
+	        <td valign="top" class="anovadata">
+	            <input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
+	            &lang;ctrl&rang;=<%=fractionFormat.format(meanControl)%>
+	            <% for (ANOVAResult res : results) { %>
+	            <table cellspacing="0" class="condition">
+	                <tr>
+	                    <td class="heading"><b><%=res.conditions%></b></td>
+	                    <td class="heading ac">&sigma;<sup>2</sup></td>
+	                    <td class="heading ac">F</td>
+	                    <td class="heading ac">p</td>
+	                    <td class="heading ac">q</td>
+	                </tr>
+	                <%@ include file="../anova-row.jhtml" %>
+	            </table>
+	            <% } %>
+	        </td>
+	        <td valign="top">
+                    <%@ include file="../gene.jhtml" %>
+                    <% if (experiment.annotation.startsWith("TAIR")) { %><%@ include file="../tairinfo.jhtml" %><% } %>
+	        </td>
+            </tr>
+        </table>
+        <%
+        } // for each gene
+        %>
 </form>
 <%
 } else if (conditionSearch) {
 %>
-<div class="topButtons" style="left:550px">
-<%@ include file="../summary-results.jhtml" %>
+<div class="topButtons" style="width:450px;left:540px;top:-130px;margin-bottom:-120px;">
+    <%@ include file="../summary-results.jhtml" %>
 </div>
 <%
 } // have / don't have genes
