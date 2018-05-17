@@ -124,7 +124,7 @@
 <%
 } else if (conditionSearch) {
 %>
-<div class="topButtons" style="width:450px;left:540px;top:-130px;margin-bottom:-120px;">
+<div class="topButtons" style="width:450px;left:600px;top:-130px;margin-bottom:-120px;">
     <%@ include file="../summary-results.jhtml" %>
 </div>
 <%
