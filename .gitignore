@@ -3,3 +3,4 @@ classes
 tmp
 workspace-id.txt
 *.lock
+*.bin

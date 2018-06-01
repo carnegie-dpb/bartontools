@@ -19,7 +19,7 @@
                 maxActive="5"
                 maxWait="15000"
                 maxIdle="1"
-                url="jdbc:mysql://spitz.lbl.gov/go_latest"
+                url="jdbc:mysql://spitz.lbl.gov/go_latest?serverTimezone=US/Pacific"
                 username="go_select"
                 />
 
