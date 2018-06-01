@@ -1,0 +1,42 @@
+<%
+if (res[j].q!=null && res[j].q.length>0) {
+	String style = "normal";
+	for (int k=0; k<res[j].q.length; k++) {
+		if (res[j].q[k]<0.05) {
+			style = "significant";
+			if (res[j].logFC[k]> 1.0) style = "upreg";
+			if (res[j].logFC[k]<-1.0) style = "downreg";
+		}
+	}
+	%>
+	<tr>
+		<td class="<%=style%>"><%=conditions[j]%></td>
+		<td class="ac br"><%=expFormat.format(Util.mean(res[j].baseMean))%></td>
+		<%
+		for (int k=0; k<times.length-1; k++) {
+			String bg = Util.bgFC(res[j].logFC[k]);
+			String sig = "";
+						   if (res[j].q[k]<0.05) sig = "significant";
+			
+
+			if (res[j].status[k]==null || res[j].status[k].equals("OK")) { // include null for back compatibility
+				if (res[j].baseMean[k]>0 && res[j].deMean[k]>0) {
+			%>
+			<td class="logFC <%=bg%>"><span class="<%=sig%>"><%=logFCFormat.format(res[j].logFC[k])%></span> (<%=pFormat.format(res[j].p[k])%>,<%=pFormat.format(res[j].q[k])%>)</td>
+						<%
+						} else {
+					%>
+					<td class="logFC missing">zero expr</td>
+						<%
+						}
+			} else {
+				%>
+				<td class="logFC missing"><%=res[j].status[k]%></td>
+				<%
+			}
+		}
+	%>
+	</tr>
+	<%
+	}
+	%>

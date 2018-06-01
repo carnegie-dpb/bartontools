@@ -1,0 +1,22 @@
+<%
+if (res[j]!=null) {
+String style = "normal";
+if (res[j].q<0.05) {
+style = "significant";
+if (res[j].logFC>1.0) style = "upreg";
+if (res[j].logFC<-1.0) style = "downreg";
+}
+%>
+<tr>
+    <td class="bl bb <%=style%>"><%=deConditions[j]%></td>
+    <td class="bl bb <%=style%>"><%=baseConditions[j]%></td>
+    <%
+    String bg = Util.bgFC(res[j].logFC);
+    String sig = "";
+    if (res[j].q<0.05) sig = "significant";
+    %>
+    <td class="bl logFC <%=bg%>"><span class="<%=sig%>"><%=logFCFormat.format(res[j].logFC)%></span>  (<%=pFormat.format(res[j].p)%>,<%=pFormat.format(res[j].q)%>)</td>
+</tr>
+<%
+}    
+%>

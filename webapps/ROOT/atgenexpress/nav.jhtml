@@ -1,6 +1,0 @@
-<ul class="nav">
-        <li><a href="/index.jsp">Home</a></li>
-	<li><a href="index.jsp">Experiment</a></li>
-	<li><a href="expression.jsp">Expression</a></li>
-	<li><a href="cminer.jsp">Correlation Miner</a></li>
-</ul>

@@ -1,7 +1,0 @@
-      <form action="<%=request.getRequestURI()%>" method="post">
-	Select<br/>
-	<input type="text" size="3" name="random" value="<%=random%>"/><br/>
-	Random<br/>
-	Genes<br/>
-        <input type="submit" class="searchButton" name="randomSearch" value="select"/>
-      </form>

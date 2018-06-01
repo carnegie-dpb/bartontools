@@ -1,0 +1,18 @@
+<% if (!user.isDefault()) { %>
+<input type="button" class="clearButton" onClick="clearSelections()" value="clear selections"/>
+Tag:<input type="text" name="tagToAdd" style="width:120px" value=""/>
+<input type="submit" name="addTag" class="addTagButton" value="tag selected genes"/>
+<% } %>
+<table cellspacing="0" class="topButtons">
+  <tr>
+    <td>
+      Plot Title (optional):<br/>
+      <input type="text" name="plotTitle" size="32"/><br/>
+      <input type="submit" name="viewSamples" class="viewButton" value="samples plot"/><input type="submit" name="viewHeatmap" class="viewButton" value="heat map"/>
+      <input type="submit" name="viewTimes" class="viewButton" value="time plots"/>
+    </td>
+    <td><input type="submit" name="viewExpressionTable" class="viewButton" value="expression&#13;&#10;table"/></td>
+    <% if (genes.length>1) { %><td><input type="submit" name="viewCorrelation" class="viewButton" value="correlation&#13;&#10;matrix"/></td><% } %>
+    <td><input type="submit" name="viewGOTerms" class="viewButton" value="GO&#13;&#10;Terms"/></td>
+  </tr>
+</table>

@@ -1,0 +1,26 @@
+        <Context className="org.apache.catalina.core.StandardContext"  
+                 displayName="Barton Lab Web Tools" >
+
+            <Resource auth="Container" scope="Shareable" type="javax.sql.DataSource"
+                      description="Connection to bartonlab database."
+                      name="jdbc/JCMSDataSource"
+                      url="jdbc:postgresql://localhost/bartonlab"
+                      driverClassName="org.postgresql.Driver"
+                      username="bartonlab"
+                      password="Arabidopsis99"
+                      maxActive="10"
+                      maxWait="15000"
+                      maxIdle="0" />
+
+            <Resource auth="Container" scope="Shareable" type="javax.sql.DataSource"
+                description="Connection to external GO database."
+                name="jdbc/GODataSource"
+                driverClassName="com.mysql.jdbc.Driver"
+                maxActive="5"
+                maxWait="15000"
+                maxIdle="1"
+                url="jdbc:mysql://spitz.lbl.gov/go_latest"
+                username="go_select"
+                />
+
+        </Context>

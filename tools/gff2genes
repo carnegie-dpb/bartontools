@@ -1,3 +1,0 @@
-#!/bin/sh
-
-java -cp classes:../classes:/usr/share/java/postgresql.jar GFF2Genes $1 $2 $3

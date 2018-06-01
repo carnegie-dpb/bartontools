@@ -1,0 +1,80 @@
+<h2>DE Score Miner</h2>
+
+<div class="instructions">
+	This co-expression tool finds genes with a DE score Levenshtein Distance less than or equal to a desired integer from the supplied gene's DE score.
+	A DE score is a string like "NNNDDDUUU" where "N" means "no significant change", "D" means "significant DOWN regulation" and "U" means "significant UP expression" (where "significant" is
+	usually q<0.05). There is a letter for every condition+time. If two genes have identical scores, the Levenshtein Distance is zero. Therefore, the distance from a gene to itself is always zero, providing at least one result.
+	Tip: start with max distance = 0 and work your way up.
+</div>
+
+<table cellspacing="2" class="searchParameters">
+  <tr>
+    <td class="searchParameters">
+		<form action="scoreminer.jsp" method="post">
+			<table cellspacing="0">
+				<tr>
+					<td>gene<br/><input type="text" size="12" name="geneID" value="<%=Util.blankIfNull(geneID)%>"/></td>
+					<td>max distance<br/><input type="text" size="2" name="maxDistance" value="<%=maxDistance%>"/></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input class="searchButton" type="submit" name="conditionSearch" value="GO" onClick="new Spinner(opts).spin(document.getElementById('spinner'));" /></td>
+				</tr>
+			</table>
+		</form>
+    </td>
+    <td style="vertical-align:top">
+		<%@ include file="../summary-results.jhtml" %>
+    </td>
+  </tr>
+</table>
+
+<%
+if (genes.length>0) {
+DEScore score1 = new DEScore(application, gene, experiment);
+%>
+<!-- form for tagging and viewing operations -->
+<form action="scoreminer.jsp" method="post">
+	<div class="topButtons" style="width:450px;left:300px;top:-70px;margin-bottom:-70px;">
+		<%@ include file="viewbuttons.jhtml" %>
+	</div>
+	<%
+	for (int i=0; i<genes.length; i++) {
+					   DEScore score2 = new DEScore(application, genes[i], experiment);
+					   int distance = score1.getLevenshteinDistance(score2);
+					   %>
+		<table cellspacing="0" class="gene">
+			<tr>
+				<td valign="top" class="corrdata">
+					<table cellspacing="0" class="scoreChart">
+						<tr>
+							<td class="checkbox">
+								<input class="checkbox" type="checkbox" name="id" checked value="<%=genes[i].id%>" />
+								distance=<%=distance%>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<%
+								// fancy display with colors
+								char[] score1chars = score1.score.toCharArray();
+								char[] score2chars = score2.score.toCharArray();
+								for (int k=0; k<score1chars.length; k++) out.print("<span class=\"score"+score1chars[k]+"\">"+score1chars[k]+"</span>");
+								out.println("<br/>");
+								for (int k=0; k<score2chars.length; k++) out.print("<span class=\"score"+score2chars[k]+"\">"+score2chars[k]+"</span>");
+								%>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td valign="top">
+					<%@ include file="../tairinfo.jhtml" %>
+				</td>
+			</tr>
+		</table>
+		<%
+		} // loop over genes
+		%>
+</form>
+<%  } // if genes %>
+
+      

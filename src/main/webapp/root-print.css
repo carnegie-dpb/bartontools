@@ -1,0 +1,42 @@
+/* override certain styles for printing */
+
+body { 
+    font-size: 8pt;
+    margin: 0;
+	padding: 0;
+}
+
+table.header {
+}
+table.header td.logo {
+	padding-right: 10pt;
+}
+table.header img.logo {
+	width: 310px;
+}
+table.header td.heading {
+	padding-top: 11pt;
+}
+table.header .title {
+    font-size: 16pt;
+}
+table.header .loginStatus {
+	font-size: 0pt;
+}
+
+div.footer {
+	font-size: 6pt;
+    margin-top: 6pt;
+    padding-top: 6pt;
+}
+
+ul.nav {
+    font-size: 0;
+    margin: 0;
+    padding: 0;
+}
+
+div.experiment { font-size:8pt; margin: 0; }
+div.experiment .description { }
+div.experiment a {  }
+div.experiment a:hover { }

@@ -1,2 +1,5 @@
 *~
 classes
+tmp
+workspace-id.txt
+*.lock

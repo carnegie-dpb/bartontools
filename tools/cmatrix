@@ -1,3 +1,0 @@
-#!/bin/sh
-
-java -cp classes:../lib/bartonlab.jar:../lib/postgresql-jdbc.jar:../lib/apache-commons-math.jar CorrelationMatrix $1 $2 $3
