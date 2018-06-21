@@ -9,7 +9,7 @@ Experiment exp = new Experiment(application, schema);
 
 // boot if user is not an admin of this experiment
 if (!user.mayAdminister(application, exp)) {
-    response.sendRedirect("index.jsp");
+    response.sendRedirect(response.encodeRedirectURL("index.jsp"));
     return;
 }
 

@@ -2,7 +2,9 @@
 -- perhaps a short-term fix; code wants schema.limmaresults for every experiment
 --
 
+CREATE TABLE atgenexpress.limmaresults () INHERITS (public.limmaresults);
 CREATE TABLE "e-mtab-4316".limmaresults () INHERITS (public.limmaresults);
+CREATE TABLE "e-mtab-6123".limmaresults () INHERITS (public.limmaresults);
 CREATE TABLE fowler1.limmaresults () INHERITS (public.limmaresults);
 CREATE TABLE grtiny.limmaresults () INHERITS (public.limmaresults);
 CREATE TABLE gse12715.limmaresults () INHERITS (public.limmaresults);

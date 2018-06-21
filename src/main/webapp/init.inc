@@ -45,7 +45,7 @@ if (request.getParameter("logout")!=null) {
 // bump user if not authorized for selected experiment
 if (experiment!=null && !experiment.publicdata) {
     if (user.isDefault() || !user.mayView(application,experiment)) {
-        response.sendRedirect("../index.jsp");
+        response.sendRedirect(response.encodeRedirectURL("../index.jsp"));
     }
 }
 %>
