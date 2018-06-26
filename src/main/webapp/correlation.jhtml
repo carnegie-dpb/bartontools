@@ -35,7 +35,7 @@ if (conditions.length<10) {
 	<table>
 		<tr>
 			<td>
-				<form action="<%=request.getRequestURI()%>" method="post">
+				<form method="post">
 					<input type="hidden" name="viewCorrelation" value="true"/>
 					<select name="correlationType" onChange="submit()">
 						<option <% if (normal) out.print("selected"); %> value="Normal">Normal: corr(condition)</option>

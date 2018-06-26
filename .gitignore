@@ -3,5 +3,6 @@ build
 classes
 tmp
 workspace-id.txt
+context.xml
 *.lock
 *.bin

@@ -1,4 +1,4 @@
-<form action="<%=request.getRequestURI()%>" method="post">
+<form method="post">
     <div class="textareaHeading">Search gene names,<br/>descriptions or aliases</div>
 	<textarea class="searchDescription" name="searchDescriptionString"><%=searchDescriptionString%></textarea>
 	<br/>

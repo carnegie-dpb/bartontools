@@ -94,7 +94,7 @@ for (int k=0; k<conditions.length; k++) {
 			   <img src="/temp/<%=chartPNG[k]%>" alt="Barton lab DESeq-normalized RNA-Seq read counts" border="0" width="<%=chartWidth%>" height="<%=chartHeight%>"/>
 			   </div>
 			   <div style="padding-top:<%=chartHeight/2%>px;">
-			   <form action="<%=request.getRequestURI()%>" method="post">
+			   <form method="post">
 			   <input type="hidden" name="viewTimes" value="true"/>
 			   <input type="hidden" name="linear" value="<%=linear%>"/>
 			   <input type="hidden" name="chartIndex" value="<%=k%>"/>
@@ -108,7 +108,7 @@ for (int k=0; k<conditions.length; k++) {
 					<% } %>
 
 						<div style="clear:both; width:600px; text-align:center">
-							<form action="<%=request.getRequestURI()%>" method="post">
+							<form method="post">
 							<input type="hidden" name="viewTimes" value="true"/>
 							<input type="hidden" name="linear" value="<%=linear%>"/>
 							<% for (int i=0; i<genes.length; i++) { %>
